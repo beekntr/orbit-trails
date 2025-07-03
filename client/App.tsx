@@ -19,28 +19,97 @@ import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
+function AppContent() {
+  const isLoading = useRouteLoading();
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <AnimatePresence mode="wait">
+        {isLoading && <Loading fullScreen message="Loading page..." />}
+      </AnimatePresence>
+      <Navbar />
+      <main className="flex-1">
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <Index />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <PageTransition>
+                  <About />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <PageTransition>
+                  <Contact />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/tours"
+              element={
+                <PageTransition>
+                  <Tours />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/tours/:slug"
+              element={
+                <PageTransition>
+                  <TourDetails />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <PageTransition>
+                  <Blog />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/adm"
+              element={
+                <PageTransition>
+                  <Admin />
+                </PageTransition>
+              }
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route
+              path="*"
+              element={
+                <PageTransition>
+                  <NotFound />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <Toaster />
     <Sonner />
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/tours" element={<Tours />} />
-            <Route path="/tours/:slug" element={<TourDetails />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/adm" element={<Admin />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AppContent />
     </BrowserRouter>
   </QueryClientProvider>
 );

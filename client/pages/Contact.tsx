@@ -3,10 +3,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default function Contact() {
   return (
     <div>
+
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -23,7 +25,8 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div>
+            <AnimatedSection direction="left">
+              <div>
               <h2 className="text-3xl font-bold text-secondary mb-8">
                 Send us a Message
               </h2>
@@ -62,10 +65,12 @@ export default function Contact() {
                   Send Message
                 </Button>
               </form>
-            </div>
+              </div>
+            </AnimatedSection>
 
             {/* Contact Information */}
-            <div className="space-y-8">
+            <AnimatedSection direction="right">
+              <div className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-secondary mb-8">
                   Contact Information

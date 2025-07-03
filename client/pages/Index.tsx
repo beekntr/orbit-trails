@@ -20,6 +20,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
+import AnimatedSection from "@/components/AnimatedSection";
+import { motion } from "framer-motion";
+
 
 export default function Index() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -135,6 +138,7 @@ export default function Index() {
 
   return (
     <div>
+
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Images */}
@@ -158,15 +162,37 @@ export default function Index() {
 
         {/* Hero Content */}
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+          >
             Discover the Magic of
-            <span className="text-primary block">India</span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              className="text-primary block"
+            >
+              India
+            </motion.span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto"
+          >
             Experience the incredible diversity, rich culture, and timeless
             beauty of India with our expertly crafted tour packages
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
             <Button
               size="lg"
               className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg"
@@ -199,7 +225,7 @@ export default function Index() {
       {/* Services Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-4xl font-bold text-secondary mb-4">
               Why Choose Orbit Trails?
             </h2>
@@ -207,14 +233,16 @@ export default function Index() {
               We are passionate about creating unforgettable travel experiences
               that showcase the authentic beauty and culture of India
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <Card
+              <AnimatedSection
                 key={index}
-                className="text-center border-none shadow-lg hover:shadow-xl transition-shadow"
+                delay={index * 0.1}
+                direction="up"
               >
+                <Card className="text-center border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <CardHeader>
                   <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
                     {service.icon}
@@ -235,7 +263,7 @@ export default function Index() {
       {/* Featured Tours */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-4xl font-bold text-secondary mb-4">
               Featured Tours
             </h2>
@@ -243,14 +271,16 @@ export default function Index() {
               Discover our most popular destinations and create memories that
               will last a lifetime
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredTours.map((tour) => (
-              <Card
+            {featuredTours.map((tour, index) => (
+              <AnimatedSection
                 key={tour.id}
-                className="overflow-hidden hover:shadow-xl transition-shadow"
+                delay={index * 0.1}
+                direction="up"
               >
+                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <div className="relative">
                   <img
                     src={tour.image}
@@ -289,10 +319,7 @@ export default function Index() {
                     <Button className="flex-1 bg-primary hover:bg-primary/90">
                       View Details
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1 border-accent text-accent hover:bg-accent hover:text-white"
-                    >
+                    <Button variant="outline" className="flex-1 border-accent text-accent hover:bg-accent hover:text-white">
                       Book Now
                     </Button>
                   </div>

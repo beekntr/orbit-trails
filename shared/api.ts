@@ -24,8 +24,9 @@ export interface Tour {
   name: string;
   slug: string;
   description: string;
+  overview: string;
   category: 'Golden Triangle' | 'Rajasthan Tours' | 'Extended Tours';
-  price: number;
+  price?: number; // Made optional since we're hiding pricing initially
   originalPrice?: number;
   duration: string;
   maxGuests: number;
@@ -158,6 +159,10 @@ export class OrbitTrailsAPI {
 
   static async getTourById(id: string): Promise<ApiResponse<Tour>> {
     return this.request(`/tours/${id}`);
+  }
+
+  static async getTourBySlug(slug: string): Promise<ApiResponse<Tour>> {
+    return this.request(`/tours/slug/${slug}`);
   }
 
   static async createTour(tour: Partial<Tour>): Promise<ApiResponse<Tour>> {

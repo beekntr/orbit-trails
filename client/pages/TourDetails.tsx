@@ -1,134 +1,100 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
-import {
-  Star,
-  Calendar,
-  Users,
-  MapPin,
-  Share2,
-  Clock,
-  Camera,
-  Utensils,
-  Bed,
+import { 
+  Calendar, 
+  Star, 
+  MapPin, 
+  Users, 
+  Clock, 
+  Share2, 
+  Mail,
+  CheckCircle,
+  XCircle,
+  ArrowLeft,
+  Camera
 } from "lucide-react";
+import { OrbitTrailsAPI, Tour } from "@shared/api";
+import { useToast } from "@/hooks/use-toast";
+import CustomizeTourModal from "@/components/CustomizeTourModal";
 
 export default function TourDetails() {
   const { slug } = useParams();
   const { toast } = useToast();
+  const [tour, setTour] = useState<Tour | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock tour data - in real app, this would be fetched based on slug
-  const tour = {
-    id: 1,
-    slug: "golden-triangle-classic",
-    name: "Golden Triangle Classic",
-    category: "Golden Triangle Tours",
-    price: 599,
-    originalPrice: 699,
-    duration: "7 Days / 6 Nights",
-    rating: 4.8,
-    reviews: 124,
-    maxGuests: 12,
-    minAge: 0,
-    description:
-      "Experience the magical Golden Triangle circuit covering Delhi, Agra, and Jaipur. This carefully crafted journey takes you through India's most iconic destinations, including the magnificent Taj Mahal, the bustling streets of Old Delhi, and the royal palaces of Jaipur.",
-    highlights: [
-      "Visit the iconic Taj Mahal at sunrise and sunset",
-      "Explore the majestic Red Fort and Jama Masjid in Delhi",
-      "Discover the Pink City of Jaipur and Amber Fort",
-      "Experience local culture and traditional cuisine",
-      "Stay in heritage hotels with modern amenities",
-      "Professional English-speaking guide throughout",
-    ],
-    included: [
-      "6 nights accommodation in 4-star hotels",
-      "Daily breakfast and 3 dinners",
-      "Private air-conditioned vehicle",
-      "Professional English-speaking guide",
-      "All monument entrance fees",
-      "Airport transfers",
-    ],
-    notIncluded: [
-      "International flights",
-      "Visa fees",
-      "Personal expenses",
-      "Tips and gratuities",
-      "Travel insurance",
-    ],
-    itinerary: [
-      {
-        day: 1,
-        title: "Arrival in Delhi",
-        description:
-          "Arrive at Delhi airport and transfer to your hotel. Evening at leisure to explore Connaught Place.",
-        highlights: ["Airport pickup", "Hotel check-in", "Welcome briefing"],
-      },
-      {
-        day: 2,
-        title: "Delhi Sightseeing",
-        description:
-          "Full day exploring Old and New Delhi including Red Fort, Jama Masjid, India Gate, and President's House.",
-        highlights: ["Red Fort", "Jama Masjid", "India Gate", "Raj Ghat"],
-      },
-      {
-        day: 3,
-        title: "Delhi to Agra",
-        description:
-          "Drive to Agra (3-4 hours). Visit Agra Fort and enjoy sunset views of Taj Mahal from Mehtab Bagh.",
-        highlights: ["Agra Fort", "Mehtab Bagh", "Taj Mahal sunset view"],
-      },
-      {
-        day: 4,
-        title: "Taj Mahal & Agra to Jaipur",
-        description:
-          "Early morning visit to Taj Mahal at sunrise. Drive to Jaipur via Fatehpur Sikri.",
-        highlights: ["Taj Mahal sunrise", "Fatehpur Sikri", "Drive to Jaipur"],
-      },
-      {
-        day: 5,
-        title: "Jaipur Sightseeing",
-        description:
-          "Explore the Pink City including Amber Fort, City Palace, Hawa Mahal, and local markets.",
-        highlights: [
-          "Amber Fort",
-          "City Palace",
-          "Hawa Mahal",
-          "Local markets",
-        ],
-      },
-      {
-        day: 6,
-        title: "Jaipur to Delhi",
-        description:
-          "Morning at leisure for shopping. Drive back to Delhi and check into hotel near airport.",
-        highlights: ["Shopping time", "Return to Delhi", "Airport hotel"],
-      },
-      {
-        day: 7,
-        title: "Departure",
-        description: "Transfer to airport for onward journey.",
-        highlights: ["Airport transfer", "Tour ends"],
-      },
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    ],
-  };
+  useEffect(() => {
+    const fetchTour = async () => {
+      if (!slug) {
+        setError("Tour not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await OrbitTrailsAPI.getTourBySlug(slug);
+        
+        if (response.success && response.data) {
+          setTour(response.data);
+        } else {
+          setError(response.message || "Tour not found");
+        }
+      } catch (err) {
+        console.error("Error fetching tour:", err);
+        setError("Failed to load tour details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTour();
+  }, [slug]);
 
   const handleBookNow = () => {
-    const subject = `Booking Inquiry - ${tour.name}`;
-    const body = `Hi,\n\nI'm interested in booking the ${tour.name} tour.\n\nPlease send me more details about availability and booking process.\n\nThank you!`;
+    if (!tour) return;
+    
+    const subject = `Book ${tour.name}`;
+    const body = `Hello Orbit Trails Team,
+
+I would like to book the following tour package:
+
+📍 Tour Package: ${tour.name}
+⏰ Duration: ${tour.duration}
+🏷️ Category: ${tour.category}
+🌟 Rating: ${tour.rating}/5.0 (${tour.reviews} reviews)
+
+Please provide me with:
+- Available dates and departure schedules
+- Detailed pricing information 
+- Booking process and requirements
+- Payment options and terms
+- What's included in the package
+- Any special offers or group discounts
+
+My details:
+- Name: [Your Name]
+- Contact Number: [Your Phone]
+- Preferred Travel Dates: [Your Preferred Dates]
+- Number of Travelers: [Number of People]
+
+Thank you for your time. I look forward to hearing from you soon!
+
+Best regards`;
+    
     window.open(
       `mailto:info@orbittrails.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
     );
   };
 
   const handleShare = () => {
+    if (!tour) return;
+    
     if (navigator.share) {
       navigator.share({
         title: tour.name,
@@ -145,6 +111,38 @@ export default function TourDetails() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tour details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !tour) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center py-20">
+          <div className="text-red-500 mb-4">
+            <XCircle className="w-16 h-16 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Tour Not Found</h2>
+            <p className="text-gray-600">{error || "The requested tour could not be found."}</p>
+          </div>
+          <Button 
+            onClick={() => window.history.back()}
+            className="mt-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header Section */}
@@ -154,19 +152,31 @@ export default function TourDetails() {
           {/* Image Gallery */}
           <div className="grid grid-cols-2 gap-4 mb-6">
             <img
-              src={tour.images[0]}
+              src={tour.images[0] || "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
               alt={tour.name}
               className="col-span-2 w-full h-64 object-cover rounded-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+              }}
             />
             <img
-              src={tour.images[1]}
+              src={tour.images[1] || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
               alt={tour.name}
               className="w-full h-32 object-cover rounded-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+              }}
             />
             <img
-              src={tour.images[2]}
+              src={tour.images[2] || "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
               alt={tour.name}
               className="w-full h-32 object-cover rounded-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+              }}
             />
           </div>
 
@@ -231,20 +241,16 @@ export default function TourDetails() {
         <div className="lg:col-span-1">
           <Card className="sticky top-6">
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-3xl font-bold text-primary">
-                      ${tour.price}
-                    </span>
-                    <span className="text-lg text-gray-500 line-through">
-                      ${tour.originalPrice}
-                    </span>
+              <div className="text-center">
+                <div className="flex items-center justify-center space-x-2 mb-3">
+                  <div className="flex items-center space-x-1">
+                    <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    <span className="font-semibold text-lg">{tour.rating}</span>
+                    <span className="text-gray-500">({tour.reviews} reviews)</span>
                   </div>
-                  <p className="text-sm text-gray-600">per person</p>
                 </div>
-                <Badge className="bg-green-100 text-green-800">
-                  Best Seller
+                <Badge className="bg-green-100 text-green-800 text-sm px-3 py-1">
+                  Best Seller Package
                 </Badge>
               </div>
             </CardHeader>
@@ -259,12 +265,12 @@ export default function TourDetails() {
                   <span>Max {tour.maxGuests}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Bed className="w-4 h-4 text-primary" />
-                  <span>4-star hotels</span>
+                  <MapPin className="w-4 h-4 text-primary" />
+                  <span>{tour.destinations?.length || 0} Places</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Utensils className="w-4 h-4 text-primary" />
-                  <span>Meals included</span>
+                  <Star className="w-4 h-4 text-primary" />
+                  <span>Premium Experience</span>
                 </div>
               </div>
 
@@ -273,22 +279,28 @@ export default function TourDetails() {
               <div className="space-y-3">
                 <Button
                   onClick={handleBookNow}
-                  className="w-full bg-primary hover:bg-primary/90"
+                  className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3"
                 >
-                  Book Now
+                  <Mail className="w-4 h-4 mr-2" />
+                  Book This Tour
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full border-accent text-accent hover:bg-accent hover:text-white"
-                >
-                  Customize This Tour
-                </Button>
+                <CustomizeTourModal
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="w-full border-accent text-accent hover:bg-accent hover:text-white font-medium py-3"
+                    >
+                      Customize This Tour
+                    </Button>
+                  }
+                />
               </div>
 
-              <div className="text-xs text-gray-500 text-center">
-                <p>✓ Free cancellation up to 48 hours</p>
-                <p>✓ No hidden fees</p>
+              <div className="text-xs text-gray-500 text-center space-y-1 pt-3 border-t">
+                <p>✓ Free consultation & quote</p>
+                <p>✓ Flexible customization</p>
                 <p>✓ 24/7 customer support</p>
+                <p>✓ Best price guarantee</p>
               </div>
             </CardContent>
           </Card>

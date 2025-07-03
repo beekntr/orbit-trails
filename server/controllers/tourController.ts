@@ -71,13 +71,42 @@ export const getTourById = async (req: Request, res: Response) => {
   }
 };
 
+// Get tour by slug
+export const getTourBySlug = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    
+    const tour = await Tour.findOne({ slug: slug, status: 'active' });
+
+    if (!tour) {
+      return res.status(404).json({
+        success: false,
+        message: 'Tour not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: tour
+    });
+  } catch (error) {
+    console.error('Get tour by slug error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching tour',
+      error: error.message
+    });
+  }
+};
+
 // Create new tour (admin only)
 export const createTour = [
   // Validation middleware
   body('name').notEmpty().trim().withMessage('Tour name is required'),
   body('description').notEmpty().withMessage('Description is required'),
+  body('overview').notEmpty().withMessage('Overview is required'),
   body('category').isIn(['Golden Triangle', 'Rajasthan Tours', 'Extended Tours']).withMessage('Invalid category'),
-  body('price').isNumeric().withMessage('Price must be a number'),
+  body('price').optional().isNumeric().withMessage('Price must be a number'),
   body('duration').notEmpty().withMessage('Duration is required'),
   body('maxGuests').isInt({ min: 1 }).withMessage('Max guests must be at least 1'),
 
@@ -133,6 +162,7 @@ export const createTour = [
 // Update tour (admin only)
 export const updateTour = [
   body('name').optional().notEmpty().trim().withMessage('Tour name cannot be empty'),
+  body('overview').optional().notEmpty().withMessage('Overview cannot be empty'),
   body('category').optional().isIn(['Golden Triangle', 'Rajasthan Tours', 'Extended Tours']).withMessage('Invalid category'),
   body('price').optional().isNumeric().withMessage('Price must be a number'),
   body('maxGuests').optional().isInt({ min: 1 }).withMessage('Max guests must be at least 1'),

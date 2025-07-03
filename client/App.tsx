@@ -76,6 +76,14 @@ function AppContent() {
               }
             />
             <Route
+              path="/tour-details/:slug"
+              element={
+                <PageTransition>
+                  <TourDetails />
+                </PageTransition>
+              }
+            />
+            <Route
               path="/blog"
               element={
                 <PageTransition>

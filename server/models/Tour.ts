@@ -4,8 +4,9 @@ export interface ITour extends Document {
   name: string;
   slug: string;
   description: string;
+  overview: string;
   category: 'Golden Triangle' | 'Rajasthan Tours' | 'Extended Tours';
-  price: number;
+  price?: number; // Made optional since we're hiding pricing initially
   originalPrice?: number;
   duration: string;
   maxGuests: number;
@@ -44,6 +45,10 @@ const TourSchema: Schema = new Schema({
     type: String,
     required: true
   },
+  overview: {
+    type: String,
+    required: true
+  },
   category: {
     type: String,
     required: true,
@@ -51,7 +56,7 @@ const TourSchema: Schema = new Schema({
   },
   price: {
     type: Number,
-    required: true
+    required: false // Made optional
   },
   originalPrice: {
     type: Number

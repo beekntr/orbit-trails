@@ -17,6 +17,8 @@ import Tours from "./pages/Tours";
 import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import TourDetails from "./pages/TourDetails";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import AnimatedNavbar from "./components/AnimatedNavbar";
 import Footer from "./components/Footer";
@@ -88,6 +90,22 @@ function AppContent() {
               element={
                 <PageTransition>
                   <Blog />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/privacy"
+              element={
+                <PageTransition>
+                  <Privacy />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <PageTransition>
+                  <Terms />
                 </PageTransition>
               }
             />

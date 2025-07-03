@@ -188,18 +188,18 @@ export default function Footer() {
               © 2024 Orbit Trails. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
-              <a
-                href="#"
+              <Link
+                to="/terms"
                 className="text-gray-400 hover:text-primary transition-colors"
               >
                 Terms of Service
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/privacy"
                 className="text-gray-400 hover:text-primary transition-colors"
               >
                 Privacy Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>

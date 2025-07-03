@@ -20,7 +20,7 @@ const pageVariants = {
   },
 };
 
-const pageTransition = {
+const pageTransition: import("framer-motion").Transition = {
   type: "tween",
   ease: "anticipate",
   duration: 0.4,

@@ -11,6 +11,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Tours from "./pages/Tours";
 import Blog from "./pages/Blog";
+import Admin from "./pages/Admin";
+import TourDetails from "./pages/TourDetails";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -31,7 +33,9 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/tours" element={<Tours />} />
+              <Route path="/tours/:slug" element={<TourDetails />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/adm" element={<Admin />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

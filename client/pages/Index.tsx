@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import CustomizeTourModal from "@/components/CustomizeTourModal";
 
 export default function Index() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -173,13 +174,17 @@ export default function Index() {
               Explore Tours
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
-            >
-              Customize Your Trip
-            </Button>
+            <CustomizeTourModal
+              trigger={
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
+                >
+                  Customize Your Trip
+                </Button>
+              }
+            />
           </div>
         </div>
 
@@ -368,13 +373,17 @@ export default function Index() {
             budget, and travel style
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
-            >
-              Customize Your Tour
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <CustomizeTourModal
+              trigger={
+                <Button
+                  size="lg"
+                  className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
+                >
+                  Customize Your Tour
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              }
+            />
             <Button
               size="lg"
               variant="outline"

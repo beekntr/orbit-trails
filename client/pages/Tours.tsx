@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Star, MapPin, Mail } from "lucide-react";
+import { Calendar, Star, MapPin, Mail, AlertCircle, RefreshCcw } from "lucide-react";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
 import { OrbitTrailsAPI, Tour } from "@shared/api";
 import { useNavigate } from "react-router-dom";
@@ -20,11 +20,22 @@ export default function Tours() {
         if (response.success && response.data) {
           setTours(response.data.tours);
         } else {
-          setError(response.message || "Failed to fetch tours");
+          // Check if it's a network error
+          if (response.message === "Network error occurred" || response.error?.includes("fetch")) {
+            setError("network");
+          } else {
+            setError(response.message || "Failed to fetch tours");
+          }
         }
       } catch (err) {
-        setError("Error loading tours");
         console.error("Error fetching tours:", err);
+        // Check if it's a network error
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {
+          setError("network");
+        } else {
+          setError("Error loading tours");
+        }
       } finally {
         setLoading(false);
       }
@@ -69,13 +80,145 @@ Best regards`;
     navigate(`/tour-details/${tour.slug}`);
   };
 
-if (loading) {
-  return <div className="text-center py-20">Loading tours...</div>;
-}
+  const handleRefresh = () => {
+    setLoading(true);
+    setError(null);
+    // Re-run the fetch
+    const fetchTours = async () => {
+      try {
+        const response = await OrbitTrailsAPI.getTours();
+        if (response.success && response.data) {
+          setTours(response.data.tours);
+        } else {
+          // Check if it's a network error
+          if (response.message === "Network error occurred" || response.error?.includes("fetch")) {
+            setError("network");
+          } else {
+            setError(response.message || "Failed to fetch tours");
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching tours:", err);
+        // Check if it's a network error
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {
+          setError("network");
+        } else {
+          setError("Error loading tours");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTours();
+  };
 
-if (error) {
-  return <div className="text-center py-20 text-red-500">{error}</div>;
-}
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tours...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error === "network") {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-5xl font-bold text-white mb-6">Our Tours</h1>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              Discover India's incredible destinations with our carefully crafted tour packages
+            </p>
+          </div>
+        </section>
+
+        {/* Network Error Message */}
+        <section className="py-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Card className="border-orange-200 bg-orange-50">
+              <CardContent className="p-8">
+                <div className="text-center">
+                  <AlertCircle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                    We're experiencing technical difficulties
+                  </h2>
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    Sorry for the inconvenience! Our tour catalog is temporarily unavailable. 
+                    Our team is working to resolve this quickly.
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+                    <Button 
+                      onClick={handleRefresh}
+                      className="bg-primary hover:bg-primary/90"
+                    >
+                      <RefreshCcw className="w-4 h-4 mr-2" />
+                      Try Again
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      onClick={() => window.open('mailto:info@orbittrails.com?subject=Tour Inquiry - Website Issue', '_blank')}
+                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                    >
+                      <Mail className="w-4 h-4 mr-2" />
+                      Contact Us
+                    </Button>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border border-orange-200">
+                    <p className="text-sm text-gray-600 mb-2">
+                      <strong>Need immediate assistance?</strong>
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Email us at <a href="mailto:info@orbittrails.com" className="text-primary hover:underline font-medium">info@orbittrails.com</a> or use our custom tour planner below
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Customize Tour CTA */}
+            <div className="text-center mt-12 p-8 bg-white rounded-lg shadow-sm border">
+              <h3 className="text-2xl font-bold text-secondary mb-4">
+                Plan Your Perfect Trip
+              </h3>
+              <p className="text-gray-600 mb-6">
+                While we fix the technical issue, you can still create a personalized tour package
+              </p>
+              <CustomizeTourModal
+                trigger={
+                  <Button size="lg" className="bg-primary hover:bg-primary/90">
+                    Create Custom Tour
+                  </Button>
+                }
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  if (error && error !== "network") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-red-500">
+          <AlertCircle className="w-12 h-12 mx-auto mb-4" />
+          <p>{error}</p>
+          <Button onClick={handleRefresh} className="mt-4">
+            <RefreshCcw className="w-4 h-4 mr-2" />
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
 return (
   <div>

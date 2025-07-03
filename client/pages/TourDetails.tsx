@@ -15,7 +15,9 @@ import {
   CheckCircle,
   XCircle,
   ArrowLeft,
-  Camera
+  Camera,
+  AlertCircle,
+  RefreshCcw
 } from "lucide-react";
 import { OrbitTrailsAPI, Tour } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
@@ -43,11 +45,22 @@ export default function TourDetails() {
         if (response.success && response.data) {
           setTour(response.data);
         } else {
-          setError(response.message || "Tour not found");
+          // Check if it's a network error
+          if (response.message === "Network error occurred" || response.error?.includes("fetch")) {
+            setError("network");
+          } else {
+            setError(response.message || "Tour not found");
+          }
         }
       } catch (err) {
         console.error("Error fetching tour:", err);
-        setError("Failed to load tour details");
+        // Check if it's a network error  
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {
+          setError("network");
+        } else {
+          setError("Failed to load tour details");
+        }
       } finally {
         setLoading(false);
       }
@@ -111,12 +124,102 @@ Best regards`;
     }
   };
 
+  const handleRefresh = () => {
+    setLoading(true);
+    setError(null);
+    // Re-run the fetch
+    const fetchTour = async () => {
+      if (!slug) {
+        setError("Tour not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await OrbitTrailsAPI.getTourBySlug(slug);
+        
+        if (response.success && response.data) {
+          setTour(response.data);
+        } else {
+          // Check if it's a network error
+          if (response.message === "Network error occurred" || response.error?.includes("fetch")) {
+            setError("network");
+          } else {
+            setError(response.message || "Tour not found");
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching tour:", err);
+        // Check if it's a network error  
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {
+          setError("network");
+        } else {
+          setError("Failed to load tour details");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTour();
+  };
+
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-600">Loading tour details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error === "network") {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center py-20">
+          <Card className="max-w-2xl mx-auto border-orange-200 bg-orange-50">
+            <CardContent className="p-8">
+              <AlertCircle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                We're experiencing technical difficulties
+              </h2>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Sorry for the inconvenience! We're having trouble loading this tour's details. 
+                Our team is working to resolve this quickly.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+                <Button 
+                  onClick={handleRefresh}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  <RefreshCcw className="w-4 h-4 mr-2" />
+                  Try Again
+                </Button>
+                
+                <Button 
+                  onClick={() => window.history.back()}
+                  variant="outline"
+                  className="border-gray-300"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Go Back
+                </Button>
+              </div>
+
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Need immediate assistance?</strong>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Email us at <a href="mailto:info@orbittrails.com" className="text-primary hover:underline font-medium">info@orbittrails.com</a> for tour information
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
@@ -131,13 +234,22 @@ Best regards`;
             <h2 className="text-2xl font-bold mb-2">Tour Not Found</h2>
             <p className="text-gray-600">{error || "The requested tour could not be found."}</p>
           </div>
-          <Button 
-            onClick={() => window.history.back()}
-            className="mt-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Go Back
-          </Button>
+          <div className="flex gap-4 justify-center">
+            <Button 
+              onClick={handleRefresh}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <RefreshCcw className="w-4 h-4 mr-2" />
+              Try Again
+            </Button>
+            <Button 
+              onClick={() => window.history.back()}
+              variant="outline"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Go Back
+            </Button>
+          </div>
         </div>
       </div>
     );

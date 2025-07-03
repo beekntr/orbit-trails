@@ -13,6 +13,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -33,6 +43,10 @@ export default function Admin() {
     password: "",
   });
   const [showAddTour, setShowAddTour] = useState(false);
+  const [showEditTour, setShowEditTour] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [editingTour, setEditingTour] = useState<any>(null);
+  const [deletingTour, setDeletingTour] = useState<{id: string, name: string} | null>(null);
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [tourForm, setTourForm] = useState({
     name: "",
@@ -243,6 +257,142 @@ export default function Admin() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditTour = (tour: any) => {
+    setEditingTour(tour);
+    setTourForm({
+      name: tour.name,
+      category: tour.category,
+      duration: tour.duration,
+      description: tour.description,
+      overview: tour.overview,
+      highlights: tour.highlights.length > 0 ? tour.highlights : [""],
+      included: tour.included.length > 0 ? tour.included : [""],
+      notIncluded: tour.notIncluded.length > 0 ? tour.notIncluded : [""],
+      itinerary: tour.itinerary.length > 0 ? tour.itinerary : [{ day: 1, title: "", description: "", highlights: [""] }],
+      images: tour.images.length > 0 ? tour.images : [""],
+      destinations: tour.destinations.length > 0 ? tour.destinations : [""],
+    });
+    setShowEditTour(true);
+  };
+
+  const handleUpdateTour = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Generate random rating between 4.0 and 5.0 for new tours, keep existing for updates
+      const rating = editingTour?.rating || parseFloat((Math.random() * (5.0 - 4.0) + 4.0).toFixed(1));
+      
+      const tourData = {
+        name: tourForm.name,
+        description: tourForm.description,
+        overview: tourForm.overview,
+        category: tourForm.category as 'Golden Triangle' | 'Rajasthan Tours' | 'Extended Tours',
+        duration: tourForm.duration,
+        maxGuests: editingTour?.maxGuests || 20,
+        minAge: editingTour?.minAge || 12,
+        rating: rating,
+        reviews: editingTour?.reviews || Math.floor(Math.random() * 100) + 20,
+        highlights: tourForm.highlights.filter(h => h.trim() !== ''),
+        included: tourForm.included.filter(i => i.trim() !== ''),
+        notIncluded: tourForm.notIncluded.filter(n => n.trim() !== ''),
+        itinerary: tourForm.itinerary.map(item => ({
+          ...item,
+          highlights: item.highlights.filter(h => h.trim() !== '')
+        })),
+        images: tourForm.images.filter(img => img.trim() !== ''),
+        destinations: tourForm.destinations.filter(d => d.trim() !== ''),
+        status: 'active' as const,
+      };
+
+      const response = await OrbitTrailsAPI.updateTour(editingTour._id, tourData);
+      
+      if (response.success) {
+        setShowEditTour(false);
+        setEditingTour(null);
+        setTourForm({
+          name: "",
+          category: "",
+          duration: "",
+          description: "",
+          overview: "",
+          highlights: [""],
+          included: [""],
+          notIncluded: [""],
+          itinerary: [{ day: 1, title: "", description: "", highlights: [""] }],
+          images: [""],
+          destinations: [""],
+        });
+        // Refresh dashboard data
+        await fetchDashboardData();
+        toast({
+          title: "Tour Updated Successfully! ✅",
+          description: "The tour package has been updated in your catalog.",
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Failed to Update Tour ❌",
+          description: response.message || "Unable to update tour. Please try again.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating tour:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Failed to update tour. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteTour = (tourId: string, tourName: string) => {
+    setDeletingTour({ id: tourId, name: tourName });
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDeleteTour = async () => {
+    if (!deletingTour) return;
+
+    try {
+      setLoading(true);
+      const response = await OrbitTrailsAPI.deleteTour(deletingTour.id);
+      
+      if (response.success) {
+        await fetchDashboardData();
+        toast({
+          title: "Tour Deleted Successfully! 🗑️",
+          description: `"${deletingTour.name}" has been removed from your tour catalog.`,
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Failed to Delete Tour ❌",
+          description: response.message || "Unable to delete tour. Please try again.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting tour:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Failed to delete tour. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    } finally {
+      setLoading(false);
+      setShowDeleteDialog(false);
+      setDeletingTour(null);
     }
   };
 
@@ -838,6 +988,459 @@ export default function Admin() {
                     </form>
                   </DialogContent>
                 </Dialog>
+
+                {/* Edit Tour Dialog */}
+                <Dialog open={showEditTour} onOpenChange={setShowEditTour}>
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Edit Tour Package</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleUpdateTour} className="space-y-6">
+                      {/* Basic Information */}
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Tour Package Name *
+                            </label>
+                            <Input
+                              placeholder="e.g., Golden Triangle Classic Adventure"
+                              value={tourForm.name}
+                              onChange={(e) => setTourForm({ ...tourForm, name: e.target.value })}
+                              required
+                              className="w-full"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Category *
+                            </label>
+                            <select
+                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                              value={tourForm.category}
+                              onChange={(e) => setTourForm({ ...tourForm, category: e.target.value })}
+                              required
+                            >
+                              <option value="">Select Category</option>
+                              <option value="Golden Triangle">Golden Triangle Tours</option>
+                              <option value="Extended Tours">Extended Tours</option>
+                              <option value="Rajasthan Tours">Rajasthan Tours</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Duration *
+                            </label>
+                            <Input 
+                              placeholder="e.g., 7 Days / 6 Nights" 
+                              value={tourForm.duration}
+                              onChange={(e) => setTourForm({ ...tourForm, duration: e.target.value })}
+                              required 
+                              className="w-full"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Status
+                            </label>
+                            <select
+                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                              value="active"
+                              disabled
+                            >
+                              <option value="active">Active</option>
+                            </select>
+                            <p className="text-xs text-gray-500 mt-1">Tours remain active when edited</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Package Overview & Description */}
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Package Overview & Description</h3>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Package Overview * 
+                              <span className="text-xs text-gray-500">(This appears on tour cards - keep it concise and appealing)</span>
+                            </label>
+                            <Textarea
+                              placeholder="A captivating brief overview that entices travelers..."
+                              rows={3}
+                              value={tourForm.overview}
+                              onChange={(e) => setTourForm({ ...tourForm, overview: e.target.value })}
+                              required
+                              className="w-full"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2 text-gray-700">
+                              Detailed Description *
+                            </label>
+                            <Textarea
+                              placeholder="Provide a comprehensive description of the tour package..."
+                              rows={6}
+                              value={tourForm.description}
+                              onChange={(e) => setTourForm({ ...tourForm, description: e.target.value })}
+                              required
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Tour Highlights */}
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Tour Highlights</h3>
+                        <p className="text-sm text-gray-600">Add the main attractions and experiences that make this tour special</p>
+                        {tourForm.highlights.map((highlight, index) => (
+                          <div key={index} className="flex gap-3 items-center">
+                            <div className="flex-1">
+                              <Input
+                                placeholder="e.g., Visit the iconic Taj Mahal at sunrise"
+                                value={highlight}
+                                onChange={(e) => {
+                                  const newHighlights = [...tourForm.highlights];
+                                  newHighlights[index] = e.target.value;
+                                  setTourForm({ ...tourForm, highlights: newHighlights });
+                                }}
+                                className="w-full"
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newHighlights = tourForm.highlights.filter((_, i) => i !== index);
+                                setTourForm({ ...tourForm, highlights: newHighlights });
+                              }}
+                              className="px-3"
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setTourForm({ ...tourForm, highlights: [...tourForm.highlights, ""] })}
+                          className="w-full"
+                        >
+                          + Add Tour Highlight
+                        </Button>
+                      </div>
+
+                      {/* What's Included */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-gray-900">What's Included</h3>
+                        {tourForm.included.map((item, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              placeholder="Enter included item..."
+                              value={item}
+                              onChange={(e) => {
+                                const newIncluded = [...tourForm.included];
+                                newIncluded[index] = e.target.value;
+                                setTourForm({ ...tourForm, included: newIncluded });
+                              }}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newIncluded = tourForm.included.filter((_, i) => i !== index);
+                                setTourForm({ ...tourForm, included: newIncluded });
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setTourForm({ ...tourForm, included: [...tourForm.included, ""] })}
+                        >
+                          Add Included Item
+                        </Button>
+                      </div>
+
+                      {/* What's Not Included */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-gray-900">What's Not Included</h3>
+                        {tourForm.notIncluded.map((item, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              placeholder="Enter not included item..."
+                              value={item}
+                              onChange={(e) => {
+                                const newNotIncluded = [...tourForm.notIncluded];
+                                newNotIncluded[index] = e.target.value;
+                                setTourForm({ ...tourForm, notIncluded: newNotIncluded });
+                              }}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newNotIncluded = tourForm.notIncluded.filter((_, i) => i !== index);
+                                setTourForm({ ...tourForm, notIncluded: newNotIncluded });
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setTourForm({ ...tourForm, notIncluded: [...tourForm.notIncluded, ""] })}
+                        >
+                          Add Not Included Item
+                        </Button>
+                      </div>
+
+                      {/* Day-wise Itinerary */}
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Day-wise Itinerary</h3>
+                        <p className="text-sm text-gray-600">Edit the detailed day-by-day plan for the tour package</p>
+                        {tourForm.itinerary.map((day, index) => (
+                          <div key={index} className="border border-gray-200 p-6 rounded-lg bg-gray-50 space-y-4">
+                            <div className="flex justify-between items-center mb-4">
+                              <h4 className="font-semibold text-lg text-primary">Day {day.day}</h4>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newItinerary = tourForm.itinerary.filter((_, i) => i !== index);
+                                  // Reorder day numbers
+                                  const reorderedItinerary = newItinerary.map((item, idx) => ({
+                                    ...item,
+                                    day: idx + 1
+                                  }));
+                                  setTourForm({ ...tourForm, itinerary: reorderedItinerary });
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                              >
+                                Remove Day
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-1 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium mb-2 text-gray-700">Day Title *</label>
+                                <Input
+                                  placeholder="e.g., Arrival in Delhi - Welcome to India"
+                                  value={day.title}
+                                  onChange={(e) => {
+                                    const newItinerary = [...tourForm.itinerary];
+                                    newItinerary[index].title = e.target.value;
+                                    setTourForm({ ...tourForm, itinerary: newItinerary });
+                                  }}
+                                  className="w-full"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2 text-gray-700">Day Description *</label>
+                                <Textarea
+                                  placeholder="Describe what happens on this day, activities, places visited, meals, accommodation details..."
+                                  rows={4}
+                                  value={day.description}
+                                  onChange={(e) => {
+                                    const newItinerary = [...tourForm.itinerary];
+                                    newItinerary[index].description = e.target.value;
+                                    setTourForm({ ...tourForm, itinerary: newItinerary });
+                                  }}
+                                  className="w-full"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">Day Highlights</label>
+                                <p className="text-xs text-gray-500">Add specific highlights for this day</p>
+                                {day.highlights.map((highlight, hIndex) => (
+                                  <div key={hIndex} className="flex gap-2">
+                                    <Input
+                                      placeholder="e.g., Visit Red Fort, Jama Masjid"
+                                      value={highlight}
+                                      onChange={(e) => {
+                                        const newItinerary = [...tourForm.itinerary];
+                                        newItinerary[index].highlights[hIndex] = e.target.value;
+                                        setTourForm({ ...tourForm, itinerary: newItinerary });
+                                      }}
+                                      className="flex-1"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => {
+                                        const newItinerary = [...tourForm.itinerary];
+                                        newItinerary[index].highlights = newItinerary[index].highlights.filter((_, hi) => hi !== hIndex);
+                                        setTourForm({ ...tourForm, itinerary: newItinerary });
+                                      }}
+                                    >
+                                      Remove
+                                    </Button>
+                                  </div>
+                                ))}
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newItinerary = [...tourForm.itinerary];
+                                    newItinerary[index].highlights.push("");
+                                    setTourForm({ ...tourForm, itinerary: newItinerary });
+                                  }}
+                                  className="w-full"
+                                >
+                                  + Add Day Highlight
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            const newDay = {
+                              day: tourForm.itinerary.length + 1,
+                              title: "",
+                              description: "",
+                              highlights: [""]
+                            };
+                            setTourForm({ ...tourForm, itinerary: [...tourForm.itinerary, newDay] });
+                          }}
+                          className="w-full bg-primary text-white hover:bg-primary/90"
+                        >
+                          + Add New Day
+                        </Button>
+                      </div>
+
+                      {/* Tour Images & Media */}
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Tour Images & Media</h3>
+                        <div className="bg-blue-50 p-4 rounded-lg">
+                          <p className="text-sm text-blue-800 mb-2">📸 <strong>Image Guidelines:</strong></p>
+                          <ul className="text-xs text-blue-700 space-y-1">
+                            <li>• Use high-quality images (minimum 1200x800px)</li>
+                            <li>• First image will be the main featured image on tour cards</li>
+                            <li>• Add 3-5 images showcasing different aspects of the tour</li>
+                            <li>• Use CDN URLs (Unsplash, Cloudinary) or upload to your image hosting service</li>
+                          </ul>
+                        </div>
+                        {tourForm.images.map((image, index) => (
+                          <div key={index} className="flex gap-3 items-start">
+                            <div className="flex-1">
+                              <label className="block text-sm font-medium mb-1 text-gray-700">
+                                Image {index + 1} {index === 0 && "(Featured Image)"}
+                              </label>
+                              <Input
+                                placeholder="https://images.unsplash.com/photo-... or your CDN image URL"
+                                value={image}
+                                onChange={(e) => {
+                                  const newImages = [...tourForm.images];
+                                  newImages[index] = e.target.value;
+                                  setTourForm({ ...tourForm, images: newImages });
+                                }}
+                                className="w-full"
+                              />
+                              {image && (
+                                <img 
+                                  src={image} 
+                                  alt={`Preview ${index + 1}`}
+                                  className="mt-2 w-24 h-16 object-cover rounded border"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                  }}
+                                />
+                              )}
+                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newImages = tourForm.images.filter((_, i) => i !== index);
+                                setTourForm({ ...tourForm, images: newImages });
+                              }}
+                              className="mt-6"
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setTourForm({ ...tourForm, images: [...tourForm.images, ""] })}
+                          className="w-full"
+                        >
+                          + Add Tour Image
+                        </Button>
+                      </div>
+
+                      {/* Destinations */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-gray-900">Destinations</h3>
+                        {tourForm.destinations.map((destination, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              placeholder="Enter destination..."
+                              value={destination}
+                              onChange={(e) => {
+                                const newDestinations = [...tourForm.destinations];
+                                newDestinations[index] = e.target.value;
+                                setTourForm({ ...tourForm, destinations: newDestinations });
+                              }}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newDestinations = tourForm.destinations.filter((_, i) => i !== index);
+                                setTourForm({ ...tourForm, destinations: newDestinations });
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setTourForm({ ...tourForm, destinations: [...tourForm.destinations, ""] })}
+                        >
+                          Add Destination
+                        </Button>
+                      </div>
+
+                      {/* Form actions */}
+                      <div className="flex justify-end space-x-2 pt-6 border-t">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setShowEditTour(false);
+                            setEditingTour(null);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="submit"
+                          className="bg-primary hover:bg-primary/90"
+                          disabled={loading}
+                        >
+                          {loading ? "Updating..." : "Update Tour"}
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
               </div>
             </CardHeader>
             <CardContent>
@@ -872,13 +1475,21 @@ export default function Admin() {
                         </TableCell>
                         <TableCell>
                           <div className="flex space-x-2">
-                            <Button size="sm" variant="outline">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => handleEditTour(tour)}
+                              disabled={loading}
+                              className="hover:bg-blue-50 hover:border-blue-300"
+                            >
                               <Edit className="w-4 h-4" />
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-red-600"
+                              className="text-red-600 hover:text-red-800 hover:bg-red-50 hover:border-red-300"
+                              onClick={() => handleDeleteTour(tour._id, tour.name)}
+                              disabled={loading}
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -1187,6 +1798,52 @@ export default function Admin() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2 text-red-600">
+              <Trash2 className="w-5 h-5" />
+              Delete Tour Package
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600 leading-relaxed">
+              Are you sure you want to delete <strong>"{deletingTour?.name}"</strong>?
+              <br />
+              <br />
+              This action cannot be undone and will permanently remove the tour package from your catalog. All associated data including itineraries, images, and tour details will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-3">
+            <AlertDialogCancel 
+              className="border-gray-300 hover:bg-gray-50"
+              onClick={() => {
+                setShowDeleteDialog(false);
+                setDeletingTour(null);
+              }}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={confirmDeleteTour}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Tour
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -9,6 +9,7 @@ import {
   Camera,
   Mountain,
   Compass,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,9 +23,15 @@ import { Badge } from "@/components/ui/badge";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
 import AnimatedSection from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
+import { OrbitTrailsAPI, Tour } from "@shared/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Index() {
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
+  const [toursLoading, setToursLoading] = useState(true);
+  const [toursError, setToursError] = useState(false);
 
   const heroImages = [
     "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80", // Taj Mahal
@@ -37,6 +44,34 @@ export default function Index() {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
     }, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Fetch featured tours from database
+  useEffect(() => {
+    const fetchFeaturedTours = async () => {
+      try {
+        setToursLoading(true);
+        const response = await OrbitTrailsAPI.getTours();
+        
+        if (response.success && response.data?.tours) {
+          // Get 3 random tours from the database
+          const allTours = response.data.tours;
+          const shuffled = [...allTours].sort(() => 0.5 - Math.random());
+          const randomTours = shuffled.slice(0, 3);
+          setFeaturedTours(randomTours);
+          setToursError(false);
+        } else {
+          setToursError(true);
+        }
+      } catch (err) {
+        console.error("Error fetching featured tours:", err);
+        setToursError(true);
+      } finally {
+        setToursLoading(false);
+      }
+    };
+
+    fetchFeaturedTours();
   }, []);
 
   const services = [
@@ -66,44 +101,48 @@ export default function Index() {
     },
   ];
 
-  const featuredTours = [
-    {
-      id: 1,
-      title: "Golden Triangle Classic",
-      description:
-        "Delhi, Agra & Jaipur - The most popular circuit covering India's iconic destinations",
-      price: "$599",
-      duration: "7 Days",
-      rating: 4.8,
-      image:
-        "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      badge: "Best Seller",
-    },
-    {
-      id: 2,
-      title: "Royal Rajasthan",
-      description:
-        "Experience the grandeur of palaces, forts, and desert landscapes",
-      price: "$899",
-      duration: "12 Days",
-      rating: 4.9,
-      image:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      badge: "Popular",
-    },
-    {
-      id: 3,
-      title: "Kerala Backwaters",
-      description:
-        "Serene backwaters, hill stations, and spice plantations of God's Own Country",
-      price: "$749",
-      duration: "9 Days",
-      rating: 4.7,
-      image:
-        "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      badge: "Nature",
-    },
-  ];
+  const handleBookNow = (tour: Tour) => {
+    const subject = `Book ${tour.name}`;
+    const body = `Hello Orbit Trails Team,
+
+I would like to book the following tour package:
+
+📍 Tour Package: ${tour.name}
+⏰ Duration: ${tour.duration}
+🏷️ Category: ${tour.category}
+
+Please provide me with:
+- Available dates and departure schedules
+- Detailed pricing information 
+- Booking process and requirements
+- Payment options and terms
+- What's included in the package
+- Any special offers or group discounts
+
+My details:
+- Name: [Your Name]
+- Contact Number: [Your Phone]
+- Preferred Travel Dates: [Your Preferred Dates]
+- Number of Travelers: [Number of People]
+
+Thank you for your time. I look forward to hearing from you soon!
+
+Best regards`;
+    
+    const mailtoLink = `mailto:info@orbittrails.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink, '_blank');
+  };
+
+  const handleViewDetails = (tour: Tour) => {
+    navigate(`/tour-details/${tour.slug}`);
+  };
+
+  const getBadgeForTour = (tour: Tour, index: number) => {
+    if (tour.rating >= 4.8) return "Best Seller";
+    if (tour.category === "Golden Triangle") return "Popular";
+    if (index === 0) return "Featured";
+    return "Special";
+  };
 
   const testimonials = [
     {
@@ -194,6 +233,7 @@ export default function Index() {
             <Button
               size="lg"
               className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg"
+              onClick={() => navigate('/tours')}
             >
               Explore Tours
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -203,7 +243,7 @@ export default function Index() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
+                  className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-secondary hover:border-white px-8 py-3 text-lg font-semibold transition-all duration-300"
                 >
                   Customize Your Trip
                 </Button>
@@ -268,71 +308,121 @@ export default function Index() {
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredTours.map((tour, index) => (
-              <AnimatedSection key={tour.id} delay={index * 0.1} direction="up">
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                  <div className="relative">
-                    <img
-                      src={tour.image}
-                      alt={tour.title}
-                      className="w-full h-64 object-cover"
-                    />
-                    <Badge className="absolute top-4 left-4 bg-primary hover:bg-accent">
-                      {tour.badge}
-                    </Badge>
-                  </div>
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl text-secondary">
-                        {tour.title}
-                      </CardTitle>
-                      <div className="flex items-center space-x-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">
-                          {tour.rating}
-                        </span>
-                      </div>
-                    </div>
-                    <CardDescription className="text-gray-600">
-                      {tour.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center mb-4">
-                      <div className="flex items-center space-x-2 text-gray-600">
-                        <Calendar className="w-4 h-4" />
-                        <span className="text-sm">{tour.duration}</span>
-                      </div>
-                      <div className="text-2xl font-bold text-primary">
-                        {tour.price}
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button className="flex-1 bg-primary hover:bg-primary/90">
-                        View Details
-                      </Button>
+          {toursLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading featured tours...</p>
+            </div>
+          ) : toursError || featuredTours.length === 0 ? (
+            // Fallback when tours can't be fetched
+            <div className="text-center py-12">
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                  Explore Our Tour Collection
+                </h3>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  We're currently updating our featured tours. Discover our complete collection of carefully crafted tour packages covering India's most incredible destinations.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/tours">
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 px-8">
+                      View All Tours
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </Link>
+                  <CustomizeTourModal
+                    trigger={
                       <Button
+                        size="lg"
                         variant="outline"
-                        className="flex-1 border-accent text-accent hover:bg-accent hover:text-white"
+                        className="border-primary text-primary hover:bg-primary hover:text-white px-8"
                       >
-                        Book Now
+                        Create Custom Tour
                       </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </AnimatedSection>
-            ))}
-          </div>
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {featuredTours.map((tour, index) => (
+                  <AnimatedSection key={tour._id} delay={index * 0.1} direction="up">
+                    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                      <div className="relative">
+                        <img
+                          src={tour.images?.[0] || "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"}
+                          alt={tour.name}
+                          className="w-full h-64 object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80";
+                          }}
+                        />
+                        <Badge className="absolute top-4 left-4 bg-primary hover:bg-accent">
+                          {getBadgeForTour(tour, index)}
+                        </Badge>
+                      </div>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-xl text-secondary line-clamp-2">
+                            {tour.name}
+                          </CardTitle>
+                          <div className="flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm font-medium text-yellow-700">
+                              {tour.rating}
+                            </span>
+                          </div>
+                        </div>
+                        <CardDescription className="text-gray-600 line-clamp-3">
+                          {tour.overview || tour.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center mb-4">
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <Calendar className="w-4 h-4 text-primary" />
+                            <span className="text-sm font-medium">{tour.duration}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <MapPin className="w-4 h-4 text-primary" />
+                            <span className="text-sm font-medium">{tour.destinations?.length || 0} Places</span>
+                          </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button 
+                            className="flex-1 bg-primary hover:bg-primary/90"
+                            onClick={() => handleViewDetails(tour)}
+                          >
+                            View Details
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="flex-1 border-accent text-accent hover:bg-accent hover:text-white"
+                            onClick={() => handleBookNow(tour)}
+                          >
+                            <Mail className="w-4 h-4 mr-1" />
+                            Book Now
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </AnimatedSection>
+                ))}
+              </div>
 
-          <div className="text-center mt-12">
-            <Link to="/tours">
-              <Button size="lg" variant="outline" className="px-8">
-                View All Tours
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-          </div>
+              <div className="text-center mt-12">
+                <Link to="/tours">
+                  <Button size="lg" variant="outline" className="px-8">
+                    View All Tours
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -404,7 +494,7 @@ export default function Index() {
                 trigger={
                   <Button
                     size="lg"
-                    className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
+                    className="bg-accent hover:bg-accent/90 text-white hover:text-white px-8 py-3 text-lg font-semibold shadow-lg"
                   >
                     Customize Your Tour
                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -414,7 +504,8 @@ export default function Index() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
+                className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-secondary hover:border-white px-8 py-3 text-lg font-semibold transition-all duration-300 shadow-lg"
+                onClick={() => navigate('/contact')}
               >
                 Contact Us
               </Button>

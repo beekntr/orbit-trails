@@ -441,9 +441,7 @@ export default function Admin() {
               >
                 Sign In
               </Button>
-              <p className="text-xs text-gray-500 text-center">
-                Demo credentials: admin / admin123
-              </p>
+              
             </form>
           </CardContent>
         </Card>

@@ -13,6 +13,7 @@ const seedData = {
       name: "Golden Triangle Classic",
       slug: "golden-triangle-classic",
       description: "Experience the magical Golden Triangle circuit covering Delhi, Agra, and Jaipur. This carefully crafted journey takes you through India's most iconic destinations, including the magnificent Taj Mahal, the bustling streets of Old Delhi, and the royal palaces of Jaipur.",
+      overview: "Discover India's most famous destinations in this classic 7-day tour covering Delhi, Agra, and Jaipur. Perfect for first-time visitors to India.",
       category: "Golden Triangle",
       price: 599,
       originalPrice: 699,
@@ -100,6 +101,7 @@ const seedData = {
       name: "Royal Rajasthan Heritage",
       slug: "royal-rajasthan-heritage",
       description: "Immerse yourself in the royal heritage of Rajasthan. Visit magnificent palaces, desert landscapes, and colorful cities that showcase the grandeur of India's royal past.",
+      overview: "Experience the royal grandeur of Rajasthan with palace stays, desert safaris, and cultural immersion in this comprehensive 12-day journey.",
       category: "Rajasthan Tours",
       price: 899,
       originalPrice: 999,
@@ -157,6 +159,7 @@ const seedData = {
       name: "Incredible India Extended",
       slug: "incredible-india-extended",
       description: "The ultimate India experience covering North to South. From the Himalayas to the beaches of Kerala, experience the diversity of India in this comprehensive tour.",
+      overview: "The ultimate India adventure covering diverse landscapes from the Himalayas to Kerala's backwaters in an epic 21-day journey.",
       category: "Extended Tours",
       price: 1299,
       originalPrice: 1499,
@@ -209,6 +212,7 @@ const seedData = {
       name: "Kerala Backwaters & Hills",
       slug: "kerala-backwaters-hills",
       description: "Discover God's Own Country with this Kerala special featuring serene backwaters, spice plantations, and hill stations.",
+      overview: "Explore Kerala's natural beauty with houseboat cruises, spice plantations, and scenic hill stations in this 9-day tropical getaway.",
       category: "Extended Tours",
       price: 749,
       originalPrice: 849,
@@ -259,6 +263,7 @@ const seedData = {
       name: "Spiritual India Journey",
       slug: "spiritual-india-journey",
       description: "Embark on a spiritual journey through India's most sacred destinations. Visit ancient temples, witness evening prayers, and experience the spiritual essence of India.",
+      overview: "Discover India's spiritual heritage with visits to sacred cities, ancient temples, and holy rituals in this transformative 10-day journey.",
       category: "Extended Tours",
       price: 849,
       originalPrice: 949,
@@ -309,6 +314,7 @@ const seedData = {
       name: "Himachal Adventure",
       slug: "himachal-adventure",
       description: "Adventure in the Himalayas with trekking, river rafting, and mountain experiences in beautiful Himachal Pradesh.",
+      overview: "Experience thrilling Himalayan adventures with trekking, rafting, and mountain sports in scenic Himachal Pradesh over 8 exciting days.",
       category: "Extended Tours",
       price: 699,
       originalPrice: 799,
@@ -357,9 +363,9 @@ const seedData = {
     }
   ],
   admin: {
-    username: "admin",
-    email: "admin@orbittrails.com",
-    password: "admin123",
+    username: "lester",
+    email: "lester@orbittrails.com",
+    password: "Ajmer2002#",
     role: "super-admin"
   }
 };

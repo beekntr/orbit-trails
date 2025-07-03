@@ -71,7 +71,7 @@ export default function Contact() {
             {/* Contact Information */}
             <AnimatedSection direction="right">
               <div className="space-y-8">
-              <div>
+                <div>
                 <h2 className="text-3xl font-bold text-secondary mb-8">
                   Contact Information
                 </h2>

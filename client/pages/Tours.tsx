@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Star, MapPin } from "lucide-react";
+import CustomizeTourModal from "@/components/CustomizeTourModal";
 
 export default function Tours() {
   return (
@@ -120,9 +121,13 @@ export default function Tours() {
             <p className="text-gray-600 mb-6">
               Let us create a personalized tour package just for you
             </p>
-            <Button size="lg" className="bg-primary hover:bg-accent">
-              Customize Your Tour
-            </Button>
+            <CustomizeTourModal
+              trigger={
+                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                  Customize Your Tour
+                </Button>
+              }
+            />
           </div>
         </div>
       </section>

@@ -23,7 +23,6 @@ import CustomizeTourModal from "@/components/CustomizeTourModal";
 import AnimatedSection from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 
-
 export default function Index() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -138,7 +137,6 @@ export default function Index() {
 
   return (
     <div>
-
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Images */}
@@ -211,7 +209,7 @@ export default function Index() {
                 </Button>
               }
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Scroll Indicator */}
@@ -237,24 +235,21 @@ export default function Index() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <AnimatedSection
-                key={index}
-                delay={index * 0.1}
-                direction="up"
-              >
+              <AnimatedSection key={index} delay={index * 0.1} direction="up">
                 <Card className="text-center border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <CardHeader>
-                  <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                    {service.icon}
-                  </div>
-                  <CardTitle className="text-xl text-secondary">
-                    {service.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{service.description}</p>
-                </CardContent>
-              </Card>
+                  <CardHeader>
+                    <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                      {service.icon}
+                    </div>
+                    <CardTitle className="text-xl text-secondary">
+                      {service.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -275,56 +270,58 @@ export default function Index() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredTours.map((tour, index) => (
-              <AnimatedSection
-                key={tour.id}
-                delay={index * 0.1}
-                direction="up"
-              >
+              <AnimatedSection key={tour.id} delay={index * 0.1} direction="up">
                 <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div className="relative">
-                  <img
-                    src={tour.image}
-                    alt={tour.title}
-                    className="w-full h-64 object-cover"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-primary hover:bg-accent">
-                    {tour.badge}
-                  </Badge>
-                </div>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-xl text-secondary">
-                      {tour.title}
-                    </CardTitle>
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{tour.rating}</span>
-                    </div>
+                  <div className="relative">
+                    <img
+                      src={tour.image}
+                      alt={tour.title}
+                      className="w-full h-64 object-cover"
+                    />
+                    <Badge className="absolute top-4 left-4 bg-primary hover:bg-accent">
+                      {tour.badge}
+                    </Badge>
                   </div>
-                  <CardDescription className="text-gray-600">
-                    {tour.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center space-x-2 text-gray-600">
-                      <Calendar className="w-4 h-4" />
-                      <span className="text-sm">{tour.duration}</span>
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-xl text-secondary">
+                        {tour.title}
+                      </CardTitle>
+                      <div className="flex items-center space-x-1">
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-medium">
+                          {tour.rating}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-2xl font-bold text-primary">
-                      {tour.price}
+                    <CardDescription className="text-gray-600">
+                      {tour.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <Calendar className="w-4 h-4" />
+                        <span className="text-sm">{tour.duration}</span>
+                      </div>
+                      <div className="text-2xl font-bold text-primary">
+                        {tour.price}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button className="flex-1 bg-primary hover:bg-primary/90">
-                      View Details
-                    </Button>
-                    <Button variant="outline" className="flex-1 border-accent text-accent hover:bg-accent hover:text-white">
-                      Book Now
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="flex space-x-2">
+                      <Button className="flex-1 bg-primary hover:bg-primary/90">
+                        View Details
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 border-accent text-accent hover:bg-accent hover:text-white"
+                      >
+                        Book Now
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
             ))}
           </div>
 
@@ -342,7 +339,7 @@ export default function Index() {
       {/* Testimonials */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-4xl font-bold text-secondary mb-4">
               What Our Travelers Say
             </h2>
@@ -350,40 +347,42 @@ export default function Index() {
               Don't just take our word for it - hear from travelers who have
               experienced the magic of India with Orbit Trails
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-none shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="flex items-center mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 mb-6 italic">
-                    "{testimonial.comment}"
-                  </p>
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-semibold text-secondary">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {testimonial.country}
-                      </p>
+              <AnimatedSection key={index} delay={index * 0.1} direction="up">
+                <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    <p className="text-gray-600 mb-6 italic">
+                      "{testimonial.comment}"
+                    </p>
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="font-semibold text-secondary">
+                          {testimonial.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {testimonial.country}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -392,33 +391,35 @@ export default function Index() {
       {/* CTA Section */}
       <section className="py-20 bg-secondary text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Start Your Indian Adventure?
-          </h2>
-          <p className="text-xl mb-8 text-gray-300">
-            Let us create a personalized itinerary that matches your interests,
-            budget, and travel style
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <CustomizeTourModal
-              trigger={
-                <Button
-                  size="lg"
-                  className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
-                >
-                  Customize Your Tour
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              }
-            />
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
-            >
-              Contact Us
-            </Button>
-          </div>
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold mb-6">
+              Ready to Start Your Indian Adventure?
+            </h2>
+            <p className="text-xl mb-8 text-gray-300">
+              Let us create a personalized itinerary that matches your
+              interests, budget, and travel style
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <CustomizeTourModal
+                trigger={
+                  <Button
+                    size="lg"
+                    className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
+                  >
+                    Customize Your Tour
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                }
+              />
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-secondary px-8 py-3 text-lg"
+              >
+                Contact Us
+              </Button>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

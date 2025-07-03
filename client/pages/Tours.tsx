@@ -1,12 +1,46 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Star, MapPin } from "lucide-react";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
+import { OrbitTrailsAPI, Tour } from "@shared/api";
 
 export default function Tours() {
-  return (
-    <div>
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await OrbitTrailsAPI.getTours();
+        if (response.success && response.data) {
+          setTours(response.data.tours);
+        } else {
+          setError(response.message || "Failed to fetch tours");
+        }
+      } catch (err) {
+        setError("Error loading tours");
+        console.error("Error fetching tours:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTours();
+}, []);
+
+if (loading) {
+  return <div className="text-center py-20">Loading tours...</div>;
+}
+
+if (error) {
+  return <div className="text-center py-20 text-red-500">{error}</div>;
+}
+
+return (
+  <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

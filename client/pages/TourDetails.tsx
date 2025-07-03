@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 import {
   Star,
   Calendar,
@@ -17,6 +18,7 @@ import {
 
 export default function TourDetails() {
   const { slug } = useParams();
+  const { toast } = useToast();
 
   // Mock tour data - in real app, this would be fetched based on slug
   const tour = {
@@ -135,7 +137,11 @@ export default function TourDetails() {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
+      toast({
+        title: "Link Copied! 📋",
+        description: "Tour link has been copied to your clipboard successfully.",
+        duration: 3000,
+      });
     }
   };
 

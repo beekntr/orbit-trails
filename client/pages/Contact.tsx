@@ -1,13 +1,87 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
-import AnimatedSection from "@/components/AnimatedSection";
+import { OrbitTrailsAPI } from "@shared/api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
-  return (
-    <div>
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Frontend validation
+      if (formData.message.trim().length < 10) {
+        toast({
+          title: "Message Too Short ✏️",
+          description: "Please write a message with at least 10 characters.",
+          variant: "destructive",
+          duration: 4000,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Clean the form data - remove empty phone field if empty
+      const cleanedFormData = {
+        ...formData,
+        phone: formData.phone.trim() || undefined
+      };
+      
+      console.log('Submitting contact form with data:', cleanedFormData);
+      
+      const response = await OrbitTrailsAPI.submitContact(cleanedFormData);
+      
+      if (response.success) {
+        toast({
+          title: "Message Sent Successfully! ✉️",
+          description: response.message || "Thank you! Your message has been sent successfully. We will get back to you soon!",
+          duration: 5000,
+        });
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        console.error('Contact form submission failed:', response);
+        console.error('Validation errors:', response.errors);
+        toast({
+          title: "Failed to Send Message ❌",
+          description: response.errors ? 
+            `Validation error: ${response.errors.map((e: any) => e.msg || e.message).join(', ')}` : 
+            (response.message || "Please try again later."),
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Unable to send message. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({ ...prev, [name]: value }));
+};
+
+return (
+  <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -24,26 +98,35 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <AnimatedSection direction="left">
+            <div>
               <div>
                 <h2 className="text-3xl font-bold text-secondary mb-8">
                   Send us a Message
                 </h2>
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Name *
                       </label>
-                      <Input placeholder="Your full name" required />
+                      <Input 
+                        name="name"
+                        placeholder="Your full name" 
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required 
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email *
                       </label>
                       <Input
+                        name="email"
                         type="email"
                         placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -52,30 +135,41 @@ export default function Contact() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Phone
                     </label>
-                    <Input placeholder="Your phone number" />
+                    <Input 
+                      name="phone"
+                      placeholder="Your phone number" 
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Message *
+                      Message * (minimum 10 characters)
                     </label>
                     <Textarea
-                      placeholder="Tell us about your travel plans, interests, and any specific requirements..."
+                      name="message"
+                      placeholder="Tell us about your travel plans, interests, and any specific requirements... (minimum 10 characters)"
                       rows={6}
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      minLength={10}
                       required
                     />
                   </div>
                   <Button
+                    type="submit"
                     size="lg"
                     className="w-full bg-primary hover:bg-primary/90"
+                    disabled={isLoading}
                   >
-                    Send Message
+                    {isLoading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>
-            </AnimatedSection>
+            </div>
 
             {/* Contact Information */}
-            <AnimatedSection direction="right">
+            <div>
               <div className="space-y-8">
                 <div>
                   <h2 className="text-3xl font-bold text-secondary mb-8">
@@ -150,7 +244,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </AnimatedSection>
+            </div>
           </div>
         </div>
       </section>

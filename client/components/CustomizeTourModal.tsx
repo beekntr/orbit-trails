@@ -28,6 +28,8 @@ import {
 import { CalendarIcon, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { OrbitTrailsAPI } from "@shared/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface CustomizeTourModalProps {
   trigger: React.ReactNode;
@@ -36,12 +38,15 @@ interface CustomizeTourModalProps {
 export default function CustomizeTourModal({
   trigger,
 }: CustomizeTourModalProps) {
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [formData, setFormData] = useState({
     startDate: undefined as Date | undefined,
     duration: "",
     travelers: "",
-    accommodation: "",
+    accommodation: "" as "Luxury" | "Comfort" | "",
     destinations: [] as string[],
     budget: "",
     details: "",
@@ -69,28 +74,79 @@ export default function CustomizeTourModal({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Custom tour request:", formData);
-    alert(
-      "Thank you! Your custom tour request has been submitted. We'll contact you within 24 hours.",
-    );
-    setIsOpen(false);
-    // Reset form
-    setFormData({
-      startDate: undefined,
-      duration: "",
-      travelers: "",
-      accommodation: "",
-      destinations: [],
-      budget: "",
-      details: "",
-      name: "",
-      email: "",
-      phone: "",
-      countryCode: "+1",
-    });
+    setIsLoading(true);
+    
+    try {
+      // Validation check
+      if (!formData.accommodation) {
+        toast({
+          title: "Accommodation Required 🏨",
+          description: "Please select an accommodation type before submitting.",
+          variant: "destructive",
+          duration: 4000,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const customTourData = {
+        startDate: formData.startDate ? formData.startDate.toISOString() : new Date().toISOString(),
+        duration: parseInt(formData.duration),
+        numberOfTravelers: parseInt(formData.travelers),
+        accommodationType: formData.accommodation,
+        destinations: formData.destinations,
+        budgetRange: formData.budget,
+        comments: formData.details,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        countryCode: formData.countryCode,
+      };
+
+      const response = await OrbitTrailsAPI.submitCustomTour(customTourData);
+      
+      if (response.success) {
+        toast({
+          title: "Custom Tour Request Submitted! 🎉",
+          description: response.message || "Thank you! Your custom tour request has been submitted. We'll contact you within 24 hours.",
+          duration: 6000,
+        });
+        setIsOpen(false);
+        // Reset form
+        setFormData({
+          startDate: undefined,
+          duration: "",
+          travelers: "",
+          accommodation: "" as "Luxury" | "Comfort" | "",
+          destinations: [],
+          budget: "",
+          details: "",
+          name: "",
+          email: "",
+          phone: "",
+          countryCode: "+1",
+        });
+      } else {
+        toast({
+          title: "Submission Failed ❌",
+          description: response.message || "Please try again later.",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting custom tour request:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Unable to submit request. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -118,9 +174,10 @@ export default function CustomizeTourModal({
               {/* Start Date */}
               <div>
                 <Label>Start Date *</Label>
-                <Popover>
+                <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
                   <PopoverTrigger asChild>
                     <Button
+                      type="button"
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal",
@@ -133,13 +190,21 @@ export default function CustomizeTourModal({
                         : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent 
+                    className="w-auto p-0" 
+                    align="start"
+                    side="bottom"
+                  >
                     <Calendar
                       mode="single"
                       selected={formData.startDate}
-                      onSelect={(date) =>
-                        setFormData((prev) => ({ ...prev, startDate: date }))
-                      }
+                      onSelect={(date) => {
+                        if (date) {
+                          setFormData((prev) => ({ ...prev, startDate: date }));
+                          setDatePickerOpen(false);
+                        }
+                      }}
+                      disabled={(date) => date < new Date()}
                       initialFocus
                     />
                   </PopoverContent>
@@ -188,17 +253,17 @@ export default function CustomizeTourModal({
               <Label>Accommodation Type *</Label>
               <RadioGroup
                 value={formData.accommodation}
-                onValueChange={(value) =>
+                onValueChange={(value: "Luxury" | "Comfort") =>
                   setFormData((prev) => ({ ...prev, accommodation: value }))
                 }
                 className="flex space-x-6 mt-2"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="luxury" id="luxury" />
+                  <RadioGroupItem value="Luxury" id="luxury" />
                   <Label htmlFor="luxury">Luxury</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="comfort" id="comfort" />
+                  <RadioGroupItem value="Comfort" id="comfort" />
                   <Label htmlFor="comfort">Comfort</Label>
                 </div>
               </RadioGroup>
@@ -345,8 +410,12 @@ export default function CustomizeTourModal({
             >
               Cancel
             </Button>
-            <Button type="submit" className="bg-accent hover:bg-accent/90 px-8">
-              Submit Custom Tour Request
+            <Button 
+              type="submit" 
+              className="bg-accent hover:bg-accent/90 px-8"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Submit Custom Tour Request"}
             </Button>
           </div>
         </form>

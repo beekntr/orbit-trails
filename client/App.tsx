@@ -18,7 +18,7 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import TourDetails from "./pages/TourDetails";
 import NotFound from "./pages/NotFound";
-import Navbar from "./components/Navbar";
+import AnimatedNavbar from "./components/AnimatedNavbar";
 import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
@@ -31,7 +31,7 @@ function AppContent() {
       <AnimatePresence mode="wait">
         {isLoading && <Loading fullScreen message="Loading page..." />}
       </AnimatePresence>
-      <Navbar />
+      <AnimatedNavbar />
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <Routes>

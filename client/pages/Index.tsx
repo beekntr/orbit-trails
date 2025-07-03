@@ -19,8 +19,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export default function Index() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -135,9 +133,7 @@ export default function Index() {
   ];
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Images */}
@@ -386,8 +382,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,9 +6,7 @@ import { MapPin, Mail, Phone, Clock } from "lucide-react";
 
 export default function Contact() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -144,8 +140,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

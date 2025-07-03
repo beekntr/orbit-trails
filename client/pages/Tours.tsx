@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +5,7 @@ import { Calendar, Star, MapPin } from "lucide-react";
 
 export default function Tours() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -130,8 +126,6 @@ export default function Tours() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

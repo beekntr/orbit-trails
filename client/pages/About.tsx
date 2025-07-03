@@ -1,12 +1,8 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Users, Award, MapPin, Clock } from "lucide-react";
 
 export default function About() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -56,8 +52,6 @@ export default function About() {
           </p>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

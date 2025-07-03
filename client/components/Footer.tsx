@@ -8,14 +8,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold text-white">Orbit</span>
-                <span className="text-xl font-bold text-primary">Trails</span>
-              </div>
+            <Link to="/" className="flex items-center space-x-3">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F2c9c81af121b4295995eefbb00e5f72c%2F511b4da1cf1145e0bda7151f95f585e3?format=webp&width=200"
+                alt="Orbit Trails Logo"
+                className="h-8 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="text-sm text-gray-300 leading-relaxed">
               Experience the magic of India with our expertly crafted tour

@@ -168,7 +168,7 @@ export default function Index() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-primary hover:bg-accent text-white px-8 py-3 text-lg"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg"
             >
               Explore Tours
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -281,10 +281,13 @@ export default function Index() {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <Button className="flex-1 bg-primary hover:bg-accent">
+                    <Button className="flex-1 bg-primary hover:bg-primary/90">
                       View Details
                     </Button>
-                    <Button variant="outline" className="flex-1">
+                    <Button
+                      variant="outline"
+                      className="flex-1 border-accent text-accent hover:bg-accent hover:text-white"
+                    >
                       Book Now
                     </Button>
                   </div>
@@ -367,7 +370,7 @@ export default function Index() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-primary hover:bg-accent px-8 py-3 text-lg"
+              className="bg-accent hover:bg-accent/90 px-8 py-3 text-lg"
             >
               Customize Your Tour
               <ArrowRight className="ml-2 w-5 h-5" />

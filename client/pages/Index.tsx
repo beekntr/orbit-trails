@@ -35,8 +35,8 @@ export default function Index() {
 
   const heroImages = [
     "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80", // Taj Mahal
-    "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80", // Rajasthan Palace
-    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80", // Red Fort Delhi
+    "https://images.pexels.com/photos/6440428/pexels-photo-6440428.jpeg?cs=srgb&dl=pexels-ankurbagai-6440428.jpg&fm=jpg", // Rajasthan Palace
+    "https://images.unsplash.com/photo-1587474260584-136574528ed5?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW5kaWElMjBnYXRlfGVufDB8fDB8fHww", // Red Fort Delhi
   ];
 
   useEffect(() => {

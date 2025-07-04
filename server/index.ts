@@ -37,7 +37,23 @@ export function createServer() {
   // Connect to database
   connectDB();
 
-  // Health check
+  // Health check endpoint for production monitoring
+  app.get("/health", (_req, res) => {
+    res.json({ 
+      status: "OK",
+      service: "Orbit Trails API",
+      version: "1.0.0",
+      timestamp: new Date().toISOString(),
+      uptime: Math.floor(process.uptime()),
+      environment: process.env.NODE_ENV || "development",
+      memory: {
+        used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + ' MB',
+        total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + ' MB'
+      }
+    });
+  });
+
+  // API Health check
   app.get("/api/health", (_req, res) => {
     res.json({ 
       status: "OK", 

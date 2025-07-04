@@ -15,7 +15,7 @@
 ### Backend (Ubuntu Server Deployment)
 - [x] **Express Server** - Production-ready with proper error handling
 - [x] **Health Endpoints** - `/health` and `/api/health` for monitoring
-- [x] **PM2 Configuration** - `ecosystem.config.js` for clustering
+- [x] **PM2 Configuration** - `ecosystem.config.cjs` for clustering
 - [x] **Environment Variables** - Complete `.env.production.example`
 - [x] **Build Scripts** - `build:server`, `build:backend` scripts configured
 - [x] **Production Start** - `start:prod` script with NODE_ENV=production
@@ -66,7 +66,7 @@ cp .env.production.example .env
 npm install -g pm2
 
 # Start with PM2
-pm2 start ecosystem.config.js --env production
+pm2 start ecosystem.config.cjs --env production
 ```
 
 ## 📊 Performance Optimizations

@@ -21,6 +21,7 @@
     "build:backend": "npm run typecheck && npm run build:server",
     "start": "node dist/server/production.mjs",
     "start:prod": "NODE_ENV=production node dist/server/production.mjs",
+    "start:dev": "NODE_ENV=production npx tsx server/node-build.ts",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc",

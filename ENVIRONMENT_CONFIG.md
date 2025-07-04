@@ -86,7 +86,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:30
    cp .env.production.example .env
    # Edit .env with actual values
    npm run build:backend
-   pm2 start ecosystem.config.js --env production
+   pm2 start ecosystem.config.cjs --env production
    ```
 
 2. **Configure Nginx** (on Ubuntu server):

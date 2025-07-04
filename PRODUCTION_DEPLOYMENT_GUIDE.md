@@ -141,7 +141,7 @@ vercel env add VITE_API_URL production
 
 1. **Create PM2 ecosystem file**:
    ```bash
-   cat > ecosystem.config.js << EOF
+   cat > ecosystem.config.cjs << EOF
    module.exports = {
      apps: [{
        name: 'orbit-trails-api',
@@ -172,7 +172,7 @@ vercel env add VITE_API_URL production
 
 3. **Start the application**:
    ```bash
-   pm2 start ecosystem.config.js --env production
+   pm2 start ecosystem.config.cjs --env production
    pm2 save
    pm2 startup
    # Follow the instructions to enable PM2 startup on boot

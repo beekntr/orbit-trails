@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 });
 
 // Fix double slash URLs - redirect //api/* to /api/*
-app.use('//api/*', (req, res, next) => {
+app.use('/api/*', (req, res, next) => {
   const newUrl = req.url.replace('//', '/');
   console.log(`Redirecting double slash: ${req.url} -> ${newUrl}`);
   req.url = newUrl;
@@ -73,7 +73,7 @@ app.get('/api/demo', (req, res) => {
 });
 
 // Direct handler for double slash API routes
-app.get('//api/tours', (req, res) => {
+app.get('/api/tours', (req, res) => {
   console.log('Handling double slash tours request');
   res.json({
     tours: [

@@ -44,6 +44,6 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "VITE_API_URL": "https://auditorium.api.kshitijsinghbhati.in"
+    "VITE_API_URL": "https://api.orbittrails.com"
   }
 }

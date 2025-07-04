@@ -40,11 +40,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// Fix double slash URLs - redirect //api/* to /api/*
-app.use('/api/*', (req, res, next) => {
-  const newUrl = req.url.replace('//', '/');
-  console.log(`Redirecting double slash: ${req.url} -> ${newUrl}`);
-  req.url = newUrl;
+// Fix double slash URLs - handle //api/* patterns
+app.use('//api/*', (req, res, next) => {
+  console.log(`Fixing double slash URL: ${req.url}`);
+  // Remove the extra slash and continue
+  req.url = req.url.replace('//', '/');
+  next();
+});
+
+// Additional middleware to catch and redirect double slash patterns
+app.use((req, res, next) => {
+  if (req.url.startsWith('//api/')) {
+    console.log(`Redirecting double slash: ${req.url} -> ${req.url.substring(1)}`);
+    req.url = req.url.substring(1); // Remove the first slash
+  }
   next();
 });
 
@@ -70,6 +79,69 @@ app.get('/api/health', (req, res) => {
 // Basic API routes
 app.get('/api/demo', (req, res) => {
   res.json({ message: 'Orbit Trails API is working!' });
+});
+
+// Handle double slash API routes explicitly
+app.get('//api/tours', (req, res) => {
+  console.log('Handling //api/tours request (double slash)');
+  res.json({
+    tours: [
+      {
+        _id: '1',
+        name: 'Golden Triangle Tour',
+        slug: 'golden-triangle-tour',
+        description: 'Explore Delhi, Agra, and Jaipur',
+        overview: 'A comprehensive tour of India\'s most famous triangle.',
+        category: 'Golden Triangle',
+        price: 999,
+        originalPrice: 1299,
+        duration: '7 days',
+        destinations: ['Delhi', 'Agra', 'Jaipur'],
+        highlights: ['Taj Mahal', 'Red Fort', 'Hawa Mahal'],
+        included: ['Hotels', 'Transport', 'Guide'],
+        notIncluded: ['Flights', 'Meals'],
+        itinerary: [
+          { day: 1, title: 'Arrival in Delhi', description: 'Airport pickup and hotel check-in' }
+        ]
+      },
+      {
+        _id: '2',
+        name: 'Rajasthan Heritage Tour',
+        slug: 'rajasthan-heritage-tour',
+        description: 'Discover the royal heritage of Rajasthan',
+        overview: 'Experience the grandeur of Rajasthan\'s palaces and forts.',
+        category: 'Rajasthan Tours',
+        price: 1299,
+        originalPrice: 1599,
+        duration: '10 days',
+        destinations: ['Jaipur', 'Udaipur', 'Jodhpur', 'Jaisalmer'],
+        highlights: ['City Palace', 'Mehrangarh Fort', 'Lake Pichola'],
+        included: ['Hotels', 'Transport', 'Guide'],
+        notIncluded: ['Flights', 'Meals'],
+        itinerary: [
+          { day: 1, title: 'Arrival in Jaipur', description: 'Airport pickup and hotel check-in' }
+        ]
+      }
+    ]
+  });
+});
+
+app.post('//api/customize-tour', (req, res) => {
+  console.log('Handling //api/customize-tour request (double slash)');
+  res.json({
+    success: true,
+    message: 'Tour customization request received',
+    data: req.body
+  });
+});
+
+app.post('//api/admin/login', (req, res) => {
+  console.log('Handling //api/admin/login request (double slash)');
+  res.json({
+    success: false,
+    message: 'Admin login not implemented',
+    error: 'Authentication not configured'
+  });
 });
 
 // Direct handler for double slash API routes

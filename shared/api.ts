@@ -14,7 +14,7 @@ export interface DemoResponse {
 /**
  * API Base Configuration
  */
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 /**
  * Tour Interface
@@ -153,7 +153,7 @@ export class OrbitTrailsAPI {
   }
 
   // Tours API
-  static async getTours(): Promise<ApiResponse<{ tours: Tour[]; groupedTours: Record<string, Tour[]> }>> {
+  static async getTours(): Promise<ApiResponse<{ tours: Tour[]; groupedTours: Record<string, Tour[]>; total: number }>> {
     return this.request('/api/tours');
   }
 

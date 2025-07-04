@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'orbit-trails-api',
-    script: './server/simple.mjs',
+    script: 'server/api-server.mjs',
     instances: 1,
     exec_mode: 'fork',
     env: {

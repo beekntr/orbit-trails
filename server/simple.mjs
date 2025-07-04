@@ -135,6 +135,17 @@ app.post('//api/customize-tour', (req, res) => {
   });
 });
 
+// Add missing contact route for double slash
+app.post('//api/contact', (req, res) => {
+  console.log('Handling //api/contact request (double slash)');
+  console.log('Contact form data:', req.body);
+  res.json({
+    success: true,
+    message: 'Thank you for your message! We will get back to you soon.',
+    data: req.body
+  });
+});
+
 app.post('//api/admin/login', (req, res) => {
   console.log('Handling //api/admin/login request (double slash)');
   res.json({
@@ -237,6 +248,16 @@ app.post('/api/customize-tour', (req, res) => {
   res.json({
     success: true,
     message: 'Tour customization request received',
+    data: req.body
+  });
+});
+
+// Add contact route
+app.post('/api/contact', (req, res) => {
+  console.log('Contact form submission:', req.body);
+  res.json({
+    success: true,
+    message: 'Thank you for your message! We will get back to you soon.',
     data: req.body
   });
 });

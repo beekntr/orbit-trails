@@ -34,6 +34,20 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+  next();
+});
+
+// Fix double slash URLs - redirect //api/* to /api/*
+app.use('//api/*', (req, res, next) => {
+  const newUrl = req.url.replace('//', '/');
+  console.log(`Redirecting double slash: ${req.url} -> ${newUrl}`);
+  req.url = newUrl;
+  next();
+});
+
 // Health check endpoints
 app.get('/health', (req, res) => {
   res.json({
@@ -56,6 +70,51 @@ app.get('/api/health', (req, res) => {
 // Basic API routes
 app.get('/api/demo', (req, res) => {
   res.json({ message: 'Orbit Trails API is working!' });
+});
+
+// Direct handler for double slash API routes
+app.get('//api/tours', (req, res) => {
+  console.log('Handling double slash tours request');
+  res.json({
+    tours: [
+      {
+        _id: '1',
+        name: 'Golden Triangle Tour',
+        slug: 'golden-triangle-tour',
+        description: 'Explore Delhi, Agra, and Jaipur',
+        overview: 'A comprehensive tour of India\'s most famous triangle.',
+        category: 'Golden Triangle',
+        price: 999,
+        originalPrice: 1299,
+        duration: '7 days',
+        destinations: ['Delhi', 'Agra', 'Jaipur'],
+        highlights: ['Taj Mahal', 'Red Fort', 'Hawa Mahal'],
+        included: ['Hotels', 'Transport', 'Guide'],
+        notIncluded: ['Flights', 'Meals'],
+        itinerary: [
+          { day: 1, title: 'Arrival in Delhi', description: 'Airport pickup and hotel check-in' }
+        ]
+      },
+      {
+        _id: '2',
+        name: 'Rajasthan Heritage Tour',
+        slug: 'rajasthan-heritage-tour',
+        description: 'Discover the royal heritage of Rajasthan',
+        overview: 'Experience the grandeur of Rajasthan\'s palaces and forts.',
+        category: 'Rajasthan Tours',
+        price: 1299,
+        originalPrice: 1599,
+        duration: '10 days',
+        destinations: ['Jaipur', 'Udaipur', 'Jodhpur', 'Jaisalmer'],
+        highlights: ['City Palace', 'Mehrangarh Fort', 'Lake Pichola'],
+        included: ['Hotels', 'Transport', 'Guide'],
+        notIncluded: ['Flights', 'Meals'],
+        itinerary: [
+          { day: 1, title: 'Arrival in Jaipur', description: 'Airport pickup and hotel check-in' }
+        ]
+      }
+    ]
+  });
 });
 
 app.get('/api/tours', (req, res) => {

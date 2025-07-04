@@ -234,13 +234,92 @@ app.get('/api/tours/slug/:slug', async (req, res) => {
 
 app.post('/api/tours', authMiddleware, async (req, res) => {
   try {
+    // Generate slug from name if not provided
+    if (!req.body.slug && req.body.name) {
+      req.body.slug = req.body.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+
     const tour = new Tour(req.body);
     await tour.save();
     res.json({ success: true, data: tour });
   } catch (error) {
+    console.error('Create tour error:', error);
     res.status(500).json({
       success: false,
       message: 'Error creating tour',
+      error: error.message
+    });
+  }
+});
+
+// PUT route for updating tours
+app.put('/api/tours/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Generate slug from name if not provided but name is updated
+    if (!req.body.slug && req.body.name) {
+      req.body.slug = req.body.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+
+    const tour = await Tour.findByIdAndUpdate(
+      id, 
+      req.body, 
+      { new: true, runValidators: true }
+    );
+    
+    if (!tour) {
+      return res.status(404).json({
+        success: false,
+        message: 'Tour not found'
+      });
+    }
+
+    res.json({ success: true, data: tour });
+  } catch (error) {
+    console.error('Update tour error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating tour',
+      error: error.message
+    });
+  }
+});
+
+// DELETE route for deleting tours
+app.delete('/api/tours/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const tour = await Tour.findByIdAndDelete(id);
+    
+    if (!tour) {
+      return res.status(404).json({
+        success: false,
+        message: 'Tour not found'
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Tour deleted successfully',
+      data: tour 
+    });
+  } catch (error) {
+    console.error('Delete tour error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting tour',
       error: error.message
     });
   }
@@ -305,6 +384,35 @@ app.get('/api/contact/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// PATCH route for updating contact status
+app.patch('/api/contact/:id/status', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    const contact = await Contact.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+    
+    if (!contact) {
+      return res.status(404).json({
+        success: false,
+        message: 'Contact message not found'
+      });
+    }
+
+    res.json({ success: true, data: contact });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error updating contact status',
+      error: error.message
+    });
+  }
+});
+
 // Custom Tour API
 app.post('/api/customize-tour', async (req, res) => {
   try {
@@ -350,6 +458,35 @@ app.get('/api/customize-tour/:id', authMiddleware, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error fetching custom tour request',
+      error: error.message
+    });
+  }
+});
+
+// PATCH route for updating custom tour status
+app.patch('/api/customize-tour/:id/status', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    const customTour = await CustomTour.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+    
+    if (!customTour) {
+      return res.status(404).json({
+        success: false,
+        message: 'Custom tour request not found'
+      });
+    }
+
+    res.json({ success: true, data: customTour });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error updating custom tour status',
       error: error.message
     });
   }
@@ -452,6 +589,28 @@ app.get('/api/admin/dashboard', authMiddleware, async (req, res) => {
   }
 });
 
+// GET route for admin profile
+app.get('/api/admin/profile', authMiddleware, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      data: {
+        id: req.admin._id,
+        username: req.admin.username,
+        email: req.admin.email,
+        role: req.admin.role,
+        lastLogin: req.admin.lastLogin
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching admin profile',
+      error: error.message
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -476,12 +635,24 @@ app.get('*', (req, res) => {
   res.json({
     message: 'Orbit Trails API Server',
     endpoints: [
-      '/health',
-      '/api/health', 
-      '/api/tours',
-      '/api/contact',
-      '/api/customize-tour',
-      '/api/admin/login'
+      'GET /health - Health check',
+      'GET /api/health - API health check',
+      'GET /api/tours - Get all tours',
+      'GET /api/tours/slug/:slug - Get tour by slug',
+      'POST /api/tours - Create tour (admin)',
+      'PUT /api/tours/:id - Update tour (admin)',
+      'DELETE /api/tours/:id - Delete tour (admin)',
+      'POST /api/contact - Submit contact form',
+      'GET /api/contact - Get all contacts (admin)',
+      'GET /api/contact/:id - Get contact by ID (admin)',
+      'PATCH /api/contact/:id/status - Update contact status (admin)',
+      'POST /api/customize-tour - Submit custom tour request',
+      'GET /api/customize-tour - Get all custom tours (admin)',
+      'GET /api/customize-tour/:id - Get custom tour by ID (admin)',
+      'PATCH /api/customize-tour/:id/status - Update custom tour status (admin)',
+      'POST /api/admin/login - Admin login',
+      'GET /api/admin/profile - Get admin profile (admin)',
+      'GET /api/admin/dashboard - Get dashboard data (admin)'
     ],
     timestamp: new Date().toISOString(),
     database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'

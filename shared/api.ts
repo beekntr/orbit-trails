@@ -14,7 +14,9 @@ export interface DemoResponse {
 /**
  * API Base Configuration
  */
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Remove trailing slash to prevent double slashes in URLs
+export const API_BASE_URL = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 /**
  * Tour Interface
@@ -126,6 +128,8 @@ export class OrbitTrailsAPI {
     const url = `${this.baseUrl}${endpoint}`;
     const token = this.getToken();
 
+    console.log(`API Request: ${options.method || 'GET'} ${url}`);
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       ...(options.headers as Record<string, string>),
@@ -141,9 +145,25 @@ export class OrbitTrailsAPI {
         headers,
       });
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error(`Non-JSON response from ${url}:`, await response.text());
+        return {
+          success: false,
+          message: 'Server returned non-JSON response',
+          error: `Expected JSON but got ${contentType || 'unknown content type'}`
+        };
+      }
+
       const data = await response.json();
+      
+      // Log response for debugging
+      console.log(`API Response from ${url}:`, data);
+      
       return data;
     } catch (error) {
+      console.error(`API Request failed for ${url}:`, error);
       return {
         success: false,
         message: 'Network error occurred',

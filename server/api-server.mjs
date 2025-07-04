@@ -131,6 +131,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Fix double slash URLs - handle //api/* patterns
+app.use((req, res, next) => {
+  if (req.url.includes('//api/')) {
+    console.log(`Fixing double slash URL: ${req.url} -> ${req.url.replace('//api/', '/api/')}`);
+    req.url = req.url.replace('//api/', '/api/');
+  }
+  next();
+});
+
 // Auth middleware
 const authMiddleware = async (req, res, next) => {
   try {

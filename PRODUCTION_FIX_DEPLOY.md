@@ -98,6 +98,36 @@ VITE_API_URL=https://your-domain.com
 VITE_API_URL=http://localhost:3001
 ```
 
+## 🚨 FRONTEND CONFIGURATION FIX
+
+**CRITICAL**: Your frontend is making requests to `https://api.orbittrails.com//api/contact` (double slash). This needs to be fixed.
+
+### Frontend Environment Variables Fix:
+
+#### Option 1: Local Frontend (if testing locally)
+```env
+VITE_API_URL=http://localhost:3001
+```
+
+#### Option 2: Production Frontend (Vercel/Netlify)
+```env
+VITE_API_URL=https://api.orbittrails.com
+```
+
+**Important**: Make sure there's NO trailing slash in `VITE_API_URL`!
+
+### Fix Applied to shared/api.ts:
+- ✅ Automatic removal of trailing slashes
+- ✅ Better error handling for non-JSON responses
+- ✅ Debug logging to track API calls
+
+### If Your Backend is Running on Different Domain:
+```bash
+# Update your CORS in .env to match your frontend:
+FRONTEND_URL=https://your-actual-frontend-domain.com
+FRONTEND_PROD_URL=https://your-actual-frontend-domain.com
+```
+
 ## 📊 Expected Results:
 
 After deployment, you should see in logs:

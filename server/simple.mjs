@@ -19,10 +19,15 @@ const port = process.env.PORT || 3001;
 const corsOptions = {
   origin: [
     'http://localhost:5173',
-    'http://localhost:3001', 
+    'http://localhost:3000',
+    'https://www.orbittrails.com',
     'https://orbittrails.com',
+    'https://orbit-trails.vercel.app',
+    'https://www.orbit-trails.vercel.app'
   ],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
 app.use(cors(corsOptions));

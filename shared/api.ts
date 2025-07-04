@@ -14,7 +14,7 @@ export interface DemoResponse {
 /**
  * API Base Configuration
  */
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 /**
  * Tour Interface
@@ -154,33 +154,33 @@ export class OrbitTrailsAPI {
 
   // Tours API
   static async getTours(): Promise<ApiResponse<{ tours: Tour[]; groupedTours: Record<string, Tour[]> }>> {
-    return this.request('/tours');
+    return this.request('/api/tours');
   }
 
   static async getTourById(id: string): Promise<ApiResponse<Tour>> {
-    return this.request(`/tours/${id}`);
+    return this.request(`/api/tours/${id}`);
   }
 
   static async getTourBySlug(slug: string): Promise<ApiResponse<Tour>> {
-    return this.request(`/tours/slug/${slug}`);
+    return this.request(`/api/tours/slug/${slug}`);
   }
 
   static async createTour(tour: Partial<Tour>): Promise<ApiResponse<Tour>> {
-    return this.request('/tours', {
+    return this.request('/api/tours', {
       method: 'POST',
       body: JSON.stringify(tour),
     });
   }
 
   static async updateTour(id: string, tour: Partial<Tour>): Promise<ApiResponse<Tour>> {
-    return this.request(`/tours/${id}`, {
+    return this.request(`/api/tours/${id}`, {
       method: 'PUT',
       body: JSON.stringify(tour),
     });
   }
 
   static async deleteTour(id: string): Promise<ApiResponse> {
-    return this.request(`/tours/${id}`, {
+    return this.request(`/api/tours/${id}`, {
       method: 'DELETE',
     });
   }
@@ -192,49 +192,49 @@ export class OrbitTrailsAPI {
       Object.entries(contact).filter(([_, value]) => value !== undefined)
     );
     
-    return this.request('/contact', {
+    return this.request('/api/contact', {
       method: 'POST',
       body: JSON.stringify(cleanContact),
     });
   }
 
   static async getContactMessages(): Promise<ApiResponse<{ messages: any[] }>> {
-    return this.request('/contact');
+    return this.request('/api/contact');
   }
 
   static async getContactMessageById(id: string): Promise<ApiResponse<any>> {
-    return this.request(`/contact/${id}`);
+    return this.request(`/api/contact/${id}`);
   }
 
   // Custom Tour API
   static async submitCustomTour(customTour: CustomTourRequest): Promise<ApiResponse> {
-    return this.request('/customize-tour', {
+    return this.request('/api/customize-tour', {
       method: 'POST',
       body: JSON.stringify(customTour),
     });
   }
 
   static async getCustomTourRequests(): Promise<ApiResponse<{ requests: any[] }>> {
-    return this.request('/customize-tour');
+    return this.request('/api/customize-tour');
   }
 
   static async getCustomTourRequestById(id: string): Promise<ApiResponse<any>> {
-    return this.request(`/customize-tour/${id}`);
+    return this.request(`/api/customize-tour/${id}`);
   }
 
   // Admin API
   static async adminLogin(credentials: AdminLogin): Promise<ApiResponse<{ token: string; admin: any }>> {
-    return this.request('/admin/login', {
+    return this.request('/api/admin/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
   }
 
   static async getAdminDashboard(): Promise<ApiResponse<any>> {
-    return this.request('/admin/dashboard');
+    return this.request('/api/admin/dashboard');
   }
 
   static async getCurrentAdmin(): Promise<ApiResponse<any>> {
-    return this.request('/admin/profile');
+    return this.request('/api/admin/profile');
   }
 }

@@ -845,6 +845,7 @@ const startServer = async () => {
       console.log(`📊 API Endpoints: http://localhost:${port}/api`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`🗄️ Database: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'}`);
+      console.log(`📧 Email Service: ${process.env.GMAIL_USER ? 'Configured' : 'Not Configured'}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

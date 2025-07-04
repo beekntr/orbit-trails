@@ -187,6 +187,7 @@ return (
                             <p className="text-gray-600">
                               Orbit Trails
                               <br />
+                              <p>68/52, Pratap Nagar</p>
                               Jaipur, Rajasthan, India
                             </p>
                           </div>
@@ -218,7 +219,7 @@ return (
                             <h3 className="font-semibold text-secondary mb-1">
                               Phone
                             </h3>
-                            <p className="text-gray-600">+91 123 456 7890</p>
+                            <p className="text-gray-600">+91 9829271900</p>
                           </div>
                         </div>
                       </CardContent>

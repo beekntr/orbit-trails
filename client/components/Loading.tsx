@@ -39,7 +39,7 @@ export default function Loading({
             transition={{ delay: 0.2 }}
           >
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F2c9c81af121b4295995eefbb00e5f72c%2F511b4da1cf1145e0bda7151f95f585e3?format=webp&width=200"
+              src="https://images.orbittrails.com/ORBIT.png"
               alt="Orbit Trails"
               className="h-8 w-auto mx-auto mb-4"
             />

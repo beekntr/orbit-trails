@@ -262,34 +262,36 @@ Best regards`;
         {/* Main Content */}
         <div className="lg:col-span-2">
           {/* Image Gallery */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="space-y-4 mb-6">
+            {/* Main Image */}
             <img
               src={tour.images[0] || "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
               alt={tour.name}
-              className="col-span-2 w-full h-64 object-cover rounded-lg"
+              className="w-full h-64 object-cover rounded-lg"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
               }}
             />
-            <img
-              src={tour.images[1] || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
-              alt={tour.name}
-              className="w-full h-32 object-cover rounded-lg"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
-              }}
-            />
-            <img
-              src={tour.images[2] || "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
-              alt={tour.name}
-              className="w-full h-32 object-cover rounded-lg"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://images.unsplash.com/photo-1539650116574-75c0c6d5d6b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
-              }}
-            />
+            
+            {/* Additional Images - Only show if they exist */}
+            {tour.images && tour.images.length > 1 && (
+              <div className="grid grid-cols-2 gap-4">
+                {tour.images.slice(1, 3).map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${tour.name} - Image ${index + 2}`}
+                    className="w-full h-32 object-cover rounded-lg"
+                    onError={(e) => {
+                      // If the image fails to load, hide it instead of showing fallback
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Tour Info */}

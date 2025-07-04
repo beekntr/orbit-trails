@@ -37,7 +37,7 @@ export default function AnimatedNavbar() {
           >
             <Link to="/" className="flex items-center space-x-3">
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F2c9c81af121b4295995eefbb00e5f72c%2F511b4da1cf1145e0bda7151f95f585e3?format=webp&width=200"
+                src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
                 className="h-8 w-auto"
               />
@@ -99,7 +99,7 @@ export default function AnimatedNavbar() {
               <motion.a
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
-                href="https://instagram.com"
+                href="https://www.instagram.com/orbittrails9/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-secondary hover:text-primary transition-colors"
@@ -210,7 +210,7 @@ export default function AnimatedNavbar() {
                       </svg>
                     </a>
                     <a
-                      href="https://instagram.com"
+                      href="https://www.instagram.com/orbittrails9/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-secondary hover:text-primary transition-colors"

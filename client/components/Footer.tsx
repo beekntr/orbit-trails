@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-3">
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F2c9c81af121b4295995eefbb00e5f72c%2F511b4da1cf1145e0bda7151f95f585e3?format=webp&width=200"
+                src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
                 className="h-8 w-auto brightness-0 invert"
               />
@@ -36,7 +36,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/orbittrails9/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-primary transition-colors"
@@ -156,6 +156,7 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-gray-300">
                   <p>Orbit Trails</p>
+                  <p>68/52, Pratap Nagar</p>
                   <p>Jaipur, Rajasthan, India</p>
                 </div>
               </div>
@@ -174,7 +175,7 @@ export default function Footer() {
                   href="tel:+911234567890"
                   className="text-sm text-gray-300 hover:text-primary transition-colors"
                 >
-                  +91 123 456 7890
+                  +91 9829271900
                 </a>
               </div>
             </div>

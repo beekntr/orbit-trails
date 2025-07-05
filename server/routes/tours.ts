@@ -18,8 +18,8 @@ router.get('/slug/:slug', getTourBySlug); // Add this route before the /:id rout
 router.get('/:id', getTourById);
 
 // Protected routes (admin only)
+router.post('/reorder', authMiddleware, reorderTours); // Put reorder before generic /:id routes
 router.post('/', authMiddleware, createTour);
-router.post('/reorder', authMiddleware, reorderTours);
 router.put('/:id', authMiddleware, updateTour);
 router.delete('/:id', authMiddleware, deleteTour);
 

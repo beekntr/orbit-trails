@@ -420,50 +420,24 @@ export default function Admin() {
           duration: 3000,
         });
       } else {
-        // Check if it's a 404 error (feature not deployed yet)
-        if (response.message?.includes('not found') || response.error?.includes('not found')) {
-          toast({
-            title: "Feature Not Available Yet 🚧",
-            description: "The reordering feature is being deployed. Please try again in a few minutes.",
-            variant: "destructive",
-            duration: 6000,
-          });
-          // Refresh data to revert changes
-          await fetchDashboardData();
-        } else {
-          toast({
-            title: "Failed to Reorder Tours ❌",
-            description: response.message || "Unable to reorder tours. Please try again.",
-            variant: "destructive",
-            duration: 4000,
-          });
-          // Refresh data to revert changes
-          await fetchDashboardData();
-        }
-      }
-    } catch (error) {
-      console.error("Error reordering tours:", error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      
-      // Check if it's a 404 error
-      if (errorMessage.includes('404') || errorMessage.includes('not found')) {
         toast({
-          title: "Feature Not Available Yet 🚧",
-          description: "The reordering feature is being deployed to production. Please try again in a few minutes.",
-          variant: "destructive",
-          duration: 6000,
-        });
-      } else {
-        toast({
-          title: "Network Error 🌐",
-          description: "Failed to reorder tours. Please check your connection and try again.",
+          title: "Failed to Reorder Tours ❌",
+          description: response.message || "Unable to reorder tours. Please try again.",
           variant: "destructive",
           duration: 4000,
         });
+        // Refresh data to revert changes
+        await fetchDashboardData();
       }
-      
+    } catch (error) {
+      console.error("Error reordering tours:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Failed to reorder tours. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 4000,
+      });
       // Refresh data to revert changes
-      await fetchDashboardData();
       await fetchDashboardData();
     }
   };

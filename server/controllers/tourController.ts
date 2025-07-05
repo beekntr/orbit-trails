@@ -12,7 +12,7 @@ export const getAllTours = async (req: Request, res: Response) => {
       filter.category = category;
     }
 
-    const tours = await Tour.find(filter).sort({ createdAt: -1 });
+    const tours = await Tour.find(filter).sort({ order: 1, createdAt: -1 });
 
     // Group tours by category for frontend
     const groupedTours = {
@@ -136,9 +136,14 @@ export const createTour = [
         });
       }
 
+      // Get the highest order value and increment by 1
+      const highestOrderTour = await Tour.findOne({}).sort({ order: -1 });
+      const nextOrder = highestOrderTour ? (highestOrderTour.order || 0) + 1 : 0;
+
       const tour = new Tour({
         ...req.body,
-        slug
+        slug,
+        order: nextOrder
       });
 
       await tour.save();
@@ -251,6 +256,39 @@ export const deleteTour = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error deleting tour',
+      error: error.message
+    });
+  }
+};
+
+// Reorder tours
+export const reorderTours = async (req: Request, res: Response) => {
+  try {
+    const { tours } = req.body;
+
+    if (!tours || !Array.isArray(tours)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid tours data provided'
+      });
+    }
+
+    // Update each tour's order
+    const updatePromises = tours.map(({ id, order }) => 
+      Tour.findByIdAndUpdate(id, { order }, { new: true })
+    );
+
+    await Promise.all(updatePromises);
+
+    res.json({
+      success: true,
+      message: 'Tours reordered successfully'
+    });
+  } catch (error) {
+    console.error('Reorder tours error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error reordering tours',
       error: error.message
     });
   }

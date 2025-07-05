@@ -25,6 +25,7 @@ export interface ITour extends Document {
   images: string[];
   destinations: string[];
   status: 'active' | 'inactive' | 'draft';
+  order: number; // For drag-and-drop ordering
   createdAt: Date;
   updatedAt: Date;
 }
@@ -120,6 +121,10 @@ const TourSchema: Schema = new Schema({
     type: String,
     enum: ['active', 'inactive', 'draft'],
     default: 'active'
+  },
+  order: {
+    type: Number,
+    default: 0 // Default order value
   }
 }, {
   timestamps: true

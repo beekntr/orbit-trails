@@ -47,7 +47,6 @@ export interface Tour {
   images: string[];
   destinations: string[];
   status: 'active' | 'inactive' | 'draft';
-  order: number; // For drag-and-drop ordering
   createdAt: string;
   updatedAt: string;
 }
@@ -203,13 +202,6 @@ export class OrbitTrailsAPI {
   static async deleteTour(id: string): Promise<ApiResponse> {
     return this.request(`/api/tours/${id}`, {
       method: 'DELETE',
-    });
-  }
-
-  static async reorderTours(tourOrders: Array<{ id: string; order: number }>): Promise<ApiResponse> {
-    return this.request('/api/tours/reorder', {
-      method: 'POST',
-      body: JSON.stringify({ tours: tourOrders }),
     });
   }
 

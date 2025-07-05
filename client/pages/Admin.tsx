@@ -31,9 +31,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus, Edit, Trash2, Eye, Shield, Star } from "lucide-react";
-import { OrbitTrailsAPI, Tour } from "@shared/api";
+import { OrbitTrailsAPI } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
-import DraggableToursTable from "@/components/DraggableToursTable";
 
 export default function Admin() {
   const { toast } = useToast();
@@ -394,51 +393,6 @@ export default function Admin() {
       setLoading(false);
       setShowDeleteDialog(false);
       setDeletingTour(null);
-    }
-  };
-
-  const handleReorderTours = async (reorderedTours: Tour[]) => {
-    try {
-      // Create array with tour IDs and their new order
-      const tourOrders = reorderedTours.map((tour, index) => ({
-        id: tour._id,
-        order: index
-      }));
-
-      const response = await OrbitTrailsAPI.reorderTours(tourOrders);
-      
-      if (response.success) {
-        // Update local state to reflect the new order
-        setDashboardData(prev => ({
-          ...prev,
-          tours: reorderedTours
-        }));
-        
-        toast({
-          title: "Tours Reordered Successfully! ✅",
-          description: "Tour display order has been updated.",
-          duration: 3000,
-        });
-      } else {
-        toast({
-          title: "Failed to Reorder Tours ❌",
-          description: response.message || "Unable to reorder tours. Please try again.",
-          variant: "destructive",
-          duration: 4000,
-        });
-        // Refresh data to revert changes
-        await fetchDashboardData();
-      }
-    } catch (error) {
-      console.error("Error reordering tours:", error);
-      toast({
-        title: "Network Error 🌐",
-        description: "Failed to reorder tours. Please check your connection and try again.",
-        variant: "destructive",
-        duration: 4000,
-      });
-      // Refresh data to revert changes
-      await fetchDashboardData();
     }
   };
 
@@ -1488,13 +1442,68 @@ export default function Admin() {
               </div>
             </CardHeader>
             <CardContent>
-              <DraggableToursTable
-                tours={dashboardData?.tours || []}
-                onEdit={handleEditTour}
-                onDelete={handleDeleteTour}
-                onReorder={handleReorderTours}
-                loading={loading}
-              />
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tour Name</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Duration</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {dashboardData?.tours?.length > 0 ? (
+                    dashboardData.tours.map((tour: any) => (
+                      <TableRow key={tour._id}>
+                        <TableCell className="font-medium">{tour.name}</TableCell>
+                        <TableCell>{tour.category}</TableCell>
+                        <TableCell>{tour.duration}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center space-x-1">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span>{tour.rating}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className="bg-green-100 text-green-800">
+                            {tour.status || 'Active'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex space-x-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => handleEditTour(tour)}
+                              disabled={loading}
+                              className="hover:bg-blue-50 hover:border-blue-300"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-red-600 hover:text-red-800 hover:bg-red-50 hover:border-red-300"
+                              onClick={() => handleDeleteTour(tour._id, tour.name)}
+                              disabled={loading}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                        No tours available. Add your first tour package!
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>

@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "migrate:tour-orders": "cd server && npx ts-node migrations/addOrderToTours.ts",
-    "dev:full": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "cd server && npm run dev",
-    "dev:client": "npm run dev"
-  }
-}

@@ -6,8 +6,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
 import { OrbitTrailsAPI } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
+import { useSEO, SEOConfigs } from "@/hooks/useSEO";
 
 export default function Contact() {
+  // SEO optimization for contact page
+  useSEO({
+    ...SEOConfigs.contact,
+    canonicalUrl: 'https://www.orbittrails.com/contact'
+  });
+
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({

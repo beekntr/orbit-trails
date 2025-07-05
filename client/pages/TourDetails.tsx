@@ -22,6 +22,7 @@ import {
 import { OrbitTrailsAPI, Tour } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function TourDetails() {
   const { slug } = useParams();
@@ -29,6 +30,72 @@ export default function TourDetails() {
   const [tour, setTour] = useState<Tour | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Dynamic SEO based on tour data
+  useSEO({
+    title: tour 
+      ? `${tour.name} - ${tour.category} Tour Package | Orbit Trails`
+      : 'Tour Details - Orbit Trails India Travel Agency',
+    description: tour 
+      ? `${tour.overview || tour.description || `Explore ${tour.name} with Orbit Trails.`} Duration: ${tour.duration}. ${tour.rating ? `Rating: ${tour.rating}/5.0.` : ''} ${tour.price ? `Starting from ${tour.price}.` : 'Contact us for pricing.'} Book your India adventure today!`
+      : 'Discover amazing India tour packages with Orbit Trails. Expert guides, luxury accommodations, and unforgettable experiences across Golden Triangle and Rajasthan.',
+    keywords: tour 
+      ? `${tour.name}, ${tour.category}, India tour, ${tour.destinations?.join(', ') || 'India destinations'}, travel package, tour booking, Orbit Trails`
+      : 'India tours, travel packages, tour booking, Golden Triangle, Rajasthan tours',
+    canonicalUrl: `https://www.orbittrails.com/tour-details/${slug}`,
+    ogImage: tour?.images?.[0] || '/og-image.jpg',
+    ogType: 'article',
+    structuredData: tour ? {
+      "@context": "https://schema.org",
+      "@type": "TouristTrip",
+      "name": tour.name,
+      "description": tour.overview || tour.description || `Experience ${tour.name} with Orbit Trails`,
+      "provider": {
+        "@type": "TravelAgency",
+        "name": "Orbit Trails",
+        "url": "https://www.orbittrails.com",
+        "telephone": "+91-98292-71900",
+        "email": "info@orbittrails.com"
+      },
+      "touristType": tour.category || "Cultural Tourism",
+      "duration": tour.duration || "Contact for details",
+      ...(tour.destinations && tour.destinations.length > 0 && {
+        "itinerary": tour.destinations.map(dest => ({
+          "@type": "TouristDestination",
+          "name": dest
+        }))
+      }),
+      ...(tour.rating && tour.rating > 0 && {
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": tour.rating,
+          "reviewCount": tour.reviews || 10,
+          "bestRating": 5,
+          "worstRating": 1
+        }
+      }),
+      "offers": {
+        "@type": "Offer",
+        "description": `${tour.name} tour package`,
+        "price": tour.price || "Contact for pricing",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "validFrom": new Date().toISOString(),
+        "seller": {
+          "@type": "TravelAgency",
+          "name": "Orbit Trails",
+          "url": "https://www.orbittrails.com"
+        }
+      },
+      ...(tour.images && tour.images.length > 0 && {
+        "image": tour.images.map(img => ({
+          "@type": "ImageObject",
+          "url": img,
+          "description": `${tour.name} tour image`
+        }))
+      })
+    } : undefined
+  });
 
   useEffect(() => {
     const fetchTour = async () => {

@@ -25,8 +25,15 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 import { OrbitTrailsAPI, Tour } from "@shared/api";
 import { useNavigate } from "react-router-dom";
+import { useSEO, SEOConfigs } from "@/hooks/useSEO";
 
 export default function Index() {
+  // SEO optimization for homepage
+  useSEO({
+    ...SEOConfigs.home,
+    canonicalUrl: 'https://www.orbittrails.com/'
+  });
+
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
@@ -175,7 +182,7 @@ Best regards`;
   ];
 
   return (
-    <div>
+    <main>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Images */}
@@ -189,8 +196,15 @@ Best regards`;
             >
               <img
                 src={image}
-                alt={`Hero ${index + 1}`}
+                alt={
+                  index === 0 
+                    ? "Iconic Taj Mahal at sunrise - Golden Triangle tour highlight in Agra, India" 
+                    : index === 1 
+                    ? "Magnificent Rajasthan palace architecture showcasing royal heritage and luxury travel experiences"
+                    : "Historic Red Fort Delhi - Gateway to India's rich Mughal heritage and cultural tourism"
+                }
                 className="w-full h-full object-cover"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-black/40" />
             </div>
@@ -221,8 +235,8 @@ Best regards`;
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto"
           >
-            Experience the incredible diversity, rich culture, and timeless
-            beauty of India with our expertly crafted tour packages
+            Experience India's Golden Triangle, royal Rajasthan, and authentic cultural heritage 
+            with our expertly crafted luxury tour packages and personalized travel experiences
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -234,6 +248,7 @@ Best regards`;
               size="lg"
               className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg"
               onClick={() => navigate('/tours')}
+              aria-label="Explore our India tour packages"
             >
               Explore Tours
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -244,6 +259,7 @@ Best regards`;
                   size="lg"
                   variant="outline"
                   className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-secondary hover:border-white px-8 py-3 text-lg font-semibold transition-all duration-300"
+                  aria-label="Create a custom India travel itinerary"
                 >
                   Customize Your Trip
                 </Button>
@@ -253,7 +269,7 @@ Best regards`;
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce" aria-hidden="true">
           <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
           </div>
@@ -478,6 +494,67 @@ Best regards`;
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-secondary mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-gray-600">
+              Everything you need to know about planning your India trip with Orbit Trails
+            </p>
+          </AnimatedSection>
+
+          <div className="space-y-8">
+            <AnimatedSection>
+              <h3 className="text-xl font-bold text-secondary mb-3">
+                What makes the Golden Triangle tour so popular?
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                The Golden Triangle (Delhi-Agra-Jaipur) is India's most iconic tourist circuit, featuring three UNESCO World Heritage sites including the Taj Mahal, Red Fort, and Amber Fort. It offers the perfect introduction to India's rich history, Mughal architecture, and royal heritage in just 3-7 days.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.1}>
+              <h3 className="text-xl font-bold text-secondary mb-3">
+                When is the best time to visit Rajasthan?
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                October to March is ideal for Rajasthan tours, with pleasant weather perfect for exploring palaces and forts. Winter months (December-February) offer the most comfortable temperatures for sightseeing, while avoiding the intense summer heat.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2}>
+              <h3 className="text-xl font-bold text-secondary mb-3">
+                Do you offer customized India tour packages?
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Yes! We specialize in creating personalized itineraries based on your interests, budget, and travel dates. Whether you want luxury heritage hotels, adventure activities, cultural experiences, or spiritual journeys, we'll design the perfect India tour for you.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3}>
+              <h3 className="text-xl font-bold text-secondary mb-3">
+                What's included in your tour packages?
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Our comprehensive packages typically include accommodation, transportation, expert local guides, entrance fees to monuments, some meals, and 24/7 support. We carefully select quality hotels and ensure seamless experiences throughout your journey.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.4}>
+              <h3 className="text-xl font-bold text-secondary mb-3">
+                How far in advance should I book my India tour?
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                We recommend booking 2-3 months in advance for the best availability and rates, especially during peak season (October-March). However, we can also arrange last-minute tours based on availability. Contact us for urgent bookings.
+              </p>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-secondary text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
@@ -513,6 +590,6 @@ Best regards`;
           </AnimatedSection>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

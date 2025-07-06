@@ -4,30 +4,65 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, User, Clock, ArrowRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { blogPosts, getFeaturedBlogs, getAllCategories } from "@/data/blogData";
+import { useState } from "react";
 
 export default function Blog() {
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  // Filter blogs based on category and search
+  const filteredBlogs = blogPosts.filter(blog => {
+    const matchesCategory = !selectedCategory || blog.category === selectedCategory;
+    const matchesSearch = !searchQuery || 
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    return matchesCategory && matchesSearch;
+  });
+
+  const featuredBlogs = getFeaturedBlogs();
+  const categories = getAllCategories();
   // SEO optimization for blog page
   useSEO({
-    title: 'India Travel Blog | Tips, Guides & Stories - Orbit Trails',
-    description: 'Discover India through our travel blog. Expert tips for Golden Triangle tours, Rajasthan travel guides, cultural insights, and inspiring stories from fellow travelers.',
-    keywords: 'India travel blog, Golden Triangle travel tips, Rajasthan travel guide, India cultural experiences, travel stories India, India tourism blog',
+    title: 'India Travel Blog | Expert Guides & Tips - Orbit Trails',
+    description: 'Discover India through our expert travel blog. Complete guides for Golden Triangle tours, Rajasthan travel, cultural insights, food guides, and essential travel tips for an unforgettable India journey.',
+    keywords: 'India travel blog, Golden Triangle travel guide, Rajasthan travel tips, India cultural experiences, travel stories India, India tourism blog, travel safety India',
     canonicalUrl: 'https://www.orbittrails.com/blog',
     structuredData: {
       "@context": "https://schema.org",
       "@type": "Blog",
-      "name": "Orbit Trails Travel Blog",
-      "description": "Expert travel insights and guides for exploring India",
+      "name": "Orbit Trails India Travel Blog",
+      "description": "Expert travel insights, comprehensive guides, and cultural experiences for exploring India",
       "url": "https://www.orbittrails.com/blog",
       "publisher": {
         "@type": "Organization",
         "name": "Orbit Trails",
-        "logo": "https://www.orbittrails.com/logo.ico"
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.orbittrails.com/logo.ico"
+        }
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://www.orbittrails.com/blog"
-      }
+      },
+      "blogPost": featuredBlogs.map(blog => ({
+        "@type": "BlogPosting",
+        "headline": blog.title,
+        "description": blog.excerpt,
+        "url": `https://www.orbittrails.com/blog/${blog.slug}`,
+        "image": blog.featuredImage,
+        "author": {
+          "@type": "Person",
+          "name": blog.author
+        },
+        "datePublished": blog.publishDate,
+        "keywords": blog.keywords.join(", ")
+      }))
     }
   });
 
@@ -50,24 +85,31 @@ export default function Blog() {
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input placeholder="Search articles..." className="pl-10" />
+              <Input 
+                placeholder="Search articles..." 
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
+            <div className="flex space-x-2 flex-wrap">
+              <Button 
+                variant={selectedCategory === null ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedCategory(null)}
+              >
                 All
               </Button>
-              <Button variant="outline" size="sm">
-                Travel Tips
-              </Button>
-              <Button variant="outline" size="sm">
-                Destinations
-              </Button>
-              <Button variant="outline" size="sm">
-                Culture
-              </Button>
-              <Button variant="outline" size="sm">
-                Food
-              </Button>
+              {categories.map((category) => (
+                <Button 
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"} 
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
@@ -77,241 +119,93 @@ export default function Blog() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-secondary mb-4">Featured Travel Articles</h2>
+            <h2 className="text-3xl font-bold text-secondary mb-4">
+              {searchQuery || selectedCategory ? 'Search Results' : 'Expert Travel Articles'}
+            </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Expert insights and practical guides to help you plan the perfect India journey
+              {searchQuery || selectedCategory 
+                ? `Found ${filteredBlogs.length} articles matching your criteria`
+                : 'Comprehensive guides and insider tips to help you plan the perfect India journey'
+              }
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Blog Article 1 - You can change the title and content */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="Travel blog article about India tourism"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-primary">
-                  Travel Guide
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Expert Travel Article
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  We're working on bringing you comprehensive travel guides and expert insights. Check back soon for detailed articles about India's best destinations and travel tips.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>5 min read</span>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+            {filteredBlogs.map((blog) => (
+              <Card 
+                key={blog.id}
+                className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group"
+                onClick={() => navigate(`/blog/${blog.slug}`)}
+              >
+                <div className="relative">
+                  <img
+                    src={blog.featuredImage}
+                    alt={blog.altText}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <Badge className="absolute top-4 left-4 bg-primary">
+                    {blog.category}
+                  </Badge>
+                  {blog.featured && (
+                    <Badge className="absolute top-4 right-4 bg-accent">
+                      Featured
+                    </Badge>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Blog Article 2 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.pexels.com/photos/6440428/pexels-photo-6440428.jpeg?cs=srgb&dl=pexels-ankurbagai-6440428.jpg&fm=jpg"
-                  alt="India heritage and culture blog article"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-secondary">
-                  Heritage
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Heritage & Culture Guide
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  Discover India's rich cultural heritage through our upcoming detailed guides. We'll share insights about traditions, festivals, and authentic experiences.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
+                <CardHeader>
+                  <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary line-clamp-2">
+                    {blog.title}
+                  </CardTitle>
+                  <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
+                    {blog.excerpt}
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-gray-500">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{blog.readTime}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>7 min read</span>
-                    </div>
+                    <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Blog Article 3 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="India travel tips and planning guide blog"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-accent">
-                  Travel Tips
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Travel Planning Tips
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  Get ready for expert travel planning advice, packing tips, and insider knowledge to make your India journey unforgettable.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>6 min read</span>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Blog Article 4 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="India festivals and cultural experiences blog"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-orange-500">
-                  Culture
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Festivals & Experiences
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  Learn about India's vibrant festivals, cultural celebrations, and authentic local experiences you shouldn't miss.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>8 min read</span>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Blog Article 5 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="Indian cuisine and food travel blog"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-green-500">
-                  Food & Cuisine
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Culinary Journey Guide
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  Explore India's incredible culinary diversity, from street food adventures to fine dining experiences across different regions.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>10 min read</span>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Blog Article 6 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="India travel safety and preparation blog"
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 left-4 bg-blue-500">
-                  Safety & Prep
-                </Badge>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary">
-                  Coming Soon: Travel Safety Guide
-                </CardTitle>
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                  Essential safety tips, health preparations, and practical advice for a safe and enjoyable India travel experience.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Coming Soon</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>9 min read</span>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
+
+          {/* No Results */}
+          {filteredBlogs.length === 0 && (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <Search className="w-16 h-16 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No articles found
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Try adjusting your search or filter criteria
+              </p>
+              <Button 
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory(null);
+                }}
+                variant="outline"
+              >
+                Clear Filters
+              </Button>
+            </div>
+          )}
 
           {/* Newsletter Signup */}
           <div className="text-center mt-16 p-8 bg-white rounded-lg shadow-sm">

@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Tours from "./pages/Tours";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Admin from "./pages/Admin";
 import TourDetails from "./pages/TourDetails";
 import Privacy from "./pages/Privacy";
@@ -90,6 +91,14 @@ function AppContent() {
               element={
                 <PageTransition>
                   <Blog />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/blog/:slug"
+              element={
+                <PageTransition>
+                  <BlogPost />
                 </PageTransition>
               }
             />

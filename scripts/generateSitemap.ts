@@ -98,25 +98,43 @@ const generateSitemap = () => {
     }
   ];
 
-  // Blog posts (add more as needed)
+  // Blog posts (updated with real blog slugs and dates)
   const blogPages: SitemapUrl[] = [
     {
-      loc: `${baseUrl}/blog/best-time-visit-rajasthan`,
-      lastmod: currentDate,
+      loc: `${baseUrl}/blog/complete-golden-triangle-travel-guide-2025`,
+      lastmod: '2025-01-15',
       changefreq: 'monthly',
-      priority: 0.6
+      priority: 0.8
     },
     {
-      loc: `${baseUrl}/blog/golden-triangle-travel-guide`,
-      lastmod: currentDate,
+      loc: `${baseUrl}/blog/best-time-visit-rajasthan-season-weather-guide`,
+      lastmod: '2025-01-10',
       changefreq: 'monthly',
-      priority: 0.6
+      priority: 0.8
     },
     {
-      loc: `${baseUrl}/blog/india-travel-tips-first-time-visitors`,
-      lastmod: currentDate,
+      loc: `${baseUrl}/blog/rajasthan-royal-cuisine-food-guide-must-try-dishes`,
+      lastmod: '2025-01-05',
       changefreq: 'monthly',
-      priority: 0.6
+      priority: 0.7
+    },
+    {
+      loc: `${baseUrl}/blog/india-travel-safety-tips-first-time-visitors-guide`,
+      lastmod: '2025-01-01',
+      changefreq: 'monthly',
+      priority: 0.7
+    },
+    {
+      loc: `${baseUrl}/blog/india-festivals-cultural-experiences-celebration-guide`,
+      lastmod: '2024-12-28',
+      changefreq: 'monthly',
+      priority: 0.7
+    },
+    {
+      loc: `${baseUrl}/blog/taj-mahal-photography-guide-best-shots-tips`,
+      lastmod: '2024-12-25',
+      changefreq: 'monthly',
+      priority: 0.7
     }
   ];
 
@@ -141,7 +159,7 @@ ${allPages.map(page => `  <url>
 };
 
 // Run if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   generateSitemap();
 }
 

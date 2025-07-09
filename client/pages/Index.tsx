@@ -19,6 +19,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -506,52 +512,72 @@ Best regards`;
             </p>
           </AnimatedSection>
 
-          <div className="space-y-8">
-            <AnimatedSection>
-              <h3 className="text-xl font-bold text-secondary mb-3">
-                What makes the Golden Triangle tour so popular?
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                The Golden Triangle (Delhi-Agra-Jaipur) is India's most iconic tourist circuit, featuring three UNESCO World Heritage sites including the Taj Mahal, Red Fort, and Amber Fort. It offers the perfect introduction to India's rich history, Mughal architecture, and royal heritage in just 3-7 days.
-              </p>
-            </AnimatedSection>
+          <AnimatedSection>
+            <Accordion type="single" collapsible className="w-full space-y-4">
+              <AccordionItem value="item-1" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  What makes the Golden Triangle tour so popular?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  The Golden Triangle (Delhi-Agra-Jaipur) is India's most iconic tourist circuit, featuring three UNESCO World Heritage sites including the Taj Mahal, Red Fort, and Amber Fort. It offers the perfect introduction to India's rich history, Mughal architecture, and royal heritage in just 3-7 days.
+                </AccordionContent>
+              </AccordionItem>
 
-            <AnimatedSection delay={0.1}>
-              <h3 className="text-xl font-bold text-secondary mb-3">
-                When is the best time to visit Rajasthan?
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                October to March is ideal for Rajasthan tours, with pleasant weather perfect for exploring palaces and forts. Winter months (December-February) offer the most comfortable temperatures for sightseeing, while avoiding the intense summer heat.
-              </p>
-            </AnimatedSection>
+              <AccordionItem value="item-2" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  When is the best time to visit Rajasthan?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  October to March is ideal for Rajasthan tours, with pleasant weather perfect for exploring palaces and forts. Winter months (December-February) offer the most comfortable temperatures for sightseeing, while avoiding the intense summer heat.
+                </AccordionContent>
+              </AccordionItem>
 
-            <AnimatedSection delay={0.2}>
-              <h3 className="text-xl font-bold text-secondary mb-3">
-                Do you offer customized India tour packages?
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Yes! We specialize in creating personalized itineraries based on your interests, budget, and travel dates. Whether you want luxury heritage hotels, adventure activities, cultural experiences, or spiritual journeys, we'll design the perfect India tour for you.
-              </p>
-            </AnimatedSection>
+              <AccordionItem value="item-3" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  Do you offer customized India tour packages?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  Yes! We specialize in creating personalized itineraries based on your interests, budget, and travel dates. Whether you want luxury heritage hotels, adventure activities, cultural experiences, or spiritual journeys, we'll design the perfect India tour for you.
+                </AccordionContent>
+              </AccordionItem>
 
-            <AnimatedSection delay={0.3}>
-              <h3 className="text-xl font-bold text-secondary mb-3">
-                What's included in your tour packages?
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Our comprehensive packages typically include accommodation, transportation, expert local guides, entrance fees to monuments, some meals, and 24/7 support. We carefully select quality hotels and ensure seamless experiences throughout your journey.
-              </p>
-            </AnimatedSection>
+              <AccordionItem value="item-4" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  What's included in your tour packages?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  Our comprehensive packages typically include accommodation, transportation, expert local guides, entrance fees to monuments, some meals, and 24/7 support. We carefully select quality hotels and ensure seamless experiences throughout your journey.
+                </AccordionContent>
+              </AccordionItem>
 
-            <AnimatedSection delay={0.4}>
-              <h3 className="text-xl font-bold text-secondary mb-3">
-                How far in advance should I book my India tour?
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                We recommend booking 2-3 months in advance for the best availability and rates, especially during peak season (October-March). However, we can also arrange last-minute tours based on availability. Contact us for urgent bookings.
-              </p>
-            </AnimatedSection>
-          </div>
+              <AccordionItem value="item-5" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  How far in advance should I book my India tour?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  We recommend booking 2-3 months in advance for the best availability and rates, especially during peak season (October-March). However, we can also arrange last-minute tours based on availability. Contact us for urgent bookings.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  Are your tours suitable for solo travelers?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  Absolutely! We welcome solo travelers and can arrange both group tours and private experiences. Our expert guides ensure your safety and help you connect with local culture. Many of our guests are solo adventurers discovering India's incredible diversity.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7" className="bg-white rounded-lg shadow-sm border border-gray-200 px-6">
+                <AccordionTrigger className="text-left text-lg font-semibold text-secondary hover:text-primary hover:no-underline">
+                  What should I pack for my India tour?
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                  Pack lightweight, breathable clothing for most seasons, with warmer layers for winter months. Essential items include comfortable walking shoes, sunscreen, hat, modest clothing for religious sites, and any required medications. We'll provide a detailed packing checklist upon booking.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </AnimatedSection>
         </div>
       </section>
 

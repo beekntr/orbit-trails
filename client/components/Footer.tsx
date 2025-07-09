@@ -26,28 +26,25 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-primary transition-colors"
+                title="Follow us on TripAdvisor"
               >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm6.5 9.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm-11 0a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z" />
-                </svg>
+                <i className="fa fa-tripadvisor" aria-hidden="true"></i>
               </a>
               <a
                 href="https://www.instagram.com/orbittrails9/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-primary transition-colors"
+                title="Follow us on Instagram"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://twitter.com/orbittrails"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-primary transition-colors"
+                title="Follow us on Twitter"
               >
                 <Twitter className="w-5 h-5" />
               </a>

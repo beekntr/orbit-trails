@@ -32,7 +32,7 @@ export default function About() {
               <p className="text-gray-600">Happy Travelers</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary mb-2">50+</div>
+              <div className="text-4xl font-bold text-primary mb-2">8+</div>
               <p className="text-gray-600">Tour Packages</p>
             </div>
             <div>

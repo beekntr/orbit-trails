@@ -140,9 +140,9 @@ export const SEOConfigs = {
         "addressLocality": "Jaipur"
       },
       "sameAs": [
-        "https://www.instagram.com/orbittrails",
+        "https://www.instagram.com/orbittrails9",
         "https://www.facebook.com/orbittrails",
-        "https://www.twitter.com/orbittrails"
+        "https://www.twitter.com/orbittrails/orbittrails"
       ],
       "priceRange": "$$-$$$",
       "areaServed": {

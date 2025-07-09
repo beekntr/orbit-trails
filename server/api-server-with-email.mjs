@@ -805,32 +805,12 @@ app.use('/api/*', (req, res) => {
   });
 });
 
-// For non-API routes, return API info
+// For non-API routes, return minimal public info only
 app.get('*', (req, res) => {
   res.json({
     message: 'Orbit Trails API Server',
-    endpoints: [
-      'GET /health - Health check',
-      'GET /api/health - API health check',
-      'GET /api/tours - Get all tours',
-      'GET /api/tours/slug/:slug - Get tour by slug',
-      'POST /api/tours - Create tour (admin)',
-      'PUT /api/tours/:id - Update tour (admin)',
-      'DELETE /api/tours/:id - Delete tour (admin)',
-      'POST /api/contact - Submit contact form',
-      'GET /api/contact - Get all contacts (admin)',
-      'GET /api/contact/:id - Get contact by ID (admin)',
-      'PATCH /api/contact/:id/status - Update contact status (admin)',
-      'POST /api/customize-tour - Submit custom tour request',
-      'GET /api/customize-tour - Get all custom tours (admin)',
-      'GET /api/customize-tour/:id - Get custom tour by ID (admin)',
-      'PATCH /api/customize-tour/:id/status - Update custom tour status (admin)',
-      'POST /api/admin/login - Admin login',
-      'GET /api/admin/profile - Get admin profile (admin)',
-      'GET /api/admin/dashboard - Get dashboard data (admin)'
-    ],
-    timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    status: 'operational',
+    timestamp: new Date().toISOString()
   });
 });
 

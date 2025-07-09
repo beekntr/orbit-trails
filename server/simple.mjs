@@ -273,11 +273,11 @@ app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
-// For non-API routes, return API info
+// For non-API routes, return minimal public info only
 app.get('*', (req, res) => {
   res.json({
     message: 'Orbit Trails API Server',
-    endpoints: ['/health', '/api/health', '/api/demo', '/api/tours'],
+    status: 'operational',
     timestamp: new Date().toISOString()
   });
 });

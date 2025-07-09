@@ -2,116 +2,128 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.orbittrails.com/</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/tours</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/about</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/contact</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/blog</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/privacy</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/terms</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/tour-details/golden-triangle-classic</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/tour-details/rajasthan-royal-heritage</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/tour-details/incredible-india-journey</loc>
-    <lastmod>2025-07-05</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/tour-details/kerala-backwaters-cultural</loc>
-    <lastmod>2025-07-05</lastmod>
+    <loc>https://www.orbittrails.com/tour-details/kerala-backwaters-bliss</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/tour-details/himalayan-spiritual-journey</loc>
-    <lastmod>2025-07-05</lastmod>
+    <loc>https://www.orbittrails.com/tour-details/himalayan-adventure</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/tour-details/south-india-temple-trail</loc>
-    <lastmod>2025-07-05</lastmod>
+    <loc>https://www.orbittrails.com/tour-details/goa-beach-retreat</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.orbittrails.com/blog/complete-golden-triangle-travel-guide-2025</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/blog/best-time-visit-rajasthan-season-weather-guide</loc>
-    <lastmod>2025-01-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.orbittrails.com/blog/rajasthan-royal-cuisine-food-guide-must-try-dishes</loc>
-    <lastmod>2025-01-05</lastmod>
+    <loc>https://www.orbittrails.com/blog/best-time-visit-rajasthan-complete-guide</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/blog/india-travel-safety-tips-first-time-visitors-guide</loc>
-    <lastmod>2025-01-01</lastmod>
+    <loc>https://www.orbittrails.com/blog/hidden-gems-delhi-local-guide</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/blog/india-festivals-cultural-experiences-celebration-guide</loc>
-    <lastmod>2024-12-28</lastmod>
+    <loc>https://www.orbittrails.com/blog/jaipur-food-guide-authentic-rajasthani-cuisine</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.orbittrails.com/blog/taj-mahal-photography-guide-best-shots-tips</loc>
-    <lastmod>2024-12-25</lastmod>
+    <loc>https://www.orbittrails.com/blog/cultural-etiquette-guide-india-travelers</loc>
+    <lastmod>2025-07-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.orbittrails.com/blog/photography-tips-india-travel-guide</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.orbittrails.com/blog/solo-female-travel-india-safety-guide</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.orbittrails.com/blog/sustainable-tourism-rajasthan-responsible-travel</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

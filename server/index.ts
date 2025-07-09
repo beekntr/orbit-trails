@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/database";
 import { handleDemo } from "./routes/demo";
+import { redirectMiddleware, specificRedirects } from "./middleware/redirectMiddleware";
 
 // Import route handlers
 import tourRoutes from "./routes/tours";
@@ -33,6 +34,10 @@ export function createServer() {
   app.use(cors(corsOptions));
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+  // Add redirect middleware BEFORE other routes
+  app.use(redirectMiddleware);
+  app.use(specificRedirects);
 
   // Connect to database
   connectDB();

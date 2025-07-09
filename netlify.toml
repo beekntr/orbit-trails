@@ -6,7 +6,96 @@
 [functions]
   external_node_modules = ["express"]
   node_bundler = "esbuild"
+
+# HTML redirect rules - MUST come before SPA redirects
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/home.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about.html"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact.html"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tours.html"
+  to = "/tours"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog.html"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy.html"
+  to = "/privacy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terms.html"
+  to = "/terms"
+  status = 301
+  force = true
+
+# Blog post redirects
+[[redirects]]
+  from = "/blog/golden-triangle-guide.html"
+  to = "/blog/complete-golden-triangle-travel-guide-2025"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/rajasthan-travel.html"
+  to = "/blog/best-time-visit-rajasthan-complete-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/delhi-hidden-gems.html"
+  to = "/blog/hidden-gems-delhi-local-guide"
+  status = 301
+  force = true
+
+# Tour redirects
+[[redirects]]
+  from = "/golden-triangle.html"
+  to = "/tour-details/golden-triangle-classic"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rajasthan-tour.html"
+  to = "/tour-details/rajasthan-royal-heritage"
+  status = 301
+  force = true
+
+# Generic .html removal (catch-all for any remaining .html URLs)
+[[redirects]]
+  from = "/*.html"
+  to = "/:splat"
+  status = 301
+  force = true
   
+# API redirects
 [[redirects]]
   force = true
   from = "/api/*"

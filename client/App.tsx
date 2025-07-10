@@ -23,6 +23,7 @@ import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import AnimatedNavbar from "./components/AnimatedNavbar";
 import Footer from "./components/Footer";
+import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 
 const queryClient = new QueryClient();
 
@@ -139,6 +140,7 @@ function AppContent() {
         </AnimatePresence>
       </main>
       <Footer />
+      <WhatsAppFloatingButton />
     </div>
   );
 }

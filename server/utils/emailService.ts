@@ -91,7 +91,7 @@ export const sendWelcomeEmail = async (to: string, name: string): Promise<void> 
         Best regards,<br>
         The Orbit Trails Team<br>
         <a href="mailto:info@orbittrails.com">info@orbittrails.com</a><br>
-        +91 9829271900
+        +91 86199 74762
       </p>
     </div>
   `;
@@ -106,7 +106,7 @@ export const sendContactConfirmation = async (to: string, name: string): Promise
       <h1 style="color: #2c5530;">Thank You, ${name}!</h1>
       <p>We've received your message and appreciate you reaching out to Orbit Trails.</p>
       <p>Our team will review your inquiry and respond within 24 hours during business hours.</p>
-      <p>If you have any urgent questions, please don't hesitate to call us at +91 9829271900.</p>
+      <p>If you have any urgent questions, please don't hesitate to call us at +91 86199 74762.</p>
       <p style="margin-top: 30px;">
         Best regards,<br>
         The Orbit Trails Team<br>

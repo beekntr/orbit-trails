@@ -7,7 +7,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 export default function Terms() {
   const contactInfo = {
     email: "support@orbittrails.com",
-    phone: "+91 9829271900"
+    phone: "+91 86199 74762"
   };
 
   const cancellationFees = [

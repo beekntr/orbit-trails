@@ -175,7 +175,7 @@ export default function Footer() {
                     href="tel:+919829271900"
                     className="text-sm text-gray-300 hover:text-primary transition-colors"
                   >
-                    +91 9829271900
+                    +91 86199 74762
                   </a>
                   <a
                     href="https://wa.me/919829271900"

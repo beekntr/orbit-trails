@@ -1,6 +1,6 @@
 import React from "react";
 
-const WHATSAPP_NUMBER = "919829271900"; // India number, no +
+const WHATSAPP_NUMBER = "9186199 74762"; // India number, no +
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export default function WhatsAppFloatingButton() {

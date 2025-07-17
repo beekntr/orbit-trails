@@ -183,7 +183,7 @@ export const SEOConfigs = {
   },
 
   about: {
-    title: 'About Orbit Trails | Leading India Travel Agency Since 2020',
+    title: 'About Orbit Trails | Leading India Travel Agency Since 2024',
     description: 'Learn about Orbit Trails, your trusted India travel partner. We specialize in creating authentic, luxurious experiences across India\'s Golden Triangle and royal Rajasthan.',
     keywords: 'about Orbit Trails, India travel company, travel agency Jaipur, India tour operator, luxury travel India, authentic India experiences',
     structuredData: {
@@ -192,7 +192,7 @@ export const SEOConfigs = {
       "mainEntity": {
         "@type": "TravelAgency",
         "name": "Orbit Trails",
-        "foundingDate": "2020",
+        "foundingDate": "2024",
         "description": "Orbit Trails is a premium travel agency specializing in curated India experiences",
         "specialty": ["Golden Triangle Tours", "Rajasthan Heritage Tours", "Custom India Itineraries"],
         "awards": ["Excellence in Customer Service", "Best Cultural Tourism Provider"]

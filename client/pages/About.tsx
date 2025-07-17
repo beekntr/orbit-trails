@@ -53,7 +53,7 @@ export default function About() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-secondary mb-6">Our Story</h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Founded in 2020, Orbit Trails emerged from a passion for showcasing India's incredible diversity and rich cultural heritage to travelers from around the world.
+              Founded in 2024, Orbit Trails emerged from a passion for showcasing India's incredible diversity and rich cultural heritage to travelers from around the world.
             </p>
           </div>
           

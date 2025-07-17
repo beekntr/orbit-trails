@@ -114,7 +114,7 @@ class SEOAuditor {
         break;
         
       case '/about':
-        result.title = 'About Orbit Trails | Leading India Travel Agency Since 2020';
+        result.title = 'About Orbit Trails | Leading India Travel Agency Since 2024';
         result.description = 'Learn about Orbit Trails, your trusted India travel partner. We specialize in creating authentic, luxurious experiences across India\'s Golden Triangle and royal Rajasthan.';
         result.h1Count = 1;
         result.h2Count = 4;

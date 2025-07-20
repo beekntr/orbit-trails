@@ -3,11 +3,6 @@ import React from "react";
 const WHATSAPP_NUMBER = "918619974762"; // India number, no +
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
-export default function WhatsAppFloatingButton() { React from "react";
-
-const WHATSAPP_NUMBER = "9186199 74762"; // India number, no +
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
-
 export default function WhatsAppFloatingButton() {
   return (
     <a

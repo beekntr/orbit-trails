@@ -227,11 +227,11 @@ return (
                               Phone (India)
                             </h3>
                             <div className="flex items-center space-x-2">
-                              <a href="tel:+919829271900" className="text-gray-600 hover:text-primary transition-colors">
+                              <a href="tel:+918619974762" className="text-gray-600 hover:text-primary transition-colors">
                                 +91 86199 74762
                               </a>
                               <a
-                                href="https://wa.me/919829271900"
+                                href="https://wa.me/918619974762"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="ml-2 text-green-500 hover:text-green-600"

@@ -172,13 +172,13 @@ export default function Footer() {
                 <div className="flex items-center space-x-3 mt-2">
                   <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                   <a
-                    href="tel:+919829271900"
+                    href="tel:+918619974762"
                     className="text-sm text-gray-300 hover:text-primary transition-colors"
                   >
                     +91 86199 74762
                   </a>
                   <a
-                    href="https://wa.me/919829271900"
+                    href="https://wa.me/918619974762"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ml-2 text-green-400 hover:text-green-600"

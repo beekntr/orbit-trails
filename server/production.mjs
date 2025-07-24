@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 // Use dynamic import for the server
 async function startServer() {
   try {
-    const { createServer } = await import('./index.js');
+    const { createServer } = await import('./index.mjs');
     const express = await import('express');
     
     const app = createServer();

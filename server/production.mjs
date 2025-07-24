@@ -2,6 +2,10 @@
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables first
+dotenv.config();
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -10,7 +14,7 @@ const __dirname = dirname(__filename);
 // Use dynamic import for the server
 async function startServer() {
   try {
-    const { createServer } = await import('./index.mjs');
+    const { createServer } = await import('../dist/server/index.mjs');
     const express = await import('express');
     
     const app = createServer();

@@ -10,7 +10,6 @@ import tourRoutes from "./routes/tours";
 import customizeRoutes from "./routes/customize";
 import contactRoutes from "./routes/contact";
 import adminRoutes from "./routes/admin";
-import reviewRoutes from "./routes/reviews";
 
 // Load environment variables
 dotenv.config();
@@ -80,7 +79,6 @@ export function createServer() {
   app.use("/api/customize-tour", customizeRoutes);
   app.use("/api/contact", contactRoutes);
   app.use("/api/admin", adminRoutes);
-  app.use("/api/reviews", reviewRoutes);
 
   // Error handling middleware
   app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

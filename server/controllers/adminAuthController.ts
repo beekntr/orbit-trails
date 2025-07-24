@@ -5,6 +5,7 @@ import { body, validationResult } from 'express-validator';
 import { Contact } from '../models/Contact';
 import { CustomizeTour } from '../models/CustomizeTour';
 import { Tour } from '../models/Tour';
+import { Review } from '../models/Review';
 
 // Admin login
 export const adminLogin = [
@@ -83,11 +84,13 @@ export const getAdminDashboardData = async (req: Request, res: Response) => {
     const [
       tours,
       contacts,
-      customTours
+      customTours,
+      reviews
     ] = await Promise.all([
       Tour.find().sort({ createdAt: -1 }),
       Contact.find().sort({ createdAt: -1 }),
-      CustomizeTour.find().sort({ createdAt: -1 })
+      CustomizeTour.find().sort({ createdAt: -1 }),
+      Review.find().sort({ createdAt: -1 })
     ]);
 
     // Get stats
@@ -106,6 +109,12 @@ export const getAdminDashboardData = async (req: Request, res: Response) => {
         total: customTours.length,
         new: customTours.filter(c => !c.status || c.status === 'new').length,
         processed: customTours.filter(c => c.status && c.status !== 'new').length
+      },
+      reviews: {
+        total: reviews.length,
+        pending: reviews.filter(r => r.status === 'pending').length,
+        approved: reviews.filter(r => r.status === 'approved').length,
+        rejected: reviews.filter(r => r.status === 'rejected').length
       }
     };
 
@@ -121,6 +130,7 @@ export const getAdminDashboardData = async (req: Request, res: Response) => {
         tours,
         contacts,
         customTours,
+        reviews,
         stats,
         toursByCategory
       }

@@ -95,6 +95,14 @@ export default function Footer() {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/review-us"
+                  className="text-gray-300 hover:text-primary transition-colors"
+                >
+                  Review Us
+                </Link>
+              </li>
             </ul>
           </div>
 

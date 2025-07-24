@@ -21,6 +21,8 @@ import TourDetails from "./pages/TourDetails";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
+import ReviewUs from "./pages/ReviewUs";
+import CustomerReviews from "./pages/CustomerReviews";
 import AnimatedNavbar from "./components/AnimatedNavbar";
 import Footer from "./components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
@@ -124,6 +126,22 @@ function AppContent() {
               element={
                 <PageTransition>
                   <Admin />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/review-us"
+              element={
+                <PageTransition>
+                  <ReviewUs />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/customer-reviews"
+              element={
+                <PageTransition>
+                  <CustomerReviews />
                 </PageTransition>
               }
             />

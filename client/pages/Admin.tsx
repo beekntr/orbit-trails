@@ -30,8 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Edit, Trash2, Eye, Shield, Star } from "lucide-react";
-import { OrbitTrailsAPI } from "@shared/api";
+import { Plus, Edit, Trash2, Eye, Shield, Star, Check, X, MessageSquare } from "lucide-react";
+import { OrbitTrailsAPI, Review } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Admin() {
@@ -69,6 +69,10 @@ export default function Admin() {
   const [selectedCustomTour, setSelectedCustomTour] = useState<any>(null);
   const [viewLoading, setViewLoading] = useState(false);
 
+  // Review states
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+
   useEffect(() => {
     // Check if user is already logged in
     const token = OrbitTrailsAPI.getToken();
@@ -80,9 +84,17 @@ export default function Admin() {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await OrbitTrailsAPI.getAdminDashboard();
-      if (response.success) {
-        setDashboardData(response.data);
+      const [dashboardResponse, reviewsResponse] = await Promise.all([
+        OrbitTrailsAPI.getAdminDashboard(),
+        OrbitTrailsAPI.getAllReviews()
+      ]);
+      
+      if (dashboardResponse.success) {
+        setDashboardData(dashboardResponse.data);
+      }
+      
+      if (reviewsResponse.success && reviewsResponse.data) {
+        setReviews(reviewsResponse.data);
       }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
@@ -182,6 +194,83 @@ export default function Admin() {
       });
     } finally {
       setViewLoading(false);
+    }
+  };
+
+  // Review Management Functions
+  const handleUpdateReviewStatus = async (reviewId: string, status: 'approved' | 'rejected') => {
+    setReviewsLoading(true);
+    try {
+      const response = await OrbitTrailsAPI.updateReviewStatus(reviewId, status);
+      
+      if (response.success) {
+        // Update local state
+        setReviews(prevReviews => 
+          prevReviews.map(review => 
+            review._id === reviewId 
+              ? { ...review, status, isApproved: status === 'approved' }
+              : review
+          )
+        );
+        
+        toast({
+          title: `Review ${status === 'approved' ? 'Approved' : 'Rejected'} ✅`,
+          description: `The customer review has been ${status === 'approved' ? 'approved and will be visible on your website' : 'rejected'}.`,
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Failed to Update Review ❌",
+          description: response.message || "Unable to update review status. Please try again.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating review status:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Failed to update review status. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId: string) => {
+    setReviewsLoading(true);
+    try {
+      const response = await OrbitTrailsAPI.deleteReview(reviewId);
+      
+      if (response.success) {
+        // Remove from local state
+        setReviews(prevReviews => prevReviews.filter(review => review._id !== reviewId));
+        
+        toast({
+          title: "Review Deleted Successfully! 🗑️",
+          description: "The customer review has been permanently removed.",
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Failed to Delete Review ❌",
+          description: response.message || "Unable to delete review. Please try again.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast({
+        title: "Network Error 🌐",
+        description: "Failed to delete review. Please check your connection and try again.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    } finally {
+      setReviewsLoading(false);
     }
   };
 
@@ -469,7 +558,7 @@ export default function Admin() {
 
       {/* Dashboard Stats Cards */}
       {dashboardData && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -515,14 +604,33 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <MessageSquare className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Customer Reviews</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {reviews.length}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {reviews.filter(r => r.status === 'pending').length} pending
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
 
       <Tabs defaultValue="tours" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="tours">Tour Packages</TabsTrigger>
           <TabsTrigger value="contact">Contact Submissions</TabsTrigger>
           <TabsTrigger value="custom">Custom Tour Requests</TabsTrigger>
+          <TabsTrigger value="reviews">Customer Reviews</TabsTrigger>
         </TabsList>
 
         {/* Tour Packages Management */}
@@ -1627,6 +1735,146 @@ export default function Admin() {
                     <TableRow>
                       <TableCell colSpan={7} className="text-center py-8 text-gray-500">
                         No custom tour requests found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Customer Reviews Management */}
+        <TabsContent value="reviews">
+          <Card>
+            <CardHeader>
+              <CardTitle>Customer Reviews</CardTitle>
+              <p className="text-sm text-gray-600">
+                Manage customer reviews and testimonials. Approve reviews to display them on your website.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead>Review</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {reviews.length > 0 ? (
+                    reviews.map((review) => (
+                      <TableRow key={review._id}>
+                        <TableCell className="font-medium">
+                          <div>
+                            <p className="font-semibold">{review.name}</p>
+                            {review.email && (
+                              <p className="text-sm text-gray-500">{review.email}</p>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center space-x-1">
+                            {[...Array(review.rating)].map((_, i) => (
+                              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            ))}
+                            <span className="ml-1 text-sm">({review.rating})</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="max-w-xs">
+                            <p className="text-sm text-gray-600 line-clamp-3">
+                              {review.description}
+                            </p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <p className="text-sm">
+                            {new Date(review.createdAt).toLocaleDateString()}
+                          </p>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            className={
+                              review.status === 'approved' 
+                                ? 'bg-green-100 text-green-800'
+                                : review.status === 'rejected'
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }
+                          >
+                            {review.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex space-x-2">
+                            {review.status === 'pending' && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleUpdateReviewStatus(review._id, 'approved')}
+                                  disabled={reviewsLoading}
+                                  className="bg-green-600 hover:bg-green-700 text-white"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleUpdateReviewStatus(review._id, 'rejected')}
+                                  disabled={reviewsLoading}
+                                  className="text-red-600 hover:text-red-800 hover:bg-red-50 border-red-300"
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </>
+                            )}
+                            {review.status === 'approved' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleUpdateReviewStatus(review._id, 'rejected')}
+                                disabled={reviewsLoading}
+                                className="text-red-600 hover:text-red-800 hover:bg-red-50 border-red-300"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            )}
+                            {review.status === 'rejected' && (
+                              <Button
+                                size="sm"
+                                onClick={() => handleUpdateReviewStatus(review._id, 'approved')}
+                                disabled={reviewsLoading}
+                                className="bg-green-600 hover:bg-green-700 text-white"
+                              >
+                                <Check className="w-4 h-4" />
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleDeleteReview(review._id)}
+                              disabled={reviewsLoading}
+                              className="text-red-600 hover:text-red-800 hover:bg-red-50 border-red-300"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                        <div className="flex flex-col items-center">
+                          <MessageSquare className="w-12 h-12 text-gray-300 mb-2" />
+                          <p>No customer reviews yet</p>
+                          <p className="text-sm">Reviews will appear here once customers submit them</p>
+                        </div>
                       </TableCell>
                     </TableRow>
                   )}

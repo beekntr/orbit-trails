@@ -79,6 +79,31 @@ export interface ContactMessage {
 }
 
 /**
+ * Review Interface
+ */
+export interface Review {
+  _id: string;
+  name: string;
+  email?: string;
+  rating: number;
+  description: string;
+  status: 'pending' | 'approved' | 'rejected';
+  isApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Review Submission Interface
+ */
+export interface ReviewSubmission {
+  name: string;
+  email?: string;
+  rating: number;
+  description: string;
+}
+
+/**
  * Admin Login Interface
  */
 export interface AdminLogin {
@@ -256,5 +281,40 @@ export class OrbitTrailsAPI {
 
   static async getCurrentAdmin(): Promise<ApiResponse<any>> {
     return this.request('/api/admin/profile');
+  }
+
+  // Reviews API
+  static async submitReview(review: ReviewSubmission): Promise<ApiResponse> {
+    return this.request('/api/reviews', {
+      method: 'POST',
+      body: JSON.stringify(review),
+    });
+  }
+
+  static async getApprovedReviews(limit?: number): Promise<ApiResponse<Review[]>> {
+    const queryParam = limit ? `?limit=${limit}` : '';
+    return this.request(`/api/reviews/approved${queryParam}`);
+  }
+
+  static async getRandomApprovedReviews(count?: number): Promise<ApiResponse<Review[]>> {
+    const queryParam = count ? `?count=${count}` : '';
+    return this.request(`/api/reviews/random${queryParam}`);
+  }
+
+  static async getAllReviews(): Promise<ApiResponse<Review[]>> {
+    return this.request('/api/reviews');
+  }
+
+  static async updateReviewStatus(id: string, status: 'pending' | 'approved' | 'rejected'): Promise<ApiResponse<Review>> {
+    return this.request(`/api/reviews/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  }
+
+  static async deleteReview(id: string): Promise<ApiResponse> {
+    return this.request(`/api/reviews/${id}`, {
+      method: 'DELETE',
+    });
   }
 }

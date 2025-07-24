@@ -29,7 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import CustomizeTourModal from "@/components/CustomizeTourModal";
 import AnimatedSection from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
-import { OrbitTrailsAPI, Tour } from "@shared/api";
+import { OrbitTrailsAPI, Tour, Review } from "@shared/api";
 import { useNavigate } from "react-router-dom";
 import { useSEO, SEOConfigs } from "@/hooks/useSEO";
 
@@ -45,6 +45,8 @@ export default function Index() {
   const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
   const [toursLoading, setToursLoading] = useState(true);
   const [toursError, setToursError] = useState(false);
+  const [testimonials, setTestimonials] = useState<Review[]>([]);
+  const [testimonialsLoading, setTestimonialsLoading] = useState(true);
 
   const heroImages = [
     "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80", // Taj Mahal
@@ -157,35 +159,61 @@ Best regards`;
     return "Special";
   };
 
-  const testimonials = [
+  // Fetch testimonials from database
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        setTestimonialsLoading(true);
+        const response = await OrbitTrailsAPI.getRandomApprovedReviews(3);
+        
+        if (response.success && response.data) {
+          setTestimonials(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+      } finally {
+        setTestimonialsLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  // Fallback testimonials if no reviews are available
+  const fallbackTestimonials = [
     {
+      _id: '1',
       name: "Sarah Johnson",
-      country: "USA",
       rating: 5,
-      comment:
-        "An absolutely incredible experience! The Golden Triangle tour exceeded all our expectations. Our guide was knowledgeable and the arrangements were perfect.",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b5e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      description: "An absolutely incredible experience! The Golden Triangle tour exceeded all our expectations. Our guide was knowledgeable and the arrangements were perfect.",
+      status: 'approved' as const,
+      isApproved: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     },
     {
+      _id: '2', 
       name: "Michael Chen",
-      country: "Australia",
       rating: 5,
-      comment:
-        "Orbit Trails made our dream trip to Rajasthan come true. Every detail was perfectly planned, and we felt safe and well-cared for throughout our journey.",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      description: "Orbit Trails made our dream trip to Rajasthan come true. Every detail was perfectly planned, and we felt safe and well-cared for throughout our journey.",
+      status: 'approved' as const,
+      isApproved: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     },
     {
-      name: "Emma Thompson",
-      country: "UK",
+      _id: '3',
+      name: "Emma Thompson", 
       rating: 5,
-      comment:
-        "The cultural immersion and authentic experiences were beyond what we imagined. Highly recommend Orbit Trails for anyone wanting to explore the real India.",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      description: "The cultural immersion and authentic experiences were beyond what we imagined. Highly recommend Orbit Trails for anyone wanting to explore the real India.",
+      status: 'approved' as const,
+      isApproved: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     },
   ];
+
+  const displayTestimonials = testimonials.length > 0 ? testimonials : fallbackTestimonials;
 
   return (
     <main>
@@ -462,8 +490,8 @@ Best regards`;
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <AnimatedSection key={index} delay={index * 0.1} direction="up">
+            {displayTestimonials.map((testimonial, index) => (
+              <AnimatedSection key={testimonial._id} delay={index * 0.1} direction="up">
                 <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                   <CardContent className="pt-6">
                     <div className="flex items-center mb-4">
@@ -475,11 +503,11 @@ Best regards`;
                       ))}
                     </div>
                     <p className="text-gray-600 mb-6 italic">
-                      "{testimonial.comment}"
+                      "{testimonial.description}"
                     </p>
                     <div className="flex items-center space-x-3">
                       <img
-                        src={testimonial.image}
+                        src="https://images.unsplash.com/photo-1494790108755-2616b612b5e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
                         alt={testimonial.name}
                         className="w-12 h-12 rounded-full object-cover"
                       />
@@ -488,7 +516,7 @@ Best regards`;
                           {testimonial.name}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {testimonial.country}
+                          Valued Customer
                         </p>
                       </div>
                     </div>

@@ -46,8 +46,6 @@ export default function Contact() {
         phone: formData.phone.trim() || undefined
       };
       
-      console.log('Submitting contact form with data:', cleanedFormData);
-      
       const response = await OrbitTrailsAPI.submitContact(cleanedFormData);
       
       if (response.success) {
@@ -58,8 +56,6 @@ export default function Contact() {
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        console.error('Contact form submission failed:', response);
-        console.error('Validation errors:', response.errors);
         toast({
           title: "Failed to Send Message ❌",
           description: response.errors ? 
@@ -70,7 +66,6 @@ export default function Contact() {
         });
       }
     } catch (error) {
-      console.error("Error submitting contact form:", error);
       toast({
         title: "Network Error 🌐",
         description: "Unable to send message. Please check your connection and try again.",

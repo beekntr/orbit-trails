@@ -77,7 +77,6 @@ export default function Index() {
           setToursError(true);
         }
       } catch (err) {
-        console.error("Error fetching featured tours:", err);
         setToursError(true);
       } finally {
         setToursLoading(false);

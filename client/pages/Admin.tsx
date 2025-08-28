@@ -85,7 +85,7 @@ export default function Admin() {
         setDashboardData(response.data);
       }
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      // Error is handled by showing login form or error state
     }
   };
 
@@ -109,7 +109,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Login error:", error);
       toast({
         title: "Login Error 🚫",
         description: "Login failed. Please check your connection and try again.",
@@ -145,7 +144,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Error fetching contact details:", error);
       toast({
         title: "Network Error 🌐",
         description: "Error loading contact details. Please check your connection.",
@@ -173,7 +171,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Error fetching tour request details:", error);
       toast({
         title: "Network Error 🌐",
         description: "Error loading tour request details. Please check your connection.",
@@ -248,7 +245,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Error adding tour:", error);
       toast({
         title: "Network Error 🌐",
         description: "Failed to add tour. Please check your connection and try again.",
@@ -342,7 +338,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Error updating tour:", error);
       toast({
         title: "Network Error 🌐",
         description: "Failed to update tour. Please check your connection and try again.",
@@ -382,7 +377,6 @@ export default function Admin() {
         });
       }
     } catch (error) {
-      console.error("Error deleting tour:", error);
       toast({
         title: "Network Error 🌐",
         description: "Failed to delete tour. Please check your connection and try again.",

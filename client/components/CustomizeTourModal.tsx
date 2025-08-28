@@ -137,7 +137,6 @@ export default function CustomizeTourModal({
         });
       }
     } catch (error) {
-      console.error("Error submitting custom tour request:", error);
       toast({
         title: "Network Error 🌐",
         description: "Unable to submit request. Please check your connection and try again.",

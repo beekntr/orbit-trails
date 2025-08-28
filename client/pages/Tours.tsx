@@ -38,7 +38,6 @@ export default function Tours() {
           }
         }
       } catch (err) {
-        console.error("Error fetching tours:", err);
         // Check if it's a network error
         const errorMessage = err instanceof Error ? err.message : String(err);
         if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {
@@ -123,7 +122,6 @@ Best regards`;
           }
         }
       } catch (err) {
-        console.error("Error fetching tours:", err);
         // Check if it's a network error
         const errorMessage = err instanceof Error ? err.message : String(err);
         if (errorMessage.toLowerCase().includes("fetch") || errorMessage.toLowerCase().includes("network")) {

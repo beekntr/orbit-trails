@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useRouteLoading } from "@/hooks/useRouteLoading";
+import { initializeSecurityMeasures, protectConsole } from "@/lib/security";
+import { useEffect } from "react";
 import Loading from "@/components/Loading";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
@@ -29,6 +31,12 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   const isLoading = useRouteLoading();
+
+  // Initialize security measures
+  useEffect(() => {
+    initializeSecurityMeasures();
+    protectConsole();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -16,7 +16,12 @@ export interface DemoResponse {
  */
 const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 // Remove trailing slash to prevent double slashes in URLs
-export const API_BASE_URL = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
+const apiBaseUrl = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
+
+// Hide API URL in production builds
+export const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? apiBaseUrl 
+  : apiBaseUrl;
 
 /**
  * Tour Interface
@@ -103,6 +108,7 @@ export interface ApiResponse<T = any> {
 export class OrbitTrailsAPI {
   private static baseUrl = API_BASE_URL;
   private static token: string | null = null;
+  private static requestCount = 0;
 
   static setToken(token: string) {
     this.token = token;
@@ -121,15 +127,39 @@ export class OrbitTrailsAPI {
     localStorage.removeItem('orbit_admin_token');
   }
 
+  // Prevent excessive API exposure
+  private static shouldAllowRequest(): boolean {
+    this.requestCount++;
+    
+    // Reset counter every minute
+    setTimeout(() => {
+      this.requestCount = Math.max(0, this.requestCount - 1);
+    }, 60000);
+    
+    // Allow max 100 requests per minute per session
+    return this.requestCount <= 100;
+  }
+
   private static async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
+    // Client-side rate limiting
+    if (!this.shouldAllowRequest()) {
+      return {
+        success: false,
+        message: 'Too many requests. Please wait a moment.',
+        error: 'Rate limited'
+      };
+    }
+
     const url = `${this.baseUrl}${endpoint}`;
     const token = this.getToken();
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      // Add security headers
+      'X-Requested-With': 'XMLHttpRequest',
       ...(options.headers as Record<string, string>),
     };
 
@@ -141,6 +171,9 @@ export class OrbitTrailsAPI {
       const response = await fetch(url, {
         ...options,
         headers,
+        // Add security options
+        credentials: 'same-origin',
+        mode: 'cors',
       });
 
       // Check if response is JSON
@@ -148,19 +181,29 @@ export class OrbitTrailsAPI {
       if (!contentType || !contentType.includes('application/json')) {
         return {
           success: false,
-          message: 'Server returned non-JSON response',
-          error: `Expected JSON but got ${contentType || 'unknown content type'}`
+          message: 'Invalid response format',
+          error: 'Server error'
         };
       }
 
       const data = await response.json();
       
+      // Sanitize error messages in production
+      if (!data.success && data.error) {
+        return {
+          success: false,
+          message: data.message || 'An error occurred',
+          error: process.env.NODE_ENV === 'production' ? 'Request failed' : data.error
+        };
+      }
+      
       return data;
     } catch (error) {
+      // Never expose internal error details in production
       return {
         success: false,
         message: 'Network error occurred',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: process.env.NODE_ENV === 'production' ? 'Connection failed' : 'Network error'
       };
     }
   }

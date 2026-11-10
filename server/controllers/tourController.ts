@@ -3,14 +3,18 @@ import { Tour } from '../models/Tour';
 import { body, validationResult } from 'express-validator';
 
 // Public tour reads may be cached by browsers and the CDN; admin requests never are.
+// Public reads get one CORS answer for every origin so a shared cache can't hand
+// one website's Access-Control-Allow-Origin to another (same as api-server.mjs).
 const setTourCacheHeaders = (req: Request, res: Response) => {
+  if (req.headers.authorization) {
+    res.vary('Authorization');
+    res.set('Cache-Control', 'no-store');
+    return;
+  }
+  res.set('Access-Control-Allow-Origin', '*');
+  res.removeHeader('Access-Control-Allow-Credentials');
   res.set('Vary', 'Authorization');
-  res.set(
-    'Cache-Control',
-    req.headers.authorization
-      ? 'no-store'
-      : 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400'
-  );
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400');
 };
 
 // Get all tours with optional category filter

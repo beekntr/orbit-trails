@@ -31,6 +31,17 @@ mongoose.Model.findById = (id) => ({
   select: async () => ({ _id: id, username: 'selftest-admin', role: 'admin', isActive: true }),
 });
 
+// Tour.find(...).sort(...).lean().select(...): a chainable query that resolves to no tours.
+mongoose.Model.find = () => {
+  const query = {
+    sort: () => query,
+    lean: () => query,
+    select: () => query,
+    then: (resolve, reject) => Promise.resolve([]).then(resolve, reject),
+  };
+  return query;
+};
+
 nodemailer.createTransport = () => ({
   sendMail: async ({ to, subject, html }) => {
     captured.mail.push({ to, subject, html });

@@ -2,15 +2,11 @@
  * Client-side security utilities
  */
 
-// Disable right-click and developer tools in production
+// Discourage developer tools in production. Right-click is deliberately left
+// alone: blocking it stopped visitors opening tours in a new tab and copying
+// addresses, and did not protect anything.
 export const initializeSecurityMeasures = () => {
   if (process.env.NODE_ENV === 'production') {
-    // Disable right-click context menu
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    });
-
     // Disable common developer tool shortcuts
     document.addEventListener('keydown', (e) => {
       // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U

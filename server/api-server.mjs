@@ -519,15 +519,11 @@ app.put('/api/tours/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Generate slug from name if not provided but name is updated
-    if (!req.body.slug && req.body.name) {
-      req.body.slug = req.body.name
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim('-');
-    }
+    // Never change a tour's URL (slug) as a side effect of editing it. The admin
+    // panel sends no slug, so regenerating it from the name meant renaming a tour
+    // broke its address: every link and Google result for it became a 404.
+    // A slug changes only when one is sent explicitly.
+    if (!req.body.slug) delete req.body.slug;
 
     const tour = await Tour.findByIdAndUpdate(
       id, 

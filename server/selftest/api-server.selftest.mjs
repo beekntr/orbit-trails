@@ -273,6 +273,23 @@ test('admin tokens: the configured secret works, the old public default does not
   assert.equal((await profile(BASE, 'not-a-token')).status, 401);
 });
 
+test('editing a tour never changes its URL unless a slug is sent', async () => {
+  const token = signToken(CONFIGURED_SECRET);
+  const put = (body) =>
+    fetch(`${BASE}/api/tours/000000000000000000000000`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+
+  assert.equal((await put({ name: 'Land of Kings: Rajasthan Private Tour' })).status, 200);
+  const renamed = captured().updates.at(-1).update;
+  assert.equal('slug' in renamed, false, 'renaming must keep the existing slug');
+
+  assert.equal((await put({ name: 'Land of Kings', slug: 'land-of-kings' })).status, 200);
+  assert.equal(captured().updates.at(-1).update.slug, 'land-of-kings');
+});
+
 test('startup without JWT_SECRET (non-production): runs on a random secret, never the old default', async () => {
   const port = PORT + 1;
   const base = `http://127.0.0.1:${port}`;

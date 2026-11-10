@@ -224,7 +224,7 @@ Part of the joy of Rajasthan is sleeping in its history. Every city on these rou
 
 ## Make it your own
 
-These itineraries are starting points. Our [Land of Kings](/tour-details/land-of-kings) and [Colourful Rajasthan with Taj Mahal](/tour-details/colourful-rajasthan-with-taj-mahal) tours follow similar routes, and every one of our [private tours](/luxury-private-tours-india) can be lengthened, shortened or rerouted around your dates.
+These itineraries are starting points. Our [Land of Kings](/tour-details/rajasthan-private-tour-land-of-kings-11-days) and [Colourful Rajasthan with Taj Mahal](/tour-details/colourful-rajasthan-with-taj-mahal) tours follow similar routes, and every one of our [private tours](/luxury-private-tours-india) can be lengthened, shortened or rerouted around your dates.
 
 **Tell us how long you have and how you like to travel** in our [trip planner](/plan-my-trip), and a specialist in Jaipur will send you a day-by-day itinerary and quote within 24 hours.`,
     category: "Travel Guide",

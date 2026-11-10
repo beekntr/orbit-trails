@@ -41,8 +41,12 @@ export const SITE = {
    */
   reviewProfiles: {
     tripadvisor: "",
-    google: "",
+    google: "https://g.page/r/CQ2WqLkvSRQAEAI",
     viator: "",
+  },
+  /** Direct "write a review" links, for guests who have travelled with us. */
+  reviewLinks: {
+    google: "https://g.page/r/CQ2WqLkvSRQAEAI/review",
   },
   /** Shown under "Government Approved Operator", e.g. the approving body and registration number. */
   accreditation: "",

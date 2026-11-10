@@ -27,6 +27,7 @@ import { ApiError, useTour, useTours } from "@/hooks/useTours";
 import { useToast } from "@/hooks/use-toast";
 import { breadcrumbSchema, tourSchema } from "@/lib/schema";
 import { SITE, truncate, whatsappLink } from "@/lib/site";
+import { cleanTourName, tourPageTitle, tourTagline } from "@/lib/tourSeo";
 import { cn } from "@/lib/utils";
 
 export default function TourDetails() {
@@ -146,7 +147,7 @@ export default function TourDetails() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Seo
-        title={`${tour.name}: ${tour.duration} Private Tour | Orbit Trails`}
+        title={tourPageTitle(tour)}
         description={truncate(
           `${tour.overview || tour.description} Private ${tour.duration} tour with your own driver and guides, fully customisable.`,
         )}
@@ -199,7 +200,16 @@ export default function TourDetails() {
                   Share
                 </Button>
               </div>
-              <h1 className="mb-2 text-3xl font-bold text-secondary">{tour.name}</h1>
+              <h1 className="mb-2 text-3xl font-bold text-secondary">
+                {cleanTourName(tour.name)}
+                {/* Part of the heading for search engines and screen readers: what and how long. */}
+                {tourTagline(tour) && (
+                  <>
+                    <span className="sr-only">: </span>
+                    <span className="mt-1 block text-lg font-medium text-gray-600">{tourTagline(tour)}</span>
+                  </>
+                )}
+              </h1>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-gray-600">
                 {tour.rating > 0 && (
                   <div className="flex items-center space-x-1">

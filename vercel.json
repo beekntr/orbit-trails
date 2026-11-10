@@ -8,6 +8,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/tour-details/land-of-kings",
+      "destination": "/tour-details/rajasthan-private-tour-land-of-kings-11-days",
+      "permanent": true
+    },
+    {
       "source": "/tours/:slug",
       "destination": "/tour-details/:slug",
       "permanent": true

@@ -190,6 +190,33 @@ test('customize-tour: junk is rejected before anything is stored', async () => {
   assert.equal(captured().saved.length, before);
 });
 
+test('tour reads: one cacheable CORS answer for every origin; admin reads stay per-origin', async () => {
+  const headersFor = async (origin, extra = {}) => {
+    const response = await fetch(`${BASE}/api/tours?view=card`, { headers: { Origin: origin, ...extra } });
+    assert.equal(response.status, 200);
+    const pick = (name) => response.headers.get(name);
+    return {
+      allowOrigin: pick('access-control-allow-origin'),
+      credentials: pick('access-control-allow-credentials'),
+      vary: pick('vary'),
+      cacheControl: pick('cache-control'),
+    };
+  };
+
+  const www = await headersFor('https://www.orbittrails.com');
+  const local = await headersFor('http://localhost:8080');
+  assert.deepEqual(www, local, 'a cached copy must be valid for any origin');
+  assert.equal(www.allowOrigin, '*');
+  assert.equal(www.credentials, null);
+  assert.match(www.cacheControl, /^public/);
+
+  const admin = await headersFor('https://www.orbittrails.com', { Authorization: 'Bearer anything' });
+  assert.equal(admin.allowOrigin, 'https://www.orbittrails.com');
+  assert.equal(admin.cacheControl, 'no-store');
+  assert.match(admin.vary, /Origin/);
+  assert.match(admin.vary, /Authorization/);
+});
+
 test('request bodies: oversized and malformed JSON are refused cleanly', async () => {
   const tooBigForForms = JSON.stringify({ ...validContact, message: 'x'.repeat(30_000) });
   assert.equal((await post('/api/contact', tooBigForForms, '203.0.113.30')).status, 413);

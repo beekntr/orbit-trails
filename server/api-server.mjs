@@ -401,14 +401,23 @@ app.get('/api/health', (req, res) => {
 // response for a minute and a CDN (Cloudflare, with a Cache Rule for
 // /api/tours*) for ten, so a busy day reaches this machine as a handful of
 // requests. Logged-in admin requests are never cached.
+//
+// The CORS middleware answers each website with its own
+// Access-Control-Allow-Origin, so a cached copy made for one origin would be
+// wrong for the next. Cloudflare ignores `Vary: Origin`, so public reads instead
+// send one answer for everyone (`*`, no credentials): the tour list is public
+// data and the site never sends cookies to the API. Admin reads keep the
+// per-origin headers and are never cached.
 const setTourCacheHeaders = (req, res) => {
+  if (req.headers.authorization) {
+    res.vary('Authorization'); // adds to the `Vary: Origin` set by cors
+    res.set('Cache-Control', 'no-store');
+    return;
+  }
+  res.set('Access-Control-Allow-Origin', '*');
+  res.removeHeader('Access-Control-Allow-Credentials');
   res.set('Vary', 'Authorization');
-  res.set(
-    'Cache-Control',
-    req.headers.authorization
-      ? 'no-store'
-      : 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400'
-  );
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400');
 };
 
 // ?view=card returns only what a tour card needs (about a tenth of the full payload).

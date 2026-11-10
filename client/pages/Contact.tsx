@@ -6,15 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
 import { OrbitTrailsAPI } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
-import { useSEO, SEOConfigs } from "@/hooks/useSEO";
+import Seo from "@/components/seo/Seo";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export default function Contact() {
-  // SEO optimization for contact page
-  useSEO({
-    ...SEOConfigs.contact,
-    canonicalUrl: 'https://www.orbittrails.com/contact'
-  });
-
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -84,6 +79,15 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaE
 
 return (
   <div>
+      <Seo
+        title="Contact Orbit Trails | Plan Your Private India Tour"
+        description="Ready to explore India? Contact Orbit Trails for personalized tour planning by email, phone or WhatsApp. Free consultation and custom itinerary design."
+        path="/contact"
+        jsonLd={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -189,7 +193,8 @@ return (
                             <p className="text-gray-600">
                               Orbit Trails
                               <br />
-                              <p>68/52, Pratap Nagar</p>
+                              68/52, Pratap Nagar
+                              <br />
                               Jaipur, Rajasthan, India
                             </p>
                           </div>

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SITE } from "@/lib/site";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AnimatedNavbar() {
@@ -11,9 +12,11 @@ export default function AnimatedNavbar() {
 
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
     { name: "Our Tours", href: "/tours" },
+    { name: "Private Tours", href: "/luxury-private-tours-india" },
+    { name: "Travel Guide", href: "/india-travel-guide-first-time-visitors" },
     { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -39,13 +42,15 @@ export default function AnimatedNavbar() {
               <img
                 src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
+                height={32}
+                decoding="async"
                 className="h-8 w-auto"
               />
             </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6">
             {navigation.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -78,19 +83,22 @@ export default function AnimatedNavbar() {
 
           {/* Social Icons & Mobile Menu Button */}
           <div className="flex items-center space-x-4">
+            <Button asChild size="sm" className="hidden bg-accent hover:bg-accent/90 sm:inline-flex">
+              <Link to="/plan-my-trip">Plan My Trip</Link>
+            </Button>
+
             {/* Social Icons - Hidden on mobile */}
-            <div className="hidden md:flex items-center space-x-3">
-              <motion.a
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://tripadvisor.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-secondary hover:text-primary transition-colors"
-                title="Follow us on TripAdvisor"
-              >
-                <i className="fa fa-tripadvisor" aria-hidden="true"></i>
-              </motion.a>
+            <div className="hidden lg:flex items-center space-x-3">
+              {SITE.reviewProfiles.tripadvisor && (
+                <a
+                  href={SITE.reviewProfiles.tripadvisor}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-secondary hover:text-primary transition-colors"
+                >
+                  Tripadvisor
+                </a>
+              )}
               <motion.a
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
@@ -114,14 +122,16 @@ export default function AnimatedNavbar() {
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" initial={false}>
                   {isOpen ? (
                     <motion.div
                       key="close"
@@ -157,7 +167,7 @@ export default function AnimatedNavbar() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden"
             >
               <div className="pb-4">
                 <div className="flex flex-col space-y-3">
@@ -183,6 +193,14 @@ export default function AnimatedNavbar() {
                     </motion.div>
                   ))}
 
+                  <Link
+                    to="/plan-my-trip"
+                    onClick={() => setIsOpen(false)}
+                    className="mx-3 rounded-md bg-accent px-3 py-2 text-center text-base font-semibold text-white sm:hidden"
+                  >
+                    Plan My Trip
+                  </Link>
+
                   {/* Mobile Social Icons */}
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
@@ -190,15 +208,16 @@ export default function AnimatedNavbar() {
                     transition={{ duration: 0.3, delay: 0.5 }}
                     className="flex items-center space-x-4 px-3 pt-4 border-t"
                   >
-                    <a
-                      href="https://tripadvisor.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-secondary hover:text-primary transition-colors"
-                      title="Follow us on TripAdvisor"
-                    >
-                      <i className="fa fa-tripadvisor" aria-hidden="true"></i>
-                    </a>
+                    {SITE.reviewProfiles.tripadvisor && (
+                      <a
+                        href={SITE.reviewProfiles.tripadvisor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-secondary hover:text-primary transition-colors"
+                      >
+                        Tripadvisor
+                      </a>
+                    )}
                     <a
                       href="https://www.instagram.com/orbittrails9/"
                       target="_blank"

@@ -1,13 +1,26 @@
 {
   "version": 2,
   "outputDirectory": "dist/spa",
-  "buildCommand": "npm run build:client",
+  "buildCommand": "npm run build:static",
   "installCommand": "npm ci",
   "framework": "vite",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/tours/:slug",
+      "destination": "/tour-details/:slug",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/adm",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/tour-details/:slug",
+      "destination": "/spa.html"
     }
   ],
   "headers": [
@@ -45,5 +58,26 @@
   "env": {
     "NODE_ENV": "production",
     "VITE_API_URL": "https://api.orbittrails.com"
+  },
+  "images": {
+    "sizes": [
+      320,
+      480,
+      640,
+      960,
+      1280,
+      1920
+    ],
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "images.orbittrails.com"
+      }
+    ],
+    "formats": [
+      "image/avif",
+      "image/webp"
+    ],
+    "minimumCacheTTL": 2592000
   }
 }

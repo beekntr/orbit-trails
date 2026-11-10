@@ -6,11 +6,17 @@ import {
   getCurrentAdmin
 } from '../controllers/adminAuthController';
 import { authMiddleware } from '../middleware/authMiddleware';
+import { createRateLimiter } from '../guards.mjs';
 
 const router = Router();
 
-// Public routes
-router.post('/login', adminLogin);
+// Public routes (same per-IP limit as the production server)
+const loginLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: 'Too many login attempts. Please try again in 15 minutes.'
+});
+router.post('/login', loginLimiter, adminLogin);
 
 // Protected routes
 router.get('/profile', authMiddleware, getCurrentAdmin);

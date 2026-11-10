@@ -6,6 +6,15 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import {
+  createRateLimiter,
+  escapeHtml,
+  escapeMultiline,
+  getJwtSecret,
+  validateContact,
+  validateCustomTour,
+  validationError
+} from './guards.mjs';
 
 // Load environment variables
 dotenv.config();
@@ -38,12 +47,12 @@ const sendContactNotification = async (contactData) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #2563eb;">New Contact Form Submission</h2>
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${contactData.name}</p>
-            <p><strong>Email:</strong> ${contactData.email}</p>
-            <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
+            <p><strong>Name:</strong> ${escapeHtml(contactData.name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(contactData.email)}</p>
+            <p><strong>Phone:</strong> ${escapeHtml(contactData.phone || 'Not provided')}</p>
             <p><strong>Message:</strong></p>
             <div style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
-              ${contactData.message}
+              ${escapeMultiline(contactData.message)}
             </div>
           </div>
           <p style="color: #64748b;">Submitted at: ${new Date().toLocaleString()}</p>
@@ -59,11 +68,11 @@ const sendContactNotification = async (contactData) => {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #2563eb;">Thank you for your message!</h2>
-          <p>Dear ${contactData.name},</p>
+          <p>Dear ${escapeHtml(contactData.name)},</p>
           <p>We have received your message and will get back to you within 24 hours.</p>
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3>Your Message:</h3>
-            <p>${contactData.message}</p>
+            <p>${escapeMultiline(contactData.message)}</p>
           </div>
           <p>Best regards,<br><strong>Orbit Trails Team</strong></p>
           <hr style="margin: 30px 0;">
@@ -103,22 +112,22 @@ const sendCustomTourNotification = async (customTourData) => {
           <h2 style="color: #2563eb;">New Custom Tour Request</h2>
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3>Customer Details:</h3>
-            <p><strong>Name:</strong> ${customTourData.name}</p>
-            <p><strong>Email:</strong> ${customTourData.email}</p>
-            <p><strong>Phone:</strong> ${customTourData.phone || 'Not provided'}</p>
+            <p><strong>Name:</strong> ${escapeHtml(customTourData.name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(customTourData.email)}</p>
+            <p><strong>Phone:</strong> ${escapeHtml([customTourData.countryCode, customTourData.phone].filter(Boolean).join(' ') || 'Not provided')}</p>
             
             <h3 style="margin-top: 25px;">Tour Requirements:</h3>
-            <p><strong>Start Date:</strong> ${customTourData.startDate}</p>
-            <p><strong>Duration:</strong> ${customTourData.duration} days</p>
-            <p><strong>Travelers:</strong> ${customTourData.numberOfTravelers} people</p>
-            <p><strong>Accommodation:</strong> ${customTourData.accommodationType}</p>
-            <p><strong>Budget Range:</strong> ${customTourData.budgetRange}</p>
-            <p><strong>Destinations:</strong> ${customTourData.destinations ? customTourData.destinations.join(', ') : 'Not specified'}</p>
+            <p><strong>Start Date:</strong> ${escapeHtml(customTourData.startDate)}</p>
+            <p><strong>Duration:</strong> ${escapeHtml(customTourData.duration)} days</p>
+            <p><strong>Travelers:</strong> ${escapeHtml(customTourData.numberOfTravelers)} people</p>
+            <p><strong>Accommodation:</strong> ${escapeHtml(customTourData.accommodationType)}</p>
+            <p><strong>Budget Range:</strong> ${escapeHtml(customTourData.budgetRange)}</p>
+            <p><strong>Destinations:</strong> ${escapeHtml(customTourData.destinations?.length ? customTourData.destinations.join(', ') : 'Not specified')}</p>
             
             ${customTourData.comments ? `
               <h3 style="margin-top: 25px;">Additional Comments:</h3>
               <div style="background: white; padding: 15px; border-radius: 4px;">
-                ${customTourData.comments}
+                ${escapeMultiline(customTourData.comments)}
               </div>
             ` : ''}
           </div>
@@ -135,15 +144,15 @@ const sendCustomTourNotification = async (customTourData) => {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #2563eb;">Thank you for your custom tour request!</h2>
-          <p>Dear ${customTourData.name},</p>
+          <p>Dear ${escapeHtml(customTourData.name)},</p>
           <p>We have received your custom tour request and our travel experts are already working on creating the perfect itinerary for you.</p>
           
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3>Your Request Summary:</h3>
-            <p><strong>Travel Dates:</strong> ${customTourData.startDate}</p>
-            <p><strong>Duration:</strong> ${customTourData.duration} days</p>
-            <p><strong>Travelers:</strong> ${customTourData.numberOfTravelers} people</p>
-            <p><strong>Destinations:</strong> ${customTourData.destinations ? customTourData.destinations.join(', ') : 'Not specified'}</p>
+            <p><strong>Travel Dates:</strong> ${escapeHtml(customTourData.startDate)}</p>
+            <p><strong>Duration:</strong> ${escapeHtml(customTourData.duration)} days</p>
+            <p><strong>Travelers:</strong> ${escapeHtml(customTourData.numberOfTravelers)} people</p>
+            <p><strong>Destinations:</strong> ${escapeHtml(customTourData.destinations?.length ? customTourData.destinations.join(', ') : 'Not specified')}</p>
           </div>
           
           <p><strong>What happens next?</strong></p>
@@ -246,6 +255,7 @@ const ContactSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: String,
   message: { type: String, required: true },
+  source: String, // where the lead came from, e.g. 'lead-magnet'
   status: { type: String, default: 'new' }
 }, { timestamps: true });
 
@@ -261,6 +271,16 @@ const CustomTourSchema = new mongoose.Schema({
   destinations: [String],
   budgetRange: String,
   comments: String,
+  // Structured fields sent by the trip planner (all optional)
+  source: String,
+  travelCrew: String,
+  travelStyles: [String],
+  countryOfResidence: String,
+  currency: String,
+  budgetPerPerson: Number,
+  preferredMonth: String,
+  interestedTour: String,
+  pageUrl: String,
   status: { type: String, default: 'new' }
 }, { timestamps: true });
 
@@ -286,9 +306,35 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
+app.disable('x-powered-by');
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request bodies are parsed before any route (and before the admin check) runs,
+// so the size limit is what stops a stranger making this machine parse huge
+// payloads. The public forms need a few hundred bytes; admin edits fit in 1mb.
+const PUBLIC_WRITE_PATHS = ['/api/contact', '/api/customize-tour', '/api/admin/login'];
+app.use(PUBLIC_WRITE_PATHS, express.json({ limit: '20kb' }));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+
+// Per-IP limits for the endpoints anyone can post to. Each accepted form also
+// sends two emails, so these protect the mailbox as well as the database.
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
+const contactLimiter = createRateLimiter({
+  windowMs: FIFTEEN_MINUTES,
+  max: 6,
+  message: 'You have sent several messages in a short time. Please try again in a few minutes.'
+});
+const customTourLimiter = createRateLimiter({
+  windowMs: FIFTEEN_MINUTES,
+  max: 6,
+  message: 'You have sent several requests in a short time. Please try again in a few minutes.'
+});
+const loginLimiter = createRateLimiter({
+  windowMs: FIFTEEN_MINUTES,
+  max: 10,
+  message: 'Too many login attempts. Please try again in 15 minutes.'
+});
 
 // Debug middleware
 app.use((req, res, next) => {
@@ -314,8 +360,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'No token provided' });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'orbit-trails-secret-key';
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     
     const admin = await Admin.findById(decoded.id).select('-password');
     if (!admin || !admin.isActive) {
@@ -351,15 +396,51 @@ app.get('/api/health', (req, res) => {
 });
 
 // Tours API
+//
+// Public tour reads are safe to cache. With these headers a browser reuses the
+// response for a minute and a CDN (Cloudflare, with a Cache Rule for
+// /api/tours*) for ten, so a busy day reaches this machine as a handful of
+// requests. Logged-in admin requests are never cached.
+const setTourCacheHeaders = (req, res) => {
+  res.set('Vary', 'Authorization');
+  res.set(
+    'Cache-Control',
+    req.headers.authorization
+      ? 'no-store'
+      : 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400'
+  );
+};
+
+// ?view=card returns only what a tour card needs (about a tenth of the full payload).
+const TOUR_CARD_FIELDS = 'name slug overview category duration rating reviews destinations price images status updatedAt';
+
+// When tours change, rebuild the prerendered site so the static pages match.
+// Set VERCEL_DEPLOY_HOOK_URL in .env (Vercel > Project > Settings > Git > Deploy Hooks).
+let rebuildTimer = null;
+const triggerSiteRebuild = () => {
+  const hook = process.env.VERCEL_DEPLOY_HOOK_URL;
+  if (!hook || typeof fetch !== 'function') return;
+  clearTimeout(rebuildTimer);
+  // Wait for a quiet minute so a burst of edits causes one rebuild, not ten.
+  rebuildTimer = setTimeout(() => {
+    fetch(hook, { method: 'POST' })
+      .then((response) => console.log(`Site rebuild triggered (${response.status})`))
+      .catch((error) => console.error('Site rebuild trigger failed:', error.message));
+  }, 60 * 1000);
+};
+
 app.get('/api/tours', async (req, res) => {
   try {
-    const tours = await Tour.find({ status: 'active' }).sort({ createdAt: -1 });
+    const query = Tour.find({ status: 'active' }).sort({ createdAt: -1 }).lean();
+    if (req.query.view === 'card') query.select(TOUR_CARD_FIELDS);
+    const tours = await query;
     const groupedTours = tours.reduce((acc, tour) => {
       acc[tour.category] = acc[tour.category] || [];
       acc[tour.category].push(tour);
       return acc;
     }, {});
 
+    setTourCacheHeaders(req, res);
     res.json({
       success: true,
       data: {
@@ -380,13 +461,14 @@ app.get('/api/tours', async (req, res) => {
 
 app.get('/api/tours/slug/:slug', async (req, res) => {
   try {
-    const tour = await Tour.findOne({ slug: req.params.slug, status: 'active' });
+    const tour = await Tour.findOne({ slug: req.params.slug, status: 'active' }).lean();
     if (!tour) {
       return res.status(404).json({
         success: false,
         message: 'Tour not found'
       });
     }
+    setTourCacheHeaders(req, res);
     res.json({ success: true, data: tour });
   } catch (error) {
     res.status(500).json({
@@ -411,6 +493,7 @@ app.post('/api/tours', authMiddleware, async (req, res) => {
 
     const tour = new Tour(req.body);
     await tour.save();
+    triggerSiteRebuild();
     res.json({ success: true, data: tour });
   } catch (error) {
     console.error('Create tour error:', error);
@@ -450,6 +533,7 @@ app.put('/api/tours/:id', authMiddleware, async (req, res) => {
       });
     }
 
+    triggerSiteRebuild();
     res.json({ success: true, data: tour });
   } catch (error) {
     console.error('Update tour error:', error);
@@ -475,6 +559,7 @@ app.delete('/api/tours/:id', authMiddleware, async (req, res) => {
       });
     }
 
+    triggerSiteRebuild();
     res.json({ 
       success: true, 
       message: 'Tour deleted successfully',
@@ -491,18 +576,15 @@ app.delete('/api/tours/:id', authMiddleware, async (req, res) => {
 });
 
 // Contact API
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', contactLimiter, async (req, res) => {
   try {
-    const { name, email, phone, message } = req.body;
-    
-    if (!name || !email || !message) {
-      return res.status(400).json({
-        success: false,
-        message: 'Name, email, and message are required'
-      });
+    // Only validated, whitelisted fields ever reach the database or an email.
+    const submission = validateContact(req.body);
+    if (!submission.ok) {
+      return res.status(400).json(validationError(submission.errors));
     }
 
-    const contact = new Contact({ name, email, phone, message });
+    const contact = new Contact(submission.value);
     await contact.save();
 
     // Send email notifications (don't block response if email fails)
@@ -584,9 +666,15 @@ app.patch('/api/contact/:id/status', authMiddleware, async (req, res) => {
 });
 
 // Custom Tour API
-app.post('/api/customize-tour', async (req, res) => {
+app.post('/api/customize-tour', customTourLimiter, async (req, res) => {
   try {
-    const customTour = new CustomTour(req.body);
+    // Only validated, whitelisted fields ever reach the database or an email.
+    const submission = validateCustomTour(req.body);
+    if (!submission.ok) {
+      return res.status(400).json(validationError(submission.errors));
+    }
+
+    const customTour = new CustomTour(submission.value);
     await customTour.save();
 
     // Send email notifications (don't block response if email fails)
@@ -668,11 +756,15 @@ app.patch('/api/customize-tour/:id/status', authMiddleware, async (req, res) => 
 });
 
 // Admin API
-app.post('/api/admin/login', async (req, res) => {
+app.post('/api/admin/login', loginLimiter, async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password } = req.body || {};
 
-    if (!username || !password) {
+    // Strings only: an object here would be treated as a database query operator.
+    if (
+      typeof username !== 'string' || typeof password !== 'string' ||
+      !username || !password || username.length > 100 || password.length > 200
+    ) {
       return res.status(400).json({
         success: false,
         message: 'Username and password are required'
@@ -695,8 +787,7 @@ app.post('/api/admin/login', async (req, res) => {
       });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'orbit-trails-secret-key';
-    const token = jwt.sign({ id: admin._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: admin._id }, getJwtSecret(), { expiresIn: '7d' });
 
     admin.lastLogin = new Date();
     await admin.save();
@@ -788,6 +879,13 @@ app.get('/api/admin/profile', authMiddleware, async (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+  if (err?.type === 'entity.too.large') {
+    return res.status(413).json({ success: false, message: 'Request is too large.' });
+  }
+  if (err?.type === 'entity.parse.failed' || err instanceof SyntaxError) {
+    return res.status(400).json({ success: false, message: 'Request body is not valid JSON.' });
+  }
+
   console.error('Unhandled error:', err);
   res.status(500).json({ 
     success: false,
@@ -817,6 +915,9 @@ app.get('*', (req, res) => {
 // Start server
 const startServer = async () => {
   try {
+    // Resolve the admin-token secret now, so a missing JWT_SECRET is reported at
+    // startup instead of on the first login.
+    getJwtSecret();
     await connectDB();
     
     app.listen(port, () => {
@@ -825,6 +926,7 @@ const startServer = async () => {
       console.log(`📊 API Endpoints: http://localhost:${port}/api`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`🗄️ Database: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'}`);
+      console.log(`📧 Email Service: ${process.env.GMAIL_USER ? 'Configured' : 'Not Configured'}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

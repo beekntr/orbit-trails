@@ -71,6 +71,16 @@ export interface CustomTourRequest {
   email: string;
   phone: string;
   countryCode?: string;
+  /** Lead attribution, stored by servers that know these fields and ignored by older ones. */
+  source?: string;
+  travelCrew?: string;
+  travelStyles?: string[];
+  countryOfResidence?: string;
+  currency?: string;
+  budgetPerPerson?: number;
+  preferredMonth?: string;
+  interestedTour?: string;
+  pageUrl?: string;
 }
 
 /**
@@ -81,6 +91,7 @@ export interface ContactMessage {
   email: string;
   phone?: string;
   message: string;
+  source?: string;
 }
 
 /**
@@ -110,21 +121,26 @@ export class OrbitTrailsAPI {
   private static token: string | null = null;
   private static requestCount = 0;
 
+  // localStorage does not exist while pages are prerendered at build time
+  private static get storage(): Storage | null {
+    return typeof window !== 'undefined' ? window.localStorage : null;
+  }
+
   static setToken(token: string) {
     this.token = token;
-    localStorage.setItem('orbit_admin_token', token);
+    this.storage?.setItem('orbit_admin_token', token);
   }
 
   static getToken(): string | null {
     if (!this.token) {
-      this.token = localStorage.getItem('orbit_admin_token');
+      this.token = this.storage?.getItem('orbit_admin_token') ?? null;
     }
     return this.token;
   }
 
   static clearToken() {
     this.token = null;
-    localStorage.removeItem('orbit_admin_token');
+    this.storage?.removeItem('orbit_admin_token');
   }
 
   // Prevent excessive API exposure
@@ -169,6 +185,8 @@ export class OrbitTrailsAPI {
 
     try {
       const response = await fetch(url, {
+        // A logged-in admin must always see fresh data, never a cached public response
+        ...(token ? { cache: 'no-store' as RequestCache } : {}),
         ...options,
         headers,
         // Add security options
@@ -209,16 +227,23 @@ export class OrbitTrailsAPI {
   }
 
   // Tours API
-  static async getTours(): Promise<ApiResponse<{ tours: Tour[]; groupedTours: Record<string, Tour[]>; total: number }>> {
-    return this.request('/api/tours');
+  /**
+   * `view: 'card'` asks the server to leave out itineraries and inclusions
+   * (a ~10x smaller response for listing pages). Older servers ignore it.
+   */
+  static async getTours(
+    options: { view?: 'card'; signal?: AbortSignal } = {}
+  ): Promise<ApiResponse<{ tours: Tour[]; groupedTours: Record<string, Tour[]>; total: number }>> {
+    const query = options.view ? `?view=${options.view}` : '';
+    return this.request(`/api/tours${query}`, { signal: options.signal });
   }
 
   static async getTourById(id: string): Promise<ApiResponse<Tour>> {
     return this.request(`/api/tours/${id}`);
   }
 
-  static async getTourBySlug(slug: string): Promise<ApiResponse<Tour>> {
-    return this.request(`/api/tours/slug/${slug}`);
+  static async getTourBySlug(slug: string, signal?: AbortSignal): Promise<ApiResponse<Tour>> {
+    return this.request(`/api/tours/slug/${encodeURIComponent(slug)}`, { signal });
   }
 
   static async createTour(tour: Partial<Tour>): Promise<ApiResponse<Tour>> {

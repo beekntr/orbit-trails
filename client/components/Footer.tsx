@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Instagram, Twitter, Mail, Phone } from "lucide-react";
+import { SITE } from "@/lib/site";
 
 export default function Footer() {
   return (
@@ -12,6 +13,9 @@ export default function Footer() {
               <img
                 src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
+                height={32}
+                loading="lazy"
+                decoding="async"
                 className="h-8 w-auto brightness-0 invert"
               />
             </Link>
@@ -21,15 +25,16 @@ export default function Footer() {
               memories that last a lifetime.
             </p>
             <div className="flex items-center space-x-3">
-              <a
-                href="https://tripadvisor.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-primary transition-colors"
-                title="Follow us on TripAdvisor"
-              >
-                <i className="fa fa-tripadvisor" aria-hidden="true"></i>
-              </a>
+              {SITE.reviewProfiles.tripadvisor && (
+                <a
+                  href={SITE.reviewProfiles.tripadvisor}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-300 hover:text-primary transition-colors"
+                >
+                  Tripadvisor
+                </a>
+              )}
               <a
                 href="https://www.instagram.com/orbittrails9/"
                 target="_blank"
@@ -80,12 +85,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/plan-my-trip"
                   className="text-gray-300 hover:text-primary transition-colors"
                 >
-                  Gallery
-                </a>
+                  Plan My Trip
+                </Link>
               </li>
               <li>
                 <Link
@@ -98,50 +103,23 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Popular Tours */}
+          {/* Explore: internal links to the main landing pages */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Popular Tours</h3>
+            <h3 className="text-lg font-semibold mb-4">Explore India</h3>
             <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-primary transition-colors"
-                >
-                  Golden Triangle
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-primary transition-colors"
-                >
-                  Rajasthan Tours
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-primary transition-colors"
-                >
-                  Kerala Backwaters
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-primary transition-colors"
-                >
-                  Mumbai & Goa
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-primary transition-colors"
-                >
-                  Spiritual India
-                </a>
-              </li>
+              {[
+                { to: "/luxury-private-tours-india", label: "Luxury Private Tours of India" },
+                { to: "/tours", label: "Golden Triangle & Rajasthan Tours" },
+                { to: "/plan-my-trip", label: "Tailor-made India Itineraries" },
+                { to: "/india-travel-guide-first-time-visitors", label: "First-Time India Travel Guide" },
+                { to: "/blog", label: "India Travel Blog" },
+              ].map((link) => (
+                <li key={link.to + link.label}>
+                  <Link to={link.to} className="text-gray-300 hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -219,7 +197,8 @@ export default function Footer() {
         <div className="border-t border-gray-600 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
-              <div>© 2024 Orbit Trails. All rights reserved.</div>
+              {/* The year can differ between build time and the visitor's clock */}
+              <div suppressHydrationWarning>© {new Date().getFullYear()} Orbit Trails. All rights reserved.</div>
               <div className="mt-1">
                 Made and managed by{" "}
                 <a

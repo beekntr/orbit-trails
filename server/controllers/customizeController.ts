@@ -38,7 +38,16 @@ export const createCustomTourRequest = [
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        countryCode: req.body.countryCode || '+1'
+        countryCode: req.body.countryCode || '+1',
+        source: req.body.source,
+        travelCrew: req.body.travelCrew,
+        travelStyles: req.body.travelStyles,
+        countryOfResidence: req.body.countryOfResidence,
+        currency: req.body.currency,
+        budgetPerPerson: req.body.budgetPerPerson,
+        preferredMonth: req.body.preferredMonth,
+        interestedTour: req.body.interestedTour,
+        pageUrl: req.body.pageUrl
       };
 
       const customTour = new CustomizeTour(customTourData);

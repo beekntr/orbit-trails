@@ -26,7 +26,8 @@ export const createContactMessage = [
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        message: req.body.message
+        message: req.body.message,
+        source: typeof req.body.source === 'string' ? req.body.source.slice(0, 50) : undefined
       };
 
       const contact = new Contact(contactData);

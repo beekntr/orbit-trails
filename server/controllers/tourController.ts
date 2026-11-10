@@ -2,6 +2,17 @@ import { Request, Response } from 'express';
 import { Tour } from '../models/Tour';
 import { body, validationResult } from 'express-validator';
 
+// Public tour reads may be cached by browsers and the CDN; admin requests never are.
+const setTourCacheHeaders = (req: Request, res: Response) => {
+  res.set('Vary', 'Authorization');
+  res.set(
+    'Cache-Control',
+    req.headers.authorization
+      ? 'no-store'
+      : 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400'
+  );
+};
+
 // Get all tours with optional category filter
 export const getAllTours = async (req: Request, res: Response) => {
   try {
@@ -12,7 +23,13 @@ export const getAllTours = async (req: Request, res: Response) => {
       filter.category = category;
     }
 
-    const tours = await Tour.find(filter).sort({ createdAt: -1 });
+    const query = Tour.find(filter).sort({ createdAt: -1 });
+    // ?view=card returns only what a tour card needs
+    if (req.query.view === 'card') {
+      query.select('name slug overview category duration rating reviews destinations price images status updatedAt');
+    }
+    const tours = await query;
+    setTourCacheHeaders(req, res);
 
     // Group tours by category for frontend
     const groupedTours = {
@@ -85,6 +102,7 @@ export const getTourBySlug = async (req: Request, res: Response) => {
       });
     }
 
+    setTourCacheHeaders(req, res);
     res.json({
       success: true,
       data: tour

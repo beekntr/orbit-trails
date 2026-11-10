@@ -3,109 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Primary Meta Tags -->
-    <title>Orbit Trails - Premium India Tours | Golden Triangle & Rajasthan Travel Packages</title>
-    <meta name="title" content="Orbit Trails - Premium India Tours | Golden Triangle & Rajasthan Travel Packages" />
-    <meta name="description" content="Experience India's golden triangle and royal Rajasthan with Orbit Trails. Luxury guided tours, custom itineraries, and authentic cultural experiences. Book your dream India vacation today!" />
-    <meta name="keywords" content="India tours, Golden Triangle tour, Rajasthan tours, Delhi Agra Jaipur package, India travel agency, luxury India travel, custom India tours, best India tour operator" />
+
+    <!--
+      Page-specific tags (title, description, canonical, Open Graph, Twitter,
+      JSON-LD) are NOT hardcoded here any more. Each page declares them with
+      <Seo />, and scripts/prerender.mjs writes them into the static HTML of
+      every URL at build time. Hardcoding them here made every URL on the site
+      announce the homepage's title and canonical to crawlers.
+    -->
+    <title>Orbit Trails</title>
     <meta name="author" content="Orbit Trails" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="geo.region" content="IN-RJ" />
-    <meta name="geo.placename" content="Jaipur, Rajasthan, India" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.orbittrails.com/" />
-    <meta property="og:title" content="Orbit Trails - Premium India Tours | Golden Triangle & Rajasthan Travel Packages" />
-    <meta property="og:description" content="Experience India's golden triangle and royal Rajasthan with Orbit Trails. Luxury guided tours, custom itineraries, and authentic cultural experiences." />
-    <meta property="og:image" content="https://www.orbittrails.com/og-image.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="Orbit Trails" />
-    <meta property="og:locale" content="en_US" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.orbittrails.com/" />
-    <meta property="twitter:title" content="Orbit Trails - Premium India Tours | Golden Triangle & Rajasthan Travel Packages" />
-    <meta property="twitter:description" content="Experience India's golden triangle and royal Rajasthan with Orbit Trails. Luxury guided tours, custom itineraries, and authentic cultural experiences." />
-    <meta property="twitter:image" content="https://www.orbittrails.com/og-image.jpg" />
-    <meta property="twitter:site" content="@OrbitTrails" />
-    <meta property="twitter:creator" content="@OrbitTrails" />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.orbittrails.com/" />
-    
-    <!-- Favicons and Icons -->
+    <meta name="theme-color" content="#24313f" />
+
     <link rel="icon" type="image/x-icon" href="/logo.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Origins every page talks to -->
+    <link rel="preconnect" href="https://images.orbittrails.com" />
     <link rel="preconnect" href="https://images.unsplash.com" />
-    
-    <!-- DNS Prefetch -->
-    <link rel="dns-prefetch" href="//www.google-analytics.com" />
-    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "TravelAgency",
-      "name": "Orbit Trails",
-      "description": "Premium India travel agency specializing in Golden Triangle and Rajasthan tours",
-      "url": "https://www.orbittrails.com",
-      "logo": "https://www.orbittrails.com/logo.ico",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+91-98292-71900",
-        "contactType": "Customer Service",
-        "email": "info@orbittrails.com",
-        "availableLanguage": ["English", "Hindi"]
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "IN",
-        "addressRegion": "Rajasthan",
-        "addressLocality": "Jaipur"
-      },
-      "sameAs": [
-        "https://www.instagram.com/orbittrails",
-        "https://www.facebook.com/orbittrails",
-        "https://www.twitter.com/orbittrails"
-      ],
-      "priceRange": "$$-$$$",
-      "areaServed": {
-        "@type": "Country",
-        "name": "India"
-      }
-    }
+    <link rel="dns-prefetch" href="https://api.orbittrails.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q5PRKK6LJ3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Q5PRKK6LJ3');
     </script>
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#0066cc" />
-    <meta name="msapplication-TileColor" content="#0066cc" />
   </head>
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/client/App.tsx"></script>
+    <script type="module" src="/client/entry-client.tsx"></script>
   </body>
-  
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q5PRKK6LJ3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Q5PRKK6LJ3');
-  </script>
 </html>

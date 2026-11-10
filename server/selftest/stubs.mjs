@@ -42,6 +42,13 @@ mongoose.Model.find = () => {
   return query;
 };
 
+// Tour.findByIdAndUpdate(id, update): record the update and return it as the saved tour.
+mongoose.Model.findByIdAndUpdate = async (id, update) => {
+  captured.updates = [...(captured.updates || []), { model: 'Tour', id, update }];
+  flush();
+  return { _id: id, ...update };
+};
+
 nodemailer.createTransport = () => ({
   sendMail: async ({ to, subject, html }) => {
     captured.mail.push({ to, subject, html });

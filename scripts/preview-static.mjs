@@ -43,6 +43,10 @@ http
     const clean = pathname.replace(/\/$/, "") || "/";
 
     // Keep in sync with "redirects" in vercel.json.
+    if (clean === "/tour-details/land-of-kings") {
+      res.writeHead(308, { Location: "/tour-details/rajasthan-private-tour-land-of-kings-11-days" }).end();
+      return;
+    }
     const legacyTour = clean.match(/^\/tours\/([^/]+)$/);
     if (legacyTour) {
       res.writeHead(308, { Location: `/tour-details/${legacyTour[1]}` }).end();

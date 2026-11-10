@@ -3,6 +3,7 @@ import { ArrowRight, Calendar, MapPin, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import SmartImage from "@/components/SmartImage";
 import type { TourSummary } from "@/hooks/useTours";
+import { cleanTourName, tourTagline } from "@/lib/tourSeo";
 
 interface TourCardProps {
   tour: TourSummary;
@@ -42,7 +43,13 @@ export default function TourCard({ tour, badge, priority = false }: TourCardProp
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-lg font-semibold leading-snug text-secondary">
             <Link to={href} className="hover:text-primary focus-visible:underline focus-visible:outline-none">
-              {tour.name}
+              {cleanTourName(tour.name)}
+              {tourTagline(tour) && (
+                <>
+                  <span className="sr-only">: </span>
+                  <span className="mt-0.5 block text-sm font-medium text-gray-500">{tourTagline(tour)}</span>
+                </>
+              )}
             </Link>
           </h3>
           {tour.rating > 0 && (

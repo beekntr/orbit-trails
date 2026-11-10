@@ -203,23 +203,8 @@ export const updateTour = [
       const { id } = req.params;
       const updates = req.body;
 
-      // If name is being updated, regenerate slug
-      if (updates.name) {
-        const newSlug = updates.name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
-        
-        const existingTour = await Tour.findOne({ slug: newSlug, _id: { $ne: id } });
-        if (existingTour) {
-          return res.status(400).json({
-            success: false,
-            message: 'A tour with this name already exists'
-          });
-        }
-        
-        updates.slug = newSlug;
-      }
+      // Keep the tour's URL stable when it is renamed (same rule as api-server.mjs).
+      if (!updates.slug) delete updates.slug;
 
       const tour = await Tour.findByIdAndUpdate(
         id,

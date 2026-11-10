@@ -188,6 +188,19 @@ export default function ReviewsWidget({
           </h2>
           <p className="mt-4 text-lg text-gray-600">{subheading}</p>
           <PlatformBadges summaries={summaries} />
+          {SITE.reviewLinks.google && (
+            <p className="mt-4 text-sm text-gray-600">
+              Travelled with us?{" "}
+              <a
+                href={SITE.reviewLinks.google}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-primary hover:underline"
+              >
+                Leave us a review on Google
+              </a>
+            </p>
+          )}
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

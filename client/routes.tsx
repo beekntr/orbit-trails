@@ -48,6 +48,7 @@ export const routes: AppRoute[] = [
     () => import("./pages/FirstTimeIndiaGuide"),
   ),
   page("/plan-my-trip", "client/pages/PlanMyTrip.tsx", () => import("./pages/PlanMyTrip")),
+  page("/gallery", "client/pages/Gallery.tsx", () => import("./pages/Gallery")),
   page("/about", "client/pages/About.tsx", () => import("./pages/About")),
   page("/contact", "client/pages/Contact.tsx", () => import("./pages/Contact")),
   page("/blog", "client/pages/Blog.tsx", () => import("./pages/Blog")),

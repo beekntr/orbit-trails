@@ -96,6 +96,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  to="/gallery"
+                  className="text-gray-300 hover:text-primary transition-colors"
+                >
+                  Guest Gallery
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/plan-my-trip"
                   className="text-gray-300 hover:text-primary transition-colors"
                 >

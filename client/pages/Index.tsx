@@ -10,6 +10,8 @@ import SmartImage from "@/components/SmartImage";
 import TourCard from "@/components/TourCard";
 import TrustBanner from "@/components/trust/TrustBanner";
 import ReviewsWidget from "@/components/trust/ReviewsWidget";
+import PhotoGrid from "@/components/gallery/PhotoGrid";
+import { guestPhotos } from "@/data/gallery";
 import { openLeadMagnet } from "@/components/lead/leadMagnet";
 import { homeFaqs } from "@/data/faqs";
 import { pickFeatured, useTours } from "@/hooks/useTours";
@@ -255,6 +257,25 @@ export default function Index() {
               <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
             </button>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Real guests on real trips: the strongest trust signal on the page */}
+      <section className="bg-white py-20" aria-labelledby="guest-moments">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 id="guest-moments" className="text-3xl font-bold text-secondary md:text-4xl">
+                Moments from our guests' trips
+              </h2>
+              <p className="mt-3 text-lg text-gray-600">Garland welcomes, forts, street food and good company.</p>
+            </div>
+            <Link to="/gallery" className="inline-flex items-center font-semibold text-primary hover:underline">
+              See the full gallery
+              <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <PhotoGrid photos={guestPhotos.slice(0, 6)} columns={6} className="mt-10" />
         </div>
       </section>
 

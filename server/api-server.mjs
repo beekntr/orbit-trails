@@ -79,7 +79,7 @@ const sendContactNotification = async (contactData) => {
           <p style="color: #64748b; font-size: 14px;">
             For immediate assistance, you can also reach us at:<br>
             📧 info@orbittrails.com<br>
-            📱 +91 98292 71900
+            📱 +91 86199 74762
           </p>
         </div>
       `
@@ -167,7 +167,7 @@ const sendCustomTourNotification = async (customTourData) => {
           <p style="color: #64748b; font-size: 14px;">
             For immediate assistance, you can also reach us at:<br>
             📧 info@orbittrails.com<br>
-            📱 +91 98292 71900
+            📱 +91 86199 74762
           </p>
         </div>
       `

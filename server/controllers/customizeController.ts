@@ -106,7 +106,7 @@ export const createCustomTourRequest = [
           
           <p>If you have any immediate questions, feel free to contact us:</p>
           <p>📧 Email: info@orbittrails.com</p>
-          <p>📞 Phone: +91 98765 43210</p>
+          <p>📞 Phone: +91 86199 74762</p>
           
           <p>Thank you for choosing Orbit Trails for your India adventure!</p>
           

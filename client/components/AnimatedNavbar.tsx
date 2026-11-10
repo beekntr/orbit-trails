@@ -50,7 +50,7 @@ export default function AnimatedNavbar() {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden xl:flex items-center space-x-6">
             {navigation.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -61,7 +61,7 @@ export default function AnimatedNavbar() {
                 <Link
                   to={item.href}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary relative",
+                    "text-sm font-medium whitespace-nowrap transition-colors hover:text-primary relative",
                     isActive(item.href)
                       ? "text-primary"
                       : "text-secondary hover:text-primary",
@@ -88,7 +88,7 @@ export default function AnimatedNavbar() {
             </Button>
 
             {/* Social Icons - Hidden on mobile */}
-            <div className="hidden lg:flex items-center space-x-3">
+            <div className="hidden xl:flex items-center space-x-3">
               {SITE.reviewProfiles.tripadvisor && (
                 <a
                   href={SITE.reviewProfiles.tripadvisor}
@@ -122,7 +122,7 @@ export default function AnimatedNavbar() {
             </div>
 
             {/* Mobile menu button */}
-            <div className="lg:hidden">
+            <div className="xl:hidden">
               <Button
                 variant="ghost"
                 size="sm"
@@ -167,7 +167,7 @@ export default function AnimatedNavbar() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden overflow-hidden"
+              className="xl:hidden overflow-hidden"
             >
               <div className="pb-4">
                 <div className="flex flex-col space-y-3">

@@ -29,7 +29,7 @@ const types = {
   ".webp": "image/webp",
 };
 
-// Keep in sync with "rewrites" in vercel.json.
+// Keep in sync with "rewrites" in vercel.json (destination "/spa" is spa.html under clean URLs).
 const spaRewrites = [/^\/adm\/?$/, /^\/tour-details\/[^/]+\/?$/];
 
 const fileAt = (relative) => {

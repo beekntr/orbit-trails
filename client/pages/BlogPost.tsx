@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +15,8 @@ import {
   List
 } from "lucide-react";
 import { getBlogBySlug, getRelatedBlogs } from "@/data/blogData";
-import { useSEO } from "@/hooks/useSEO";
+import Seo from "@/components/seo/Seo";
+import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -60,44 +61,6 @@ export default function BlogPost() {
     return () => window.removeEventListener('scroll', updateReadingProgress);
   }, []);
 
-  // SEO optimization for individual blog posts
-  useSEO({
-    title: blog?.metaTitle || 'Blog Post - Orbit Trails',
-    description: blog?.metaDescription || 'Discover expert travel insights and guides for exploring India with Orbit Trails.',
-    keywords: blog?.keywords?.join(', ') || 'India travel, travel blog, travel guides',
-    canonicalUrl: `https://www.orbittrails.com/blog/${slug}`,
-    ogImage: blog?.featuredImage || '/og-image.jpg',
-    ogType: 'article',
-    structuredData: blog ? {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": blog.title,
-      "description": blog.excerpt,
-      "image": blog.featuredImage,
-      "author": {
-        "@type": "Person",
-        "name": blog.author
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Orbit Trails",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.orbittrails.com/logo.ico"
-        }
-      },
-      "datePublished": blog.publishDate,
-      "dateModified": blog.publishDate,
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://www.orbittrails.com/blog/${slug}`
-      },
-      "keywords": blog.keywords.join(", "),
-      "articleSection": blog.category,
-      "wordCount": blog.content.split(' ').length
-    } : undefined
-  });
-
   const handleShare = () => {
     if (!blog) return;
     
@@ -120,6 +83,12 @@ export default function BlogPost() {
   if (!blog) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Seo
+          title="Blog Post Not Found | Orbit Trails"
+          description="This article could not be found. Browse the Orbit Trails India travel blog."
+          path={`/blog/${slug}`}
+          noindex
+        />
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
           <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist.</p>
@@ -134,6 +103,30 @@ export default function BlogPost() {
 
   return (
     <>
+      <Seo
+        title={blog.metaTitle}
+        description={blog.metaDescription}
+        path={`/blog/${blog.slug}`}
+        image={blog.featuredImage}
+        imageAlt={blog.altText}
+        type="article"
+        article={{ publishedTime: blog.publishDate, modifiedTime: blog.publishDate, author: blog.author }}
+        jsonLd={[
+          articleSchema({
+            title: blog.title,
+            description: blog.excerpt,
+            path: `/blog/${blog.slug}`,
+            image: blog.featuredImage,
+            author: blog.author,
+            datePublished: blog.publishDate,
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: blog.title, path: `/blog/${blog.slug}` },
+          ]),
+        ]}
+      />
       {/* Reading Progress Bar */}
       <div 
         className="reading-progress fixed top-0 left-0 h-1 bg-gradient-to-r from-primary to-accent z-50 transition-all duration-300"
@@ -191,7 +184,7 @@ export default function BlogPost() {
                 <div className="p-2 bg-accent/10 rounded-full">
                   <Calendar className="w-4 h-4 text-accent" />
                 </div>
-                <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { 
+                <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC', 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric' 
@@ -416,7 +409,9 @@ export default function BlogPost() {
                     </div>
                     <CardHeader className="p-6">
                       <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight">
-                        {relatedBlog.title}
+                        <Link to={`/blog/${relatedBlog.slug}`} onClick={(event) => event.stopPropagation()}>
+                          {relatedBlog.title}
+                        </Link>
                       </CardTitle>
                       <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
                         {relatedBlog.excerpt}

@@ -11,6 +11,23 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: "dist/spa",
+    // Lets scripts/prerender.mjs add <link rel="modulepreload"> for each page's chunk.
+    manifest: true,
+    rollupOptions: {
+      output: {
+        // Libraries change far less often than app code. Keeping them in their
+        // own files means returning visitors re-download only what changed.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return undefined;
+          if (id.includes("lucide-react")) return "icons";
+          if (/node_modules\/(framer-motion|motion-dom|motion-utils)\//.test(id)) return "motion";
+          if (/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom)\//.test(id)) {
+            return "react";
+          }
+          return undefined;
+        },
+      },
+    },
   },
   plugins: [react(), expressPlugin()],
   resolve: {

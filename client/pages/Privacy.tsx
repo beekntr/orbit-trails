@@ -3,6 +3,7 @@ import { Shield, Mail, Phone, MapPin, Clock, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import AnimatedSection from "@/components/AnimatedSection";
+import Seo from "@/components/seo/Seo";
 
 export default function Privacy() {
   const contactInfo = {
@@ -98,6 +99,7 @@ export default function Privacy() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo title="Privacy Policy | Orbit Trails" description="How Orbit Trails collects, uses and protects the personal information you share when planning and booking a tour of India." path="/privacy" />
       {/* Header Section */}
       <section className="bg-gradient-to-r from-secondary via-primary to-accent text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

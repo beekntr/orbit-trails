@@ -3,6 +3,7 @@ import { FileText, Mail, Phone, Scale, Clock, AlertTriangle, CreditCard, Users, 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import AnimatedSection from "@/components/AnimatedSection";
+import Seo from "@/components/seo/Seo";
 
 export default function Terms() {
   const contactInfo = {
@@ -65,6 +66,7 @@ export default function Terms() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo title="Terms of Service | Orbit Trails" description="Terms and conditions for booking tours and travel services with Orbit Trails, including payments, cancellations and responsibilities." path="/terms" />
       {/* Header Section */}
       <section className="bg-gradient-to-r from-secondary via-primary to-accent text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

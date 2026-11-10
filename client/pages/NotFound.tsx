@@ -13,6 +13,7 @@ import {
   Search
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Seo from "@/components/seo/Seo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -23,6 +24,12 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
+      <Seo
+        title="Page Not Found | Orbit Trails"
+        description="The page you are looking for does not exist. Explore our private tours of India instead."
+        path="/404"
+        noindex
+      />
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

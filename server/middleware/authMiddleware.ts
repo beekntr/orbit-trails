@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { Admin } from '../models/Admin';
+// Shared with the production server (api-server.mjs): never falls back to a hardcoded secret.
+import { getJwtSecret } from '../guards.mjs';
 
 export interface AuthenticatedRequest extends Request {
   admin?: any;
@@ -17,8 +19,7 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
       });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'orbit-trails-secret-key';
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, getJwtSecret()) as any;
     
     const admin = await Admin.findById(decoded.id).select('-password');
     
@@ -41,8 +42,7 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
 };
 
 export const generateToken = (adminId: string): string => {
-  const JWT_SECRET = process.env.JWT_SECRET || 'orbit-trails-secret-key';
   const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
   
-  return jwt.sign({ id: adminId }, JWT_SECRET, { expiresIn: JWT_EXPIRE } as jwt.SignOptions);
+  return jwt.sign({ id: adminId }, getJwtSecret(), { expiresIn: JWT_EXPIRE } as jwt.SignOptions);
 };

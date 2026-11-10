@@ -1,166 +1,113 @@
 import "./global.css";
 
+import { Suspense, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { QueryClientProvider, type QueryClient } from "@tanstack/react-query";
+import { PresenceContext } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
-import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import { useRouteLoading } from "@/hooks/useRouteLoading";
 import { initializeSecurityMeasures, protectConsole } from "@/lib/security";
-import { useEffect } from "react";
-import Loading from "@/components/Loading";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/Seo";
 import PageTransition from "@/components/PageTransition";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Tours from "./pages/Tours";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import Admin from "./pages/Admin";
-import TourDetails from "./pages/TourDetails";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import NotFound from "./pages/NotFound";
-import AnimatedNavbar from "./components/AnimatedNavbar";
-import Footer from "./components/Footer";
+import AnimatedNavbar from "@/components/AnimatedNavbar";
+import Footer from "@/components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import LeadMagnetHost from "@/components/lead/LeadMagnetHost";
+import { routes } from "./routes";
 
-const queryClient = new QueryClient();
+/**
+ * While the page is being prerendered and hydrated, tell framer-motion to skip
+ * "animate in" effects. Otherwise the static HTML would ship with
+ * `opacity: 0` on the hero and every section, hiding the content from
+ * visitors until JavaScript runs and delaying the largest contentful paint.
+ * Once hydrated, `initial` is released and animations behave as usual.
+ *
+ * The context value must never switch between an object and null: motion
+ * components call different hooks in each case.
+ */
+const presence = (skipInitial: boolean) => ({
+  id: "app",
+  isPresent: true,
+  initial: skipInitial ? (false as const) : undefined,
+  register: () => () => {},
+  onExitComplete: () => {},
+});
+const SKIP_INITIAL_ANIMATION = presence(true);
+const NORMAL_ANIMATION = presence(false);
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [pathname, hash]);
+  return null;
+}
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center" role="status">
+      <title>Orbit Trails</title>
+      <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-primary" />
+      <span className="sr-only">Loading…</span>
+    </div>
+  );
+}
+
+/** /tours/:slug used to render the same page as /tour-details/:slug. One URL per tour avoids duplicate content. */
+function LegacyTourRedirect() {
+  const { slug } = useParams();
+  return <Navigate to={`/tour-details/${slug}`} replace />;
+}
 
 function AppContent() {
-  const isLoading = useRouteLoading();
+  const [hydrated, setHydrated] = useState(false);
 
-  // Initialize security measures
   useEffect(() => {
+    setHydrated(true);
     initializeSecurityMeasures();
     protectConsole();
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <AnimatePresence mode="wait">
-        {isLoading && <Loading fullScreen message="Loading page..." />}
-      </AnimatePresence>
-      <AnimatedNavbar />
-      <main className="flex-1">
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PageTransition>
-                  <Index />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <PageTransition>
-                  <About />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <PageTransition>
-                  <Contact />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/tours"
-              element={
-                <PageTransition>
-                  <Tours />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/tours/:slug"
-              element={
-                <PageTransition>
-                  <TourDetails />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/tour-details/:slug"
-              element={
-                <PageTransition>
-                  <TourDetails />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/blog"
-              element={
-                <PageTransition>
-                  <Blog />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/blog/:slug"
-              element={
-                <PageTransition>
-                  <BlogPost />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/privacy"
-              element={
-                <PageTransition>
-                  <Privacy />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/terms"
-              element={
-                <PageTransition>
-                  <Terms />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/adm"
-              element={
-                <PageTransition>
-                  <Admin />
-                </PageTransition>
-              }
-            />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route
-              path="*"
-              element={
-                <PageTransition>
-                  <NotFound />
-                </PageTransition>
-              }
-            />
-          </Routes>
-        </AnimatePresence>
-      </main>
-      <Footer />
-      <WhatsAppFloatingButton />
-    </div>
+    <PresenceContext.Provider value={hydrated ? NORMAL_ANIMATION : SKIP_INITIAL_ANIMATION}>
+      <div className="min-h-screen flex flex-col">
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
+        <ScrollToTop />
+        <AnimatedNavbar />
+        <main className="flex-1">
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              {routes.map(({ path, Component }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    <PageTransition>
+                      <Component />
+                    </PageTransition>
+                  }
+                />
+              ))}
+              <Route path="/tours/:slug" element={<LegacyTourRedirect />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+        <WhatsAppFloatingButton />
+        {hydrated && <LeadMagnetHost />}
+      </div>
+    </PresenceContext.Provider>
   );
 }
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <Toaster />
-    <Sonner />
-    <BrowserRouter>
+export default function App({ queryClient }: { queryClient: QueryClient }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      <Sonner />
       <AppContent />
-    </BrowserRouter>
-  </QueryClientProvider>
-);
-
-createRoot(document.getElementById("root")!).render(<App />);
+    </QueryClientProvider>
+  );
+}

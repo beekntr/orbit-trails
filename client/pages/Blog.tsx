@@ -3,8 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, User, Clock, ArrowRight } from "lucide-react";
-import { useSEO } from "@/hooks/useSEO";
-import { useNavigate } from "react-router-dom";
+import Seo from "@/components/seo/Seo";
+import { breadcrumbSchema } from "@/lib/schema";
+import { Link, useNavigate } from "react-router-dom";
 import { blogPosts, getFeaturedBlogs, getAllCategories } from "@/data/blogData";
 import { useState } from "react";
 
@@ -26,48 +27,17 @@ export default function Blog() {
 
   const featuredBlogs = getFeaturedBlogs();
   const categories = getAllCategories();
-  // SEO optimization for blog page
-  useSEO({
-    title: 'India Travel Blog | Expert Guides & Tips - Orbit Trails',
-    description: 'Discover India through our expert travel blog. Complete guides for Golden Triangle tours, Rajasthan travel, cultural insights, food guides, and essential travel tips for an unforgettable India journey.',
-    keywords: 'India travel blog, Golden Triangle travel guide, Rajasthan travel tips, India cultural experiences, travel stories India, India tourism blog, travel safety India',
-    canonicalUrl: 'https://www.orbittrails.com/blog',
-    structuredData: {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "Orbit Trails India Travel Blog",
-      "description": "Expert travel insights, comprehensive guides, and cultural experiences for exploring India",
-      "url": "https://www.orbittrails.com/blog",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Orbit Trails",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.orbittrails.com/logo.ico"
-        }
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://www.orbittrails.com/blog"
-      },
-      "blogPost": featuredBlogs.map(blog => ({
-        "@type": "BlogPosting",
-        "headline": blog.title,
-        "description": blog.excerpt,
-        "url": `https://www.orbittrails.com/blog/${blog.slug}`,
-        "image": blog.featuredImage,
-        "author": {
-          "@type": "Person",
-          "name": blog.author
-        },
-        "datePublished": blog.publishDate,
-        "keywords": blog.keywords.join(", ")
-      }))
-    }
-  });
-
   return (
     <div>
+      <Seo
+        title="India Travel Blog | Expert Guides & Tips - Orbit Trails"
+        description="Discover India through our expert travel blog: Golden Triangle guides, Rajasthan travel tips, cultural insights, food guides and essential advice for your India journey."
+        path="/blog"
+        jsonLd={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -155,7 +125,9 @@ export default function Blog() {
                 </div>
                 <CardHeader>
                   <CardTitle className="text-lg hover:text-primary transition-colors group-hover:text-primary line-clamp-2">
-                    {blog.title}
+                    <Link to={`/blog/${blog.slug}`} onClick={(event) => event.stopPropagation()}>
+                      {blog.title}
+                    </Link>
                   </CardTitle>
                   <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
                     {blog.excerpt}
@@ -166,7 +138,7 @@ export default function Blog() {
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-1">
                         <Calendar className="w-4 h-4" />
-                        <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { 
+                        <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC', 
                           month: 'short', 
                           day: 'numeric' 
                         })}</span>

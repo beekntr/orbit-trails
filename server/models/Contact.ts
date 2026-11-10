@@ -5,6 +5,8 @@ export interface IContact extends Document {
   email: string;
   phone?: string;
   message: string;
+  /** Where the lead came from, e.g. 'lead-magnet'. */
+  source?: string;
   status: 'new' | 'read' | 'replied' | 'resolved';
   createdAt: Date;
   updatedAt: Date;
@@ -31,6 +33,11 @@ const ContactSchema: Schema = new Schema({
     type: String,
     required: true,
     maxlength: 2000
+  },
+  source: {
+    type: String,
+    trim: true,
+    maxlength: 50
   },
   status: {
     type: String,

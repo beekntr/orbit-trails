@@ -12,6 +12,16 @@ export interface ICustomizeTour extends Document {
   email: string;
   phone: string;
   countryCode: string;
+  // Structured fields sent by the trip planner (all optional)
+  source?: string;
+  travelCrew?: string;
+  travelStyles?: string[];
+  countryOfResidence?: string;
+  currency?: string;
+  budgetPerPerson?: number;
+  preferredMonth?: string;
+  interestedTour?: string;
+  pageUrl?: string;
   status: 'new' | 'in-progress' | 'quoted' | 'booked' | 'completed' | 'cancelled';
   createdAt: Date;
   updatedAt: Date;
@@ -70,6 +80,15 @@ const CustomizeTourSchema: Schema = new Schema({
     required: true,
     default: '+1'
   },
+  source: String,
+  travelCrew: String,
+  travelStyles: [String],
+  countryOfResidence: String,
+  currency: String,
+  budgetPerPerson: Number,
+  preferredMonth: String,
+  interestedTour: String,
+  pageUrl: String,
   status: {
     type: String,
     enum: ['new', 'in-progress', 'quoted', 'booked', 'completed', 'cancelled'],

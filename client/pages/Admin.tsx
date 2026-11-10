@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Seo from "@/components/seo/Seo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -393,6 +394,7 @@ export default function Admin() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Seo title="Admin | Orbit Trails" description="Orbit Trails administration." path="/adm" noindex />
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -445,6 +447,7 @@ export default function Admin() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      <Seo title="Admin | Orbit Trails" description="Orbit Trails administration." path="/adm" noindex />
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-secondary">Admin Dashboard</h1>

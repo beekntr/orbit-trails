@@ -1,15 +1,19 @@
 import { Users, Award, MapPin, Clock } from "lucide-react";
-import { useSEO, SEOConfigs } from "@/hooks/useSEO";
+import Seo from "@/components/seo/Seo";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export default function About() {
-  // SEO optimization for about page
-  useSEO({
-    ...SEOConfigs.about,
-    canonicalUrl: 'https://www.orbittrails.com/about'
-  });
-
   return (
     <div>
+      <Seo
+        title="About Orbit Trails | India Tour Operator Based in Jaipur"
+        description="Learn about Orbit Trails, your trusted India travel partner. We specialize in creating authentic, luxurious experiences across India's Golden Triangle and royal Rajasthan."
+        path="/about"
+        jsonLd={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-secondary to-secondary/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

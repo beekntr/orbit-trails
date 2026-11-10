@@ -54,6 +54,7 @@ export function staticPaths() {
     { path: "/about", needsTours: false, lastmod: today },
     { path: "/contact", needsTours: false, lastmod: today },
     { path: "/blog", needsTours: false, lastmod: today },
+    { path: "/gallery", needsTours: false, lastmod: today },
     ...blogPosts.map((post) => ({
       path: `/blog/${post.slug}`,
       needsTours: false,

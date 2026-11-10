@@ -91,10 +91,10 @@ export default function Privacy() {
   ];
 
   const cookieUses = [
-    "Save your login sessions",
-    "Track usage and analytics",
-    "Store travel preferences",
-    "Deliver personalized content and offers"
+    "Essential (always on): remember your cookie choice and settings such as a closed pop-up, and keep staff signed in to the admin area",
+    "Analytics (only if you allow it): Google Analytics, to understand which pages are visited and how the site is used",
+    "Marketing (only if you allow it): Google Ads and Meta (Instagram and Facebook), to measure our ads and show them to people who visited our site",
+    "We do not sell your personal data, and we never use cookies to collect payment details"
   ];
 
   return (
@@ -356,7 +356,7 @@ export default function Privacy() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 mb-4">We use cookies to:</p>
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="grid gap-4 mb-4">
                 {cookieUses.map((use, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-secondary rounded-full"></div>
@@ -365,7 +365,9 @@ export default function Privacy() {
                 ))}
               </div>
               <p className="text-gray-600">
-                You may disable cookies anytime via your browser settings.
+                Analytics and marketing cookies only switch on after you allow them in our cookie
+                banner. You can change your choice at any time with the "Cookie settings" link at
+                the bottom of every page, or block cookies in your browser settings.
               </p>
             </CardContent>
           </Card>

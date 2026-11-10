@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { OrbitTrailsAPI, type CustomTourRequest } from "@shared/api";
-import { track } from "@/lib/analytics";
+import { track, trackLead } from "@/lib/analytics";
 import { whatsappLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import {
@@ -233,8 +233,7 @@ export default function TripPlanner({ className }: TripPlannerProps) {
 
     if (response.success) {
       setStatus("done");
-      track("generate_lead", {
-        method: "trip_planner",
+      trackLead("trip_planner", {
         currency: state.currency,
         value: state.budget * state.travellers,
         travel_crew: state.crew,

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Instagram, Twitter, Linkedin, Mail, Phone } from "lucide-react";
 import { SITE } from "@/lib/site";
+import { openConsentSettings } from "@/lib/consent";
 
 export default function Footer() {
   return (
@@ -242,6 +243,13 @@ export default function Footer() {
               >
                 Privacy Policy
               </Link>
+              <button
+                type="button"
+                onClick={openConsentSettings}
+                className="text-gray-400 hover:text-primary transition-colors"
+              >
+                Cookie settings
+              </button>
             </div>
           </div>
         </div>

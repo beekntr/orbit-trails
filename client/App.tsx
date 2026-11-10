@@ -14,7 +14,9 @@ import AnimatedNavbar from "@/components/AnimatedNavbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 import LeadMagnetHost from "@/components/lead/LeadMagnetHost";
+import CookieBanner from "@/components/consent/CookieBanner";
 import { routes } from "./routes";
+import { installContactClickTracking } from "@/lib/analytics";
 
 /**
  * While the page is being prerendered and hydrated, tell framer-motion to skip
@@ -67,6 +69,7 @@ function AppContent() {
     setHydrated(true);
     initializeSecurityMeasures();
     protectConsole();
+    return installContactClickTracking();
   }, []);
 
   return (
@@ -97,6 +100,7 @@ function AppContent() {
         <Footer />
         <WhatsAppFloatingButton />
         {hydrated && <LeadMagnetHost />}
+        {hydrated && <CookieBanner />}
       </div>
     </PresenceContext.Provider>
   );

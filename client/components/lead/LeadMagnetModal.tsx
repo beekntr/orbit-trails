@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { OrbitTrailsAPI } from "@shared/api";
 import { routePlanner } from "@/data/northIndiaRoute";
-import { track } from "@/lib/analytics";
+import { track, trackLead } from "@/lib/analytics";
 import { DIAL_CODES } from "@/components/planner/plannerOptions";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -110,7 +110,7 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
     }
 
     setStatus("done");
-    track("generate_lead", { method: "lead_magnet", trigger });
+    trackLead("lead_magnet", { trigger });
     startDownload();
   };
 

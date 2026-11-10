@@ -23,14 +23,37 @@
     <link rel="dns-prefetch" href="https://api.orbittrails.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q5PRKK6LJ3"></script>
+    <!--
+      Google tag with Consent Mode v2. Nothing that stores data is allowed until
+      the visitor chooses in the cookie banner (client/components/consent).
+      A choice saved on an earlier visit is applied here, before the first
+      page view. The storage key must match CONSENT_STORAGE_KEY in lib/consent.ts.
+    -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      try {
+        var saved = JSON.parse(localStorage.getItem('ot_consent_v1') || 'null');
+        if (saved) {
+          var ads = saved.marketing ? 'granted' : 'denied';
+          gtag('consent', 'update', {
+            analytics_storage: saved.analytics ? 'granted' : 'denied',
+            ad_storage: ads, ad_user_data: ads, ad_personalization: ads
+          });
+        }
+      } catch (e) {}
       gtag('js', new Date());
       gtag('config', 'G-Q5PRKK6LJ3');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q5PRKK6LJ3"></script>
   </head>
 
   <body>

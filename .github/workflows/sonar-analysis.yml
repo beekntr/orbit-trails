@@ -42,7 +42,26 @@ jobs:
         npm run build:client || echo "⚠️ Client build not configured"
         npm run build:server || echo "⚠️ Server build not configured"
     
+    # The scan needs a SONAR_TOKEN repository secret. Without one the scanner
+    # fails with "Not authorized or organization not found", which is why this
+    # job had never passed. SonarCloud's own automatic analysis (the separate
+    # "SonarCloud Code Analysis" check) still scans every push and PR, so the
+    # scan here is skipped instead of failing the build. The token stays
+    # scoped to the two steps that need it.
+    - name: 🔑 Check for SonarCloud token
+      id: sonar-token
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        if [ -n "$SONAR_TOKEN" ]; then
+          echo "present=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "present=false" >> "$GITHUB_OUTPUT"
+          echo "::notice title=SonarCloud scan skipped::No SONAR_TOKEN secret is configured. SonarCloud automatic analysis still runs as the 'SonarCloud Code Analysis' check."
+        fi
+
     - name: 📊 SonarCloud Scan
+      if: steps.sonar-token.outputs.present == 'true'
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

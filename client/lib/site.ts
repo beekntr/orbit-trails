@@ -48,6 +48,18 @@ export const SITE = {
   reviewLinks: {
     google: "https://g.page/r/CQ2WqLkvSRQAEAI/review",
   },
+  /**
+   * Advertising IDs. Leave empty until the accounts exist; nothing loads for an
+   * empty value. All are public identifiers, safe to keep in the code.
+   */
+  tracking: {
+    /** Meta Events Manager > Data sources > your pixel: a 15-16 digit number. */
+    metaPixelId: "",
+    /** Google Ads > Goals > Conversions > your lead conversion > Tag setup: "AW-123456789". */
+    googleAdsId: "",
+    /** From the same screen: the part after the slash in send_to, e.g. "AbC-D_efG1234". */
+    googleAdsLeadLabel: "",
+  },
   /** Shown under "Government Approved Operator", e.g. the approving body and registration number. */
   accreditation: "",
 } as const;

@@ -8,6 +8,7 @@ import { OrbitTrailsAPI } from "@shared/api";
 import { useToast } from "@/hooks/use-toast";
 import Seo from "@/components/seo/Seo";
 import { breadcrumbSchema } from "@/lib/schema";
+import { trackLead } from "@/lib/analytics";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -44,6 +45,7 @@ export default function Contact() {
       const response = await OrbitTrailsAPI.submitContact(cleanedFormData);
       
       if (response.success) {
+        trackLead("contact_form");
         toast({
           title: "Message Sent Successfully! ✉️",
           description: response.message || "Thank you! Your message has been sent successfully. We will get back to you soon!",

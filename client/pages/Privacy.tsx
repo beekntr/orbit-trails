@@ -10,7 +10,7 @@ export default function Privacy() {
     dpo: "Data Protection Officer (DPO)",
     company: "Orbit Trails Private Limited",
     address: "68/52 Pratap Nagar, Jaipur",
-    phone: "+91 98292 71900",
+    phone: "+91 86199 74762",
     email: "privacy@orbittrails.com",
     hours: "9:00 AM – 9:00 PM IST, Monday – Sunday"
   };

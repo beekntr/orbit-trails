@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Instagram, Twitter, Mail, Phone } from "lucide-react";
+import { MapPin, Instagram, Twitter, Linkedin, Mail, Phone } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 export default function Footer() {
@@ -52,6 +52,16 @@ export default function Footer() {
                 title="Follow us on Twitter"
               >
                 <Twitter className="w-5 h-5" />
+              </a>
+              <a
+                href={SITE.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-primary transition-colors"
+                title="Orbit Trails on LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
+                <span className="sr-only">LinkedIn</span>
               </a>
             </div>
           </div>

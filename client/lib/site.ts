@@ -33,6 +33,7 @@ export const SITE = {
   social: {
     instagram: "https://www.instagram.com/orbittrails9/",
     twitter: "https://twitter.com/orbittrails",
+    linkedin: "https://in.linkedin.com/company/orbit-trails",
   },
   /**
    * Public review listings. Leave a value empty until the listing exists:

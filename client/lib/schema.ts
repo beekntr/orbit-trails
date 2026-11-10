@@ -31,6 +31,7 @@ export function organizationSchema() {
   const sameAs = [
     SITE.social.instagram,
     SITE.social.twitter,
+    SITE.social.linkedin,
     ...Object.values(SITE.reviewProfiles),
   ].filter(Boolean);
 

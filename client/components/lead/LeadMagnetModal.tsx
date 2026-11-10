@@ -8,8 +8,29 @@ import { Label } from "@/components/ui/label";
 import { OrbitTrailsAPI } from "@shared/api";
 import { routePlanner } from "@/data/northIndiaRoute";
 import { track } from "@/lib/analytics";
+import { DIAL_CODES } from "@/components/planner/plannerOptions";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const selectClass =
+  "h-10 w-32 shrink-0 rounded-md border border-input bg-background px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
+/** Region (from the browser's language, e.g. "en-GB") to calling code, so most visitors never touch the selector. */
+const REGION_DIAL: Record<string, string> = {
+  US: "+1", CA: "+1", GB: "+44", AU: "+61", IE: "+353", DE: "+49", FR: "+33", NL: "+31",
+  ES: "+34", IT: "+39", CH: "+41", SE: "+46", ZA: "+27", SA: "+966", AE: "+971", NZ: "+64",
+  SG: "+65", IN: "+91",
+};
+
+function guessDialCode(): string {
+  const languages = typeof navigator !== "undefined" ? navigator.languages ?? [navigator.language] : [];
+  for (const language of languages) {
+    const region = language?.split("-")[1]?.toUpperCase();
+    if (region && REGION_DIAL[region]) return REGION_DIAL[region];
+  }
+  return "+1";
+}
+
+type Field = "name" | "email" | "phone";
 
 function startDownload() {
   const link = document.createElement("a");
@@ -36,7 +57,11 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
   const { pathname } = useLocation();
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [dial, setDial] = useState(guessDialCode);
+  const [phone, setPhone] = useState("");
   const [company, setCompany] = useState(""); // honeypot
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
+  /** A problem with the request as a whole (server refused it, or could not be reached). */
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
 
@@ -50,11 +75,17 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
     event.preventDefault();
     if (status === "submitting") return;
 
-    if (!EMAIL_PATTERN.test(email.trim())) {
-      setError("Please enter a valid email address.");
+    const nextErrors: Partial<Record<Field, string>> = {};
+    if (firstName.trim().length < 2) nextErrors.name = "Please enter your first name.";
+    if (!EMAIL_PATTERN.test(email.trim())) nextErrors.email = "Please enter a valid email address.";
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 6 || digits.length > 15) nextErrors.phone = "Please enter your phone number.";
+    setErrors(nextErrors);
+    setError(null);
+    if (Object.keys(nextErrors).length) {
+      document.getElementById(`lead-${Object.keys(nextErrors)[0]}`)?.focus();
       return;
     }
-    setError(null);
 
     if (company) {
       setStatus("done");
@@ -63,8 +94,9 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
 
     setStatus("submitting");
     const response = await OrbitTrailsAPI.submitContact({
-      name: firstName.trim() || "Route planner download",
+      name: firstName.trim(),
       email: email.trim(),
+      phone: `${dial} ${phone.replace(/[^\d\s-]/g, "").trim()}`,
       message: `Lead magnet: requested "${routePlanner.title}" (PDF). Page: ${pathname}. Opened by: ${trigger}.`,
       source: "lead-magnet",
     });
@@ -110,7 +142,7 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
           </div>
 
           {/* Form */}
-          <div className="p-8 md:col-span-3">
+          <div className="max-h-[90vh] overflow-y-auto p-6 sm:p-8 md:col-span-3">
             {status === "done" ? (
               <div role="status">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -150,16 +182,22 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
 
                 <div className="mt-6 space-y-4">
                   <div>
-                    <Label htmlFor="lead-first-name">
-                      First name <span className="font-normal text-gray-500">(optional)</span>
-                    </Label>
+                    <Label htmlFor="lead-name">First name</Label>
                     <Input
-                      id="lead-first-name"
+                      id="lead-name"
                       autoComplete="given-name"
+                      required
                       value={firstName}
                       onChange={(event) => setFirstName(event.target.value)}
+                      aria-invalid={Boolean(errors.name)}
+                      aria-describedby={errors.name ? "lead-name-error" : undefined}
                       className="mt-1.5"
                     />
+                    {errors.name && (
+                      <p id="lead-name-error" className="mt-1 text-sm text-destructive" role="alert">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="lead-email">Email</Label>
@@ -171,16 +209,57 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
                       required
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
-                      aria-invalid={Boolean(error)}
-                      aria-describedby={error ? "lead-email-error" : undefined}
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? "lead-email-error" : undefined}
                       className="mt-1.5"
                     />
-                    {error && (
+                    {errors.email && (
                       <p id="lead-email-error" className="mt-1 text-sm text-destructive" role="alert">
-                        {error}
+                        {errors.email}
                       </p>
                     )}
                   </div>
+                  <div>
+                    <Label htmlFor="lead-phone">
+                      Phone number <span className="font-normal text-gray-500">(WhatsApp if you have it)</span>
+                    </Label>
+                    <div className="mt-1.5 flex gap-2">
+                      <select
+                        aria-label="Country calling code"
+                        value={dial}
+                        onChange={(event) => setDial(event.target.value)}
+                        className={selectClass}
+                      >
+                        {DIAL_CODES.map((item) => (
+                          <option key={item.dial} value={item.dial}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Input
+                        id="lead-phone"
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="tel-national"
+                        required
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
+                        aria-invalid={Boolean(errors.phone)}
+                        aria-describedby={errors.phone ? "lead-phone-error" : undefined}
+                        className="flex-1"
+                      />
+                    </div>
+                    {errors.phone && (
+                      <p id="lead-phone-error" className="mt-1 text-sm text-destructive" role="alert">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+                  {error && (
+                    <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-destructive" role="alert">
+                      {error}
+                    </p>
+                  )}
                   <div className="hidden" aria-hidden="true">
                     <label htmlFor="lead-company">Company</label>
                     <input
@@ -212,8 +291,8 @@ export default function LeadMagnetModal({ trigger, onClose }: LeadMagnetModalPro
                   )}
                 </Button>
                 <p className="mt-3 text-xs text-gray-500">
-                  We use your email to follow up about your India trip. No spam, and you can ask us
-                  to stop at any time. See our{" "}
+                  We use your email and phone number to follow up about your India trip. No spam,
+                  and you can ask us to stop at any time. See our{" "}
                   <Link to="/privacy" className="underline" onClick={() => onClose(false)}>
                     privacy policy
                   </Link>

@@ -54,7 +54,7 @@ export const SITE = {
    */
   tracking: {
     /** Meta Events Manager > Data sources > your pixel: a 15-16 digit number. */
-    metaPixelId: "",
+    metaPixelId: "1828586951682574",
     /** Google Ads > Goals > Conversions > your lead conversion > Tag setup: "AW-123456789". */
     googleAdsId: "",
     /** From the same screen: the part after the slash in send_to, e.g. "AbC-D_efG1234". */

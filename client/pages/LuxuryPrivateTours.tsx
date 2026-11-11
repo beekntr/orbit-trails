@@ -60,7 +60,7 @@ export default function LuxuryPrivateTours() {
     <>
       <Seo
         title="Luxury Private Tours of India | Tailor-Made | Orbit Trails"
-        description="Luxury private tours of India designed around you: tailor-made itineraries, palace hotels, your own driver and expert guides, with 24/7 local support. Free quote in 24 hours."
+        description="Luxury private tours of India designed around you: tailor-made itineraries, palace hotels, your own driver and guides, and 24/7 local support."
         path={PATH}
         image={HERO_IMAGE}
         jsonLd={[

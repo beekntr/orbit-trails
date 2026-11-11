@@ -54,8 +54,8 @@ export default function Index() {
   return (
     <>
       <Seo
-        title="Private India Tours: Golden Triangle & Rajasthan | Orbit Trails"
-        description="Private, tailor-made tours of India with your own driver, expert guides and hand-picked heritage hotels. Golden Triangle, Rajasthan and beyond, planned around you."
+        title="Golden Triangle & Rajasthan Private Tours | Orbit Trails"
+        description="Private, tailor-made tours of India with your own driver, expert guides and hand-picked heritage hotels: the Golden Triangle, Rajasthan and beyond."
         path="/"
         jsonLd={[
           faqSchema(homeFaqs),
@@ -81,7 +81,9 @@ export default function Index() {
                   alt={image.alt}
                   priority={index === 0}
                   sizes="100vw"
-                  widths={[640, 960, 1280, 1920]}
+                  widths={[480, 750, 1080, 1440, 1920]}
+                  width={1920}
+                  height={1080}
                   fallbackSrc={null}
                   className="h-full w-full bg-secondary object-cover"
                 />

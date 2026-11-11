@@ -42,6 +42,7 @@ export default function AnimatedNavbar() {
               <img
                 src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
+                width={302}
                 height={32}
                 decoding="async"
                 className="h-8 w-auto"

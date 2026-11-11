@@ -14,6 +14,7 @@ export default function Footer() {
               <img
                 src="https://images.orbittrails.com/ORBIT.png"
                 alt="Orbit Trails Logo"
+                width={302}
                 height={32}
                 loading="lazy"
                 decoding="async"
@@ -151,11 +152,13 @@ export default function Footer() {
                 <div className="font-semibold text-primary mb-1">India Office</div>
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-gray-300">
-                    <p>Orbit Trails</p>
-                    <p>68/52, Pratap Nagar</p>
-                    <p>Jaipur, Rajasthan, India</p>
-                  </div>
+                  <address className="text-sm not-italic text-gray-300">
+                    Orbit Trails
+                    <br />
+                    68/52, Pratap Nagar
+                    <br />
+                    Jaipur, Rajasthan 302033, India
+                  </address>
                 </div>
                 <div className="flex items-center space-x-3 mt-2">
                   <Mail className="w-5 h-5 text-primary flex-shrink-0" />

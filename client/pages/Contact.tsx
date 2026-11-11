@@ -192,13 +192,13 @@ return (
                             <h3 className="font-semibold text-secondary mb-1">
                               Office Address
                             </h3>
-                            <p className="text-gray-600">
+                            <address className="text-gray-600 not-italic">
                               Orbit Trails
                               <br />
                               68/52, Pratap Nagar
                               <br />
-                              Jaipur, Rajasthan, India
-                            </p>
+                              Jaipur, Rajasthan 302033, India
+                            </address>
                           </div>
                         </div>
                       </CardContent>

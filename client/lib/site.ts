@@ -21,6 +21,7 @@ export const SITE = {
       streetAddress: "68/52, Pratap Nagar",
       addressLocality: "Jaipur",
       addressRegion: "Rajasthan",
+      postalCode: "302033",
       addressCountry: "IN",
     },
     uk: {

@@ -58,6 +58,9 @@ export default function PhotoGrid({ photos, columns = 4, className }: PhotoGridP
                 src={photoUrl(photo)}
                 alt={photo.alt}
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                widths={[320, 480, 640]}
+                width={480}
+                height={480}
                 fallbackSrc={null}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

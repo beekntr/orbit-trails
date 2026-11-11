@@ -19,7 +19,7 @@ export default function Gallery() {
   return (
     <>
       <Seo
-        title="Guest Gallery: Photos from Our Private India Tours | Orbit Trails"
+        title="Guest Gallery: Private India Tour Photos | Orbit Trails"
         description="Photos from Orbit Trails guests on private tours of Jaipur and Rajasthan: garland welcomes, Amber Fort, street food and the sights along the way."
         path={PATH}
         image={photoUrl(guestPhotos[0])}

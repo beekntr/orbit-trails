@@ -270,7 +270,7 @@ Start your golden journey today with Orbit Trails – where every trip is a memo
     readTime: "15 min read",
     featuredImage: "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Golden Triangle Tour in India - Delhi, Agra, Jaipur",
-    metaTitle: "Golden Triangle Tour Guide - Delhi, Agra, Jaipur | Orbit Trails",
+    metaTitle: "Golden Triangle Tour Guide: Delhi, Agra & Jaipur",
     metaDescription: "Explore India's most iconic travel circuit – Delhi, Agra & Jaipur. Discover itineraries, tips, and best Golden Triangle tour packages by Orbit Trails.",
     keywords: ["golden triangle tour", "delhi agra jaipur", "india travel guide", "taj mahal tour", "rajasthan travel", "india tourism", "orbit trails packages"],
     featured: true
@@ -606,8 +606,8 @@ Remember, Rajasthan's magic transcends seasons, but choosing the right time will
     readTime: "8 min read",
     featuredImage: "https://images.unsplash.com/photo-1599661046827-dacbb2298088?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Rajasthan palace and desert landscape showing best travel seasons",
-    metaTitle: "Best Time to Visit Rajasthan | Weather Guide & Travel Tips - Orbit Trails",
-    metaDescription: "Discover the best time to visit Rajasthan with our detailed weather guide. Learn about seasons, festivals, and perfect months for your royal Rajasthan adventure.",
+    metaTitle: "Best Time to Visit Rajasthan: Weather & Season Guide",
+    metaDescription: "The best time to visit Rajasthan, month by month: weather, seasons, festivals and the perfect months for your royal Rajasthan adventure.",
     keywords: ["best time visit rajasthan", "rajasthan weather", "rajasthan seasons", "when to visit rajasthan", "rajasthan travel planning"],
     featured: true
   },
@@ -973,7 +973,7 @@ The food of Rajasthan is not just sustenance—it's an integral part of the cult
     readTime: "10 min read",
     featuredImage: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Traditional Rajasthani thali with dal baati churma and royal cuisine dishes",
-    metaTitle: "Rajasthani Food Guide | 15 Must-Try Royal Dishes & Cuisine - Orbit Trails",
+    metaTitle: "Rajasthani Food Guide: 15 Must-Try Royal Dishes",
     metaDescription: "Discover authentic Rajasthani cuisine with our food guide. Learn about 15 must-try royal dishes, local specialties, and best restaurants in Rajasthan.",
     keywords: ["rajasthani food", "rajasthani cuisine", "dal baati churma", "laal maas", "rajasthan food guide", "indian royal cuisine"],
     featured: true
@@ -1356,7 +1356,7 @@ The key to safe travel in India is preparation, awareness, and flexibility. Embr
     readTime: "11 min read",
     featuredImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Safe travel in India showing tourists exploring local markets and monuments",
-    metaTitle: "India Travel Safety Guide | Essential Tips for First-Time Visitors - Orbit Trails",
+    metaTitle: "India Travel Safety Guide for First-Time Visitors",
     metaDescription: "Essential India travel safety tips for first-time visitors. Health, money, cultural etiquette, and transportation safety guide for a worry-free India trip.",
     keywords: ["india travel safety", "india safety tips", "first time india travel", "india travel guide", "safe travel india"],
     featured: false
@@ -1762,7 +1762,7 @@ Plan your trip around these incredible celebrations, and discover why India trul
     readTime: "9 min read",
     featuredImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Colorful Indian festival celebration with traditional decorations and cultural performances",
-    metaTitle: "India Festivals Guide | Cultural Experiences & Celebrations - Orbit Trails",
+    metaTitle: "India Festivals Guide: Holi, Diwali & Cultural Celebrations",
     metaDescription: "Discover India's vibrant festivals and cultural celebrations. Complete guide to Holi, Diwali, regional festivals, and authentic cultural experiences.",
     keywords: ["india festivals", "indian cultural festivals", "holi festival", "diwali celebration", "india cultural experiences"],
     featured: false
@@ -2093,7 +2093,7 @@ The Taj Mahal will reward your photographic efforts with images that capture not
     readTime: "7 min read",
     featuredImage: "https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Perfect Taj Mahal photography shot during golden hour with reflection pool",
-    metaTitle: "Taj Mahal Photography Guide | Best Shots & Tips - Orbit Trails",
+    metaTitle: "Taj Mahal Photography Guide: Best Shots & Tips",
     metaDescription: "Complete Taj Mahal photography guide with best angles, lighting tips, and secret spots. Capture stunning photos of the world's most beautiful monument.",
     keywords: ["taj mahal photography", "taj mahal photos", "agra photography", "india photography guide", "monument photography"],
     featured: false

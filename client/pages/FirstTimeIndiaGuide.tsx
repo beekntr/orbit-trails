@@ -311,7 +311,7 @@ export default function FirstTimeIndiaGuide() {
     <>
       <Seo
         title="India Travel Guide for First-Time Visitors | Orbit Trails"
-        description="A practical first-time India travel guide: visas, safety, health and drinking water, money, etiquette, when to go and what to pack, from a tour operator based in India."
+        description="A practical first-time India travel guide: visas, safety, health and water, money, etiquette, when to go and what to pack, from a Jaipur tour operator."
         path={PATH}
         image={HERO_IMAGE}
         type="article"

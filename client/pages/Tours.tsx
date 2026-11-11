@@ -33,8 +33,8 @@ export default function Tours() {
   return (
     <>
       <Seo
-        title="India Tour Packages: Golden Triangle & Rajasthan | Orbit Trails"
-        description="Browse private India tour itineraries: Golden Triangle classics, royal Rajasthan journeys and extended trips. Every itinerary can be tailored to your dates and budget."
+        title="India Tour Packages: Golden Triangle & Rajasthan"
+        description="Private India tour itineraries: Golden Triangle classics, royal Rajasthan journeys and longer trips, each tailored to your dates and budget."
         path="/tours"
         jsonLd={[
           breadcrumbSchema(crumbs),

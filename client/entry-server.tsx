@@ -11,7 +11,7 @@ import { matchRoute } from "./routes";
 import { blogPosts } from "./data/blogData";
 import { tourKeys, toTourSummary } from "./hooks/useTours";
 
-export { tourKeys, toTourSummary };
+export { tourKeys, toTourSummary, blogPosts };
 
 export type QuerySeed = [readonly unknown[], unknown];
 

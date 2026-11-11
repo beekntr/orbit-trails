@@ -7,7 +7,7 @@ export default function About() {
     <div>
       <Seo
         title="About Orbit Trails | India Tour Operator Based in Jaipur"
-        description="Learn about Orbit Trails, your trusted India travel partner. We specialize in creating authentic, luxurious experiences across India's Golden Triangle and royal Rajasthan."
+        description="Orbit Trails is a Jaipur-based tour operator creating private, tailor-made journeys through India's Golden Triangle, royal Rajasthan and beyond."
         path="/about"
         jsonLd={breadcrumbSchema([
           { name: "Home", path: "/" },

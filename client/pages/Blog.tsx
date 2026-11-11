@@ -30,8 +30,8 @@ export default function Blog() {
   return (
     <div>
       <Seo
-        title="India Travel Blog | Expert Guides & Tips - Orbit Trails"
-        description="Discover India through our expert travel blog: Golden Triangle guides, Rajasthan travel tips, cultural insights, food guides and essential advice for your India journey."
+        title="India Travel Blog: Guides & Tips | Orbit Trails"
+        description="India travel guides from a Jaipur tour operator: Golden Triangle and Rajasthan itineraries, safaris, food, festivals and first-timer tips."
         path="/blog"
         jsonLd={breadcrumbSchema([
           { name: "Home", path: "/" },

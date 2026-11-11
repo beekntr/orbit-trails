@@ -84,10 +84,58 @@ function preloadTags(manifest, source) {
 
 function buildPage(template, { head, body, seeds, preloads }) {
   const state = seeds.length ? `<script>window.__ORBIT_DATA__=${embed(seeds)}</script>` : "";
+
+  // React emits <link rel="preload" as="image"> for the page's main image. Put it
+  // before the scripts so phones on slow connections fetch the hero photo first
+  // (it is usually the Largest Contentful Paint), then the JavaScript.
+  const imagePreloads = (head.match(/<link rel="preload" as="image"[^>]*>/g) ?? []).sort(
+    (a, b) => Number(/fetchpriority="high"/i.test(b)) - Number(/fetchpriority="high"/i.test(a)),
+  );
+  const restOfHead = imagePreloads.reduce((html, tag) => html.replace(tag, ""), head);
+
+  // Vite already preloads the entry's shared chunks: don't list them twice.
+  const uniquePreloads = preloads
+    .split(/(?=<link )/)
+    .filter((tag) => tag && !template.includes(tag.match(/href="([^"]+)"/)?.[1] ?? "\0"))
+    .join("");
+
   return template
     .replace(/<title>[\s\S]*?<\/title>\s*/, "")
-    .replace("</head>", `${head}${preloads}</head>`)
+    .replace(/(<link rel="dns-prefetch"[^>]*>\s*)(?![\s\S]*<link rel="dns-prefetch")/, `$1${imagePreloads.join("")}`)
+    .replace("</head>", `${restOfHead}${uniquePreloads}</head>`)
     .replace('<div id="root"></div>', `<div id="root">${body}</div>${state}`);
+}
+
+/** llms.txt: a plain-text map of the site for AI assistants (https://llmstxt.org). */
+function llmsTxt({ tours, blogPosts }) {
+  const line = (title, path, note) => `- [${title}](${SITE_URL}${path})${note ? `: ${note}` : ""}`;
+  return [
+    "# Orbit Trails",
+    "",
+    "> Orbit Trails is a tour operator based in Jaipur, India, offering private, tailor-made tours of India for international travellers: the Golden Triangle (Delhi, Agra, Jaipur), Rajasthan and beyond, with a private car and English-speaking driver, local guides and hand-picked hotels.",
+    "",
+    "Contact: info@orbittrails.com, +91 86199 74762 (also WhatsApp). Office: 68/52, Pratap Nagar, Jaipur, Rajasthan 302033, India. Free tailor-made quotes via the trip planner.",
+    "",
+    "## Plan a trip",
+    line("Plan your tailor-made India trip", "/plan-my-trip", "four quick questions; a specialist replies within 24 hours"),
+    line("Luxury private tours of India", "/luxury-private-tours-india", "how private, tailor-made tours work"),
+    line("All India tour packages", "/tours"),
+    line("Contact", "/contact"),
+    "",
+    "## Tours",
+    ...tours.map((tour) =>
+      line(tour.name.replace(/\s+/g, " ").trim(), `/tour-details/${tour.slug}`, [tour.duration, (tour.destinations || []).join(", ")].filter(Boolean).join("; ")),
+    ),
+    "",
+    "## Travel guides",
+    line("India travel guide for first-time visitors", "/india-travel-guide-first-time-visitors", "visas, safety, health, money, etiquette"),
+    ...blogPosts.map((post) => line(post.title, `/blog/${post.slug}`)),
+    "",
+    "## About",
+    line("About Orbit Trails", "/about"),
+    line("Guest gallery", "/gallery"),
+    "",
+  ].join("\n");
 }
 
 async function writePage(route, html) {
@@ -119,7 +167,7 @@ async function main() {
   } catch {
     throw new Error("No fresh client build found. Run `npm run build:static` (it builds, then prerenders).");
   }
-  const { render, staticPaths, tourKeys, toTourSummary } = await import(
+  const { render, staticPaths, tourKeys, toTourSummary, blogPosts } = await import(
     pathToFileURL(ssrEntry).href
   );
 
@@ -190,6 +238,8 @@ async function main() {
   }
 
   await fs.writeFile(path.join(outDir, "sitemap.xml"), sitemap(pages), "utf8");
+  await fs.writeFile(path.join(outDir, "llms.txt"), llmsTxt({ tours, blogPosts }), "utf8");
+  console.log("  llms.txt     ->  site summary for AI assistants");
   console.log(`  sitemap.xml  ->  ${pages.length} URLs`);
 
   // Build metadata is not meant to be public.

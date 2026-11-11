@@ -116,9 +116,9 @@ Our [Golden Triangle and Roaring Ranthambore tour](/tour-details/golden-triangle
     readTime: "6 min read",
     featuredImage: "https://images.orbittrails.com/gt-ranthambore.webp",
     altText: "Close-up of a Bengal tiger, the animal every Ranthambore safari hopes to find",
-    metaTitle: "Ranthambore Tiger Safari Guide: Zones, Booking & Best Time | Orbit Trails",
+    metaTitle: "Ranthambore Tiger Safari Guide: Zones, Booking & Best Time",
     metaDescription:
-      "Plan a Ranthambore tiger safari: how the 10 zones work, gypsy vs canter, when to book, the best months for sightings, and how to add it to a Golden Triangle trip.",
+      "Plan a Ranthambore tiger safari: how the 10 zones work, gypsy vs canter, when to book, the best months, and adding it to a Golden Triangle trip.",
     keywords: [
       "ranthambore safari",
       "ranthambore tiger safari",
@@ -234,7 +234,7 @@ These itineraries are starting points. Our [Land of Kings](/tour-details/rajasth
     readTime: "6 min read",
     featuredImage: "https://images.orbittrails.com/rajasthan.jpg",
     altText: "Amber Fort near Jaipur at sunset, the first stop on most Rajasthan itineraries",
-    metaTitle: "Rajasthan Itinerary: 7, 10 & 14-Day Routes for a First Trip | Orbit Trails",
+    metaTitle: "Rajasthan Itinerary: 7, 10 & 14-Day Routes | Orbit Trails",
     metaDescription:
       "Three Rajasthan itineraries with realistic drive times: a 7-day classic, 10 days with the Taj Mahal, and 14 days with tigers, lakes and the Thar Desert.",
     keywords: [
@@ -329,9 +329,9 @@ Every [Orbit Trails tour](/tours) is private, with your own air-conditioned car 
     readTime: "5 min read",
     featuredImage: "https://images.orbittrails.com/land-of-kings.jpg",
     altText: "Jaisalmer Fort lit up at dusk at the end of a long road trip across Rajasthan",
-    metaTitle: "Hiring a Car and Driver in India: Costs & Tips | Orbit Trails",
+    metaTitle: "Hiring a Car and Driver in India: Costs and Tips",
     metaDescription:
-      "How hiring a private car and driver in India works: what the price includes, which car to choose, where drivers sleep, tipping and safety tips for first-time visitors.",
+      "How hiring a private car and driver in India works: what the price includes, which car to choose, where drivers sleep, tipping and safety tips.",
     keywords: [
       "car and driver india",
       "private driver india",

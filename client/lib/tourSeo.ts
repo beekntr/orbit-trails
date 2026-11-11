@@ -55,5 +55,9 @@ export function tourTagline(tour: TourNaming): string | null {
 /** <title> for a tour page, e.g. "Land of Kings: 11-Day Private Rajasthan Tour | Orbit Trails". */
 export function tourPageTitle(tour: TourNaming): string {
   const tagline = tourTagline(tour);
-  return `${cleanTourName(tour.name)}${tagline ? `: ${tagline}` : ""} | Orbit Trails`;
+  const title = `${cleanTourName(tour.name)}${tagline ? `: ${tagline}` : ""}`;
+  // Google shows about 60 characters. Keep the brand only when it fits, so the
+  // search phrase is never the part that gets cut off.
+  const branded = `${title} | Orbit Trails`;
+  return branded.length <= 60 ? branded : title;
 }

@@ -110,7 +110,7 @@ export default function BlogPost() {
         image={blog.featuredImage}
         imageAlt={blog.altText}
         type="article"
-        article={{ publishedTime: blog.publishDate, modifiedTime: blog.publishDate, author: blog.author }}
+        article={{ publishedTime: blog.publishDate, modifiedTime: blog.updatedDate ?? blog.publishDate, author: blog.author }}
         jsonLd={[
           articleSchema({
             title: blog.title,
@@ -119,6 +119,7 @@ export default function BlogPost() {
             image: blog.featuredImage,
             author: blog.author,
             datePublished: blog.publishDate,
+            dateModified: blog.updatedDate,
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -184,11 +185,14 @@ export default function BlogPost() {
                 <div className="p-2 bg-accent/10 rounded-full">
                   <Calendar className="w-4 h-4 text-accent" />
                 </div>
-                <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</span>
+                <span>
+                  {blog.updatedDate ? "Updated " : ""}
+                  {new Date(blog.updatedDate ?? blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="p-2 bg-green-100 rounded-full">

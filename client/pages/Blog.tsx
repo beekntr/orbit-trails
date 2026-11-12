@@ -138,9 +138,10 @@ export default function Blog() {
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-1">
                         <Calendar className="w-4 h-4" />
-                        <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC', 
-                          month: 'short', 
-                          day: 'numeric' 
+                        <span>{new Date(blog.publishDate).toLocaleDateString('en-US', { timeZone: 'UTC',
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
                         })}</span>
                       </div>
                       <div className="flex items-center space-x-1">

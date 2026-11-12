@@ -1,5 +1,6 @@
 // Blog data structure for Orbit Trails
 import { novemberPosts } from "./blogPostsNov2026";
+import { placesPosts } from "./blogPostsPlaces";
 // Each blog will have its own dedicated page and strong SEO
 
 export interface BlogPost {
@@ -2101,7 +2102,7 @@ The Taj Mahal will reward your photographic efforts with images that capture not
 ];
 
 // Newest first: the blog page lists posts in this order.
-export const blogPosts: BlogPost[] = [...novemberPosts, ...olderPosts];
+export const blogPosts: BlogPost[] = [...placesPosts, ...novemberPosts, ...olderPosts];
 
 // Get blog post by slug
 export const getBlogBySlug = (slug: string): BlogPost | undefined => {

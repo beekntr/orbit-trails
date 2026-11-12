@@ -263,52 +263,52 @@ export default function BlogPost() {
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeSanitize]}
                     components={{
-                      h1: ({children, ...props}) => (
+                      h1: ({children, node: _node, ...props}) => (
                         <h1 {...props} id={String(children).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')} 
                             className="text-4xl font-bold text-gray-900 mb-6 pt-8 border-b-2 border-primary/20 pb-4">
                           {children}
                         </h1>
                       ),
-                      h2: ({children, ...props}) => (
+                      h2: ({children, node: _node, ...props}) => (
                         <h2 {...props} id={String(children).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')} 
                             className="text-3xl font-bold text-gray-800 mb-5 pt-8 flex items-center">
                           <span className="w-1 h-8 bg-gradient-to-b from-primary to-accent rounded-full mr-4"></span>
                           {children}
                         </h2>
                       ),
-                      h3: ({children, ...props}) => (
+                      h3: ({children, node: _node, ...props}) => (
                         <h3 {...props} id={String(children).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')} 
                             className="text-2xl font-semibold text-gray-800 mb-4 pt-6">
                           {children}
                         </h3>
                       ),
-                      p: ({children, ...props}) => (
+                      p: ({children, node: _node, ...props}) => (
                         <p {...props} className="text-gray-700 leading-relaxed mb-6 text-lg">
                           {children}
                         </p>
                       ),
-                      ul: ({children, ...props}) => (
+                      ul: ({children, node: _node, ...props}) => (
                         <ul {...props} className="space-y-2 mb-6 ml-6">
                           {children}
                         </ul>
                       ),
-                      li: ({children, ...props}) => (
+                      li: ({children, node: _node, ...props}) => (
                         <li {...props} className="text-gray-700 leading-relaxed flex items-start">
                           <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
                           <span>{children}</span>
                         </li>
                       ),
-                      blockquote: ({children, ...props}) => (
+                      blockquote: ({children, node: _node, ...props}) => (
                         <blockquote {...props} className="border-l-4 border-accent bg-accent/5 p-6 rounded-r-lg my-8 italic">
                           {children}
                         </blockquote>
                       ),
-                      strong: ({children, ...props}) => (
+                      strong: ({children, node: _node, ...props}) => (
                         <strong {...props} className="font-semibold text-primary">
                           {children}
                         </strong>
                       ),
-                      a: ({children, href, ...props}) => (
+                      a: ({children, href, node: _node, ...props}) => (
                         <a {...props} href={href} className="text-primary hover:text-primary/80 underline font-medium transition-colors">
                           {children}
                         </a>

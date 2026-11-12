@@ -58,7 +58,7 @@ export function staticPaths() {
     ...blogPosts.map((post) => ({
       path: `/blog/${post.slug}`,
       needsTours: false,
-      lastmod: post.publishDate?.slice(0, 10) || today,
+      lastmod: (post.updatedDate ?? post.publishDate)?.slice(0, 10) || today,
     })),
     { path: "/privacy", needsTours: false, lastmod: today },
     { path: "/terms", needsTours: false, lastmod: today },

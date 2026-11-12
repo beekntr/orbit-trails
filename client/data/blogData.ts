@@ -13,6 +13,8 @@ export interface BlogPost {
   tags: string[];
   author: string;
   publishDate: string;
+  /** Set when a post is revised; shown as "Updated" and used for dateModified. */
+  updatedDate?: string;
   readTime: string;
   featuredImage: string;
   altText: string;
@@ -27,24 +29,18 @@ const olderPosts: BlogPost[] = [
   {
     id: "1",
     slug: "complete-golden-triangle-travel-guide-2025",
-    title: "The Ultimate Golden Triangle Tour Guide (Delhi, Agra & Jaipur) – Orbit Trails",
+    title: "The Ultimate Golden Triangle Tour Guide: Delhi, Agra & Jaipur",
     excerpt: "Explore India's Heritage, Culture, and Royalty in One Magical Journey. Discover the essence of India's history, culture, and architecture with our expertly curated Golden Triangle tour packages.",
-    content: `# The Ultimate Golden Triangle Tour Guide (Delhi, Agra & Jaipur) – Orbit Trails
-
-## Explore India's Heritage, Culture, and Royalty in One Magical Journey
-
-### Introduction
-
-If you're visiting India for the first time or want to discover the essence of its history, culture, and architecture, then the Golden Triangle Tour is your perfect itinerary. Covering three iconic cities – Delhi, Agra, and Jaipur – this circuit forms a triangle on the map and takes you through India's glorious past, vibrant present, and promising future.
+    content: `If you're visiting India for the first time or want to discover the essence of its history, culture, and architecture, then the Golden Triangle Tour is your perfect itinerary. Covering three iconic cities – Delhi, Agra, and Jaipur – this circuit forms a triangle on the map and takes you through India's glorious past, vibrant present, and promising future.
 
 At Orbit Trails, we offer carefully curated Golden Triangle tour packages tailored to different travel styles and timelines, whether you're a solo traveler, a couple, or a family.
 
-👉 **Explore the 6-Day Golden Triangle Tour**  
-👉 **Explore the 4-Day Golden Triangle Tour**
+👉 [Explore the 6-Day Golden Triangle Tour](/tour-details/6-day-golden-triangle-tour-)  
+👉 [Explore the 4-Day Golden Triangle Tour](/tour-details/4-day-golden-triangle-tour)
 
 We also offer extended itineraries like:  
-🎨 **Colourful Rajasthan with Taj Mahal**  
-🏖️ **Taj to Tide: Heritage & Beaches Trail**
+🎨 [Colourful Rajasthan with Taj Mahal](/tour-details/colourful-rajasthan-with-taj-mahal)  
+🏖️ [Taj to Tide: Heritage & Beaches Trail](/tour-details/taj-to-tide-heritage-beaches-trail)
 
 Let's dive into the complete Golden Triangle experience with Orbit Trails.
 
@@ -59,8 +55,8 @@ The Golden Triangle is a popular travel route in northern India that connects th
 - Ideal duration: 4 to 6 days
 - Options to extend into Rajasthan, Goa, or Mumbai
 
-👉 **View 6-Day Golden Triangle Tour Details**  
-👉 **Short on time? Check out the 4-Day Tour**
+👉 [View the 6-Day Golden Triangle Tour](/tour-details/6-day-golden-triangle-tour-)  
+👉 [Short on time? See the 4-Day Tour](/tour-details/4-day-golden-triangle-tour)
 
 ## Golden Triangle City 1: Delhi – The Capital of Contrasts
 
@@ -70,7 +66,7 @@ Delhi offers a blend of ancient history and modern hustle. As India's capital, i
 
 - **Red Fort:** Mughal-era fort and UNESCO site
 - **Qutub Minar:** Tallest brick minaret in the world
-- **India Gate & Rajpath:** National pride and war memorial
+- **India Gate & Kartavya Path:** The national war memorial and ceremonial avenue
 - **Lotus Temple:** Icon of modern Indian architecture
 - **Chandni Chowk:** Old Delhi's spice, jewelry & food haven
 - **Humayun's Tomb:** The precursor to the Taj Mahal
@@ -82,7 +78,7 @@ Delhi offers a blend of ancient history and modern hustle. As India's capital, i
 - Light and sound show at Purana Qila
 - Shopping at Connaught Place & Janpath
 
-**Orbit Trails Tip:** Book our Delhi Day Tour to explore both Old and New Delhi with expert guides.
+**Orbit Trails Tip:** Give Delhi a full day with a licensed guide, so you can see both Old and New Delhi without rushing.
 
 ## Golden Triangle City 2: Agra – The City of Love
 
@@ -103,15 +99,15 @@ Agra is synonymous with the Taj Mahal – the symbol of eternal love. However, t
 - Visit local marble inlay artisans
 - Agra street food tour
 
-**Orbit Trails Tip:** Try the Taj Sunrise Tour for magical early-morning views.
+**Orbit Trails Tip:** See the Taj Mahal at sunrise for the softest light and the smallest crowds, and remember it is closed on Fridays. Our guide to the [best places to visit in Agra](/blog/places-to-visit-in-agra) covers the rest of the city.
 
 ## Golden Triangle City 3: Jaipur – The Pink City
 
-Jaipur is the capital of Rajasthan and the gateway to India's royal heritage. With forts, palaces, colorful bazaars, and majestic elephants, Jaipur offers a vibrant experience.
+Jaipur is the capital of Rajasthan and the gateway to India's royal heritage. With forts, palaces and colourful bazaars, Jaipur offers a vibrant experience.
 
 ### Must-Visit Attractions in Jaipur
 
-- **Amber Fort:** Stunning views and elephant rides
+- **Amber Fort:** Hilltop palace with the mirrored Sheesh Mahal
 - **Hawa Mahal:** Iconic honeycomb palace
 - **City Palace:** Museum of royal artifacts
 - **Jantar Mantar:** Ancient astronomical observatory
@@ -124,17 +120,17 @@ Jaipur is the capital of Rajasthan and the gateway to India's royal heritage. Wi
 - Pottery workshops
 - Folk dance and puppet shows
 
-**Orbit Trails Tip:** Book our Jaipur City Tour with heritage haveli stays and local guides.
+**Orbit Trails Tip:** Jaipur is our home city. See our local guide to the [best places to visit in Jaipur](/blog/places-to-visit-in-jaipur), with a two-day plan.
 
 ## Popular Packages to Extend the Golden Triangle
 
 ### 1. Colourful Rajasthan with Taj Mahal
-A 10-11 day tour covering Delhi, Agra, Jaipur, Jaisalmer, Bikaner, Jodhpur, and Udaipur. Perfect for travelers who want to blend the Golden Triangle with desert adventures and lakeside romance.  
-👉 **See Full Itinerary**
+An 11-day journey from Delhi and Agra across Rajasthan to Udaipur. Perfect for travelers who want to blend the Golden Triangle with desert forts and lakeside romance.  
+👉 [See the full itinerary](/tour-details/colourful-rajasthan-with-taj-mahal)
 
 ### 2. Taj to Tide: Heritage & Beaches Trail
 Golden Triangle plus Goa and Mumbai – combining royal India with sandy beaches and cosmopolitan vibes.  
-👉 **See Taj to Tide Tour Details**
+👉 [See the Taj to Tide tour](/tour-details/taj-to-tide-heritage-beaches-trail)
 
 ## Suggested Itineraries for Every Type of Traveler
 
@@ -145,7 +141,7 @@ Golden Triangle plus Goa and Mumbai – combining royal India with sandy beaches
 - **Day 3:** Agra Fort, Fatehpur Sikri en route to Jaipur
 - **Day 4:** Jaipur sightseeing – Amber Fort, City Palace, and return
 
-👉 **Book the 4-Day Express Tour**
+👉 [See the 4-Day Golden Triangle Tour](/tour-details/4-day-golden-triangle-tour)
 
 ### 6-Day Golden Triangle Tour – The Balanced Explorer
 
@@ -154,7 +150,7 @@ Golden Triangle plus Goa and Mumbai – combining royal India with sandy beaches
 - **Day 4-5:** Jaipur exploration
 - **Day 6:** Return to Delhi or extend to other destinations
 
-👉 **Explore the 6-Day Golden Triangle Itinerary**
+👉 [See the 6-Day Golden Triangle Tour](/tour-details/6-day-golden-triangle-tour-)
 
 ## Best Time to Visit the Golden Triangle
 
@@ -247,12 +243,12 @@ We include food walks, folk shows, craft village visits, and more—beyond just 
 ### ✅ 24x7 Support & Flexibility
 Travel worry-free with our support team available round the clock throughout your tour.
 
-### ✅ Trusted By Global Travelers
-Hundreds of 5-star reviews from tourists across Europe, the US, and Asia.
+### ✅ A Local Team in Jaipur
+We are based in Rajasthan, and we know the roads, hotels, guides and drivers we work with personally.
 
 Orbit Trails is your gateway to experiencing the true heart of India.
 
-👉 **Book Your Golden Triangle Tour Now**
+👉 [Plan your Golden Triangle tour](/plan-my-trip)
 
 ## Final Thoughts: Begin Your India Adventure with Orbit Trails
 
@@ -262,15 +258,16 @@ The Golden Triangle is the perfect introduction to India's rich culture, diverse
 
 Start your golden journey today with Orbit Trails – where every trip is a memory in the making.
 
-📩 **Contact us today to customize your tour:** hello@orbittrails.com  
-🌐 **Browse all Golden Triangle tours:** https://orbittrails.com/packages`,
+📩 **Customize your tour:** tell us your dates in our [trip planner](/plan-my-trip) or email info@orbittrails.com  
+🌐 **Browse all our tours:** [India tour packages](/tours)`,
     category: "Travel Guide",
     tags: ["Golden Triangle", "Delhi", "Agra", "Jaipur", "India Tourism", "Travel Tips", "Tour Packages"],
     author: "Orbit Trails Expert",
     publishDate: "2025-01-15",
+    updatedDate: "2026-11-12",
     readTime: "15 min read",
     featuredImage: "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    altText: "Golden Triangle Tour in India - Delhi, Agra, Jaipur",
+    altText: "The Taj Mahal in Agra, the centrepiece of a Golden Triangle tour of Delhi, Agra and Jaipur",
     metaTitle: "Golden Triangle Tour Guide: Delhi, Agra & Jaipur",
     metaDescription: "Explore India's most iconic travel circuit – Delhi, Agra & Jaipur. Discover itineraries, tips, and best Golden Triangle tour packages by Orbit Trails.",
     keywords: ["golden triangle tour", "delhi agra jaipur", "india travel guide", "taj mahal tour", "rajasthan travel", "india tourism", "orbit trails packages"],
@@ -281,9 +278,7 @@ Start your golden journey today with Orbit Trails – where every trip is a memo
     slug: "best-time-visit-rajasthan-season-weather-guide",
     title: "Best Time to Visit Rajasthan: Complete Season & Weather Guide",
     excerpt: "Planning a Rajasthan trip? Our comprehensive guide covers the best months to visit, weather patterns, festivals, and seasonal highlights to help you plan the perfect royal adventure.",
-    content: `# Best Time to Visit Rajasthan: Complete Season & Weather Guide
-
-Rajasthan, the "Land of Kings," is a mesmerizing desert state that offers incredible experiences year-round. However, choosing the right time to visit can make or break your royal adventure. This comprehensive guide will help you understand Rajasthan's weather patterns, seasonal highlights, and the best times to visit different regions.
+    content: `Rajasthan, the "Land of Kings," is a mesmerizing desert state that offers incredible experiences year-round. However, choosing the right time to visit can make or break your royal adventure. This comprehensive guide will help you understand Rajasthan's weather patterns, seasonal highlights, and the best times to visit different regions.
 
 ## Rajasthan Weather Overview
 
@@ -330,7 +325,7 @@ The winter months offer the most comfortable weather for exploring Rajasthan's m
 
 #### January: Coldest Month
 - **Temperature:** 5-20°C
-- **Highlights:** Makar Sankranti, kite festivals
+- **Highlights:** Makar Sankranti kite flying, the Jaipur Literature Festival
 - **Best for:** Desert exploration, heritage walks
 - **What to pack:** Warm clothing, especially for desert nights
 
@@ -352,7 +347,7 @@ The winter months offer the most comfortable weather for exploring Rajasthan's m
 Summer in Rajasthan can be brutal, with temperatures soaring above 45°C (113°F) in desert areas. This makes outdoor exploration extremely uncomfortable and potentially dangerous.
 
 #### April: Getting Hot
-- **Temperature:** 20-35°C
+- **Temperature:** 22-38°C
 - **Challenges:** Increasing heat, dust storms possible
 - **Limited activities:** Early morning and late evening only
 
@@ -448,17 +443,17 @@ Monsoons bring relief from the scorching heat but also create new challenges for
 - Camel polo, turban tying competitions
 - Perfect weather for outdoor celebrations
 
-**Elephant Festival, Jaipur (March)**
-- Coincides with Holi
-- Elephant beauty contests and polo
-- Colorful processions
+**Gangaur (March/April)**
+- Women's festival honouring the goddess Gauri
+- Colourful processions through Jaipur's old city
+- Boat processions on Lake Pichola in Udaipur
 
 **Nagaur Fair (January/February)**
 - Cattle trading fair
 - Folk performances
 - Less crowded than Pushkar
 
-### Year-Round Festivals
+### Other Major Festivals
 - **Teej (July/August):** Monsoon festival celebrating love
 - **Diwali (October/November):** Festival of lights
 - **Holi (March):** Festival of colors
@@ -466,13 +461,13 @@ Monsoons bring relief from the scorching heat but also create new challenges for
 ## Accommodation & Pricing by Season
 
 ### Peak Season (December to February)
-- **Prices:** 200-300% higher than summer
-- **Availability:** Book 2-3 months in advance
+- **Prices:** Highest of the year, especially over Christmas and New Year
+- **Availability:** Book 3-6 months ahead for the best heritage hotels
 - **Benefits:** Best weather, all activities available
 
 ### Shoulder Season (October-November, March)
-- **Prices:** 50-100% higher than summer
-- **Availability:** Moderate, book 1 month ahead
+- **Prices:** Lower than peak, except around Diwali and the Pushkar Camel Fair
+- **Availability:** Good, but popular hotels still fill early
 - **Benefits:** Good weather, fewer crowds
 
 ### Off-Season (April to September)
@@ -578,16 +573,13 @@ Monsoons bring relief from the scorching heat but also create new challenges for
 ## Budget Planning by Season
 
 ### Cost Variations
-- **Peak Season (Dec-Feb):** 100% baseline
-- **Shoulder Season:** 60-80% of peak
-- **Monsoon Season:** 40-60% of peak
-- **Summer Season:** 30-50% of peak
+Hotel rates follow the weather: highest from December to February, lower in October, November and March, and lowest from April to September, when many hotels offer significant discounts.
 
 ### Money-Saving Tips
-1. **Travel in shoulder season** for best value
-2. **Book early** for peak season discounts
-3. **Consider monsoon** for dramatic savings
-4. **Flexible dates** can save significantly
+1. **Travel in shoulder season** for the best balance of weather and price
+2. **Book early** for peak season, when the best hotels sell out
+3. **Consider the monsoon** for the lowest prices and green landscapes
+4. **Avoid festival dates** such as Diwali and Christmas if budget matters
 
 ## Conclusion
 
@@ -599,14 +591,21 @@ Monsoons bring relief from the scorching heat but also create new challenges for
 
 **Avoid if Possible:** April to June unless you're specifically interested in experiencing extreme desert conditions or getting the lowest prices.
 
-Remember, Rajasthan's magic transcends seasons, but choosing the right time will ensure you can fully enjoy everything this incredible state has to offer. Plan ahead, pack appropriately, and prepare for the royal adventure of a lifetime!`,
+Remember, Rajasthan's magic transcends seasons, but choosing the right time will ensure you can fully enjoy everything this incredible state has to offer.
+
+## Plan Your Trip
+
+Once you know when to go, choose where: see the [12 best places to visit in Rajasthan](/blog/best-places-to-visit-in-rajasthan) and our [Rajasthan itineraries for 7, 10 and 14 days](/blog/rajasthan-itinerary-7-10-14-days). Visiting Ranthambore? Read our [tiger safari guide](/blog/ranthambore-tiger-safari-guide) for the best months for sightings.
+
+**Tell us your dates** in our [trip planner](/plan-my-trip), and a specialist in Jaipur will suggest the best route for that season, with a quote within 24 hours.`,
     category: "Travel Tips",
     tags: ["Rajasthan", "Best Time to Visit", "Weather", "Seasons", "Travel Planning"],
     author: "Orbit Trails Expert",
     publishDate: "2025-01-10",
+    updatedDate: "2026-11-12",
     readTime: "8 min read",
-    featuredImage: "https://images.unsplash.com/photo-1599661046827-dacbb2298088?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    altText: "Rajasthan palace and desert landscape showing best travel seasons",
+    featuredImage: "https://images.orbittrails.com/gallery/jal-mahal-jaipur-tour.jpg",
+    altText: "Jal Mahal, the water palace in Jaipur, at dusk on a clear winter evening",
     metaTitle: "Best Time to Visit Rajasthan: Weather & Season Guide",
     metaDescription: "The best time to visit Rajasthan, month by month: weather, seasons, festivals and the perfect months for your royal Rajasthan adventure.",
     keywords: ["best time visit rajasthan", "rajasthan weather", "rajasthan seasons", "when to visit rajasthan", "rajasthan travel planning"],
@@ -617,9 +616,7 @@ Remember, Rajasthan's magic transcends seasons, but choosing the right time will
     slug: "rajasthan-royal-cuisine-food-guide-must-try-dishes",
     title: "Royal Rajasthan Cuisine: 15 Must-Try Dishes & Food Guide",
     excerpt: "Explore the rich flavors of Rajasthan's royal cuisine. From Dal Baati Churma to Laal Maas, discover authentic dishes, local specialties, and the best places to experience Rajasthani food culture.",
-    content: `# Royal Rajasthan Cuisine: 15 Must-Try Dishes & Food Guide
-
-Rajasthan's cuisine is as royal and magnificent as its palaces and forts. Born from the harsh desert climate and the luxurious lifestyle of maharajas, Rajasthani food is rich, flavorful, and designed to last. This comprehensive guide will take you through the must-try dishes, cooking techniques, and the best places to experience authentic Rajasthani cuisine.
+    content: `Rajasthan's cuisine is as royal and magnificent as its palaces and forts. Born from the harsh desert climate and the luxurious lifestyle of maharajas, Rajasthani food is rich, flavorful, and designed to last. This comprehensive guide will take you through the must-try dishes, cooking techniques, and the best places to experience authentic Rajasthani cuisine.
 
 ## The Heritage of Rajasthani Cuisine
 
@@ -632,7 +629,7 @@ Rajasthani cuisine has been shaped by several factors:
 - **Warrior culture:** High-energy, nutrient-rich foods for active lifestyles
 
 ### Key Cooking Techniques
-- **Bhgar (Tempering):** Essential spice technique
+- **Baghaar (Tempering):** Spices sizzled in hot ghee or oil to finish a dish
 - **Dum cooking:** Slow-cooking in sealed pots
 - **Sun-drying:** Preservation method for vegetables and lentils
 - **Ghee-based cooking:** Rich, flavorful preparations
@@ -645,7 +642,7 @@ Rajasthani cuisine has been shaped by several factors:
 This iconic trio represents the essence of Rajasthani cooking:
 
 **Dal:** A mix of five lentils (panchmel dal) cooked with spices, ghee, and sometimes dried fruits
-**Baati:** Hard wheat bread balls baked in traditional ovens or cow dung fire
+**Baati:** Hard wheat bread rolls baked over coals or in a traditional oven, then dipped in ghee
 **Churma:** Sweet crumbled wheat mixed with ghee, jaggery, and nuts
 
 **Where to try:** Any traditional Rajasthani thali restaurant
@@ -719,7 +716,7 @@ A mild, creamy mutton curry cooked in milk, almonds, and aromatic spices. This r
 
 When vegetables were scarce in the desert, creative cooks made curry from roasted papads. This dish is surprisingly flavorful and satisfying.
 
-**Innovation factor:** High - making vegetables from non-vegetables
+**Why it exists:** A clever curry for when fresh vegetables were scarce
 **Taste:** Tangy and spicy
 **Garnish:** Fresh coriander and chilies
 
@@ -739,7 +736,7 @@ Bikaner's famous snack made from gram flour, spices, and moth beans. A crunchy d
 
 **Shelf life:** Long-lasting due to desert preservation techniques
 **Spice level:** Mild to medium
-**Best brands:** Haldiram's originated here
+**Famous names:** Haldiram's and Bikaji both began in Bikaner
 
 ### 12. Rajasthani Kadhi (राजस्थानी कढ़ी)
 **Spiced Buttermilk Curry**
@@ -762,10 +759,10 @@ Large green chilies stuffed with spiced potato filling, coated in gram flour bat
 ### 14. Dil Khushal (दिल खुशाल)
 **Royal Sweet Delight**
 
-A rich sweet made from khoya, sugar, and cardamom, shaped into heart shapes. Originally prepared for royal celebrations.
+A rich, fudge-like sweet made from gram flour (besan) slowly roasted in ghee, with sugar, cardamom and nuts. A favourite at royal celebrations.
 
-**Preparation time:** 2-3 hours
-**Shelf life:** 3-4 days
+**Texture:** Grainy and melt-in-the-mouth
+**Shelf life:** Keeps for several days
 **Special occasions:** Weddings and festivals
 
 ### 15. Rajasthani Thali (राजस्थानी थाली)
@@ -818,7 +815,6 @@ A traditional platter containing 15-20 different dishes including dal, vegetable
 
 **Udaipur:**
 - **Ambrai Restaurant:** Lake-side dining
-- **Upre (Lake Palace Hotel):** Royal treatment
 - **Natraj Dining Hall:** Authentic local experience
 
 **Jodhpur:**
@@ -835,9 +831,8 @@ A traditional platter containing 15-20 different dishes including dal, vegetable
 - **Hathi Pol, Udaipur:** Traditional food stalls
 
 ### Traditional Dhabas
-- **Rawat Mishtan Bhandar, Jaipur:** Famous for kachoris
-- **Gypsy Restaurant, Jaisalmer:** Desert cuisine
-- **Natraj Restaurant, Udaipur:** Family-run establishment
+- **Rawat Mishtan Bhandar, Jaipur:** Famous for pyaaz kachori
+- **Gypsy Restaurant, Jodhpur:** Known for its unlimited Rajasthani thali
 
 ## Cooking Classes and Food Experiences
 
@@ -850,17 +845,14 @@ A traditional platter containing 15-20 different dishes including dal, vegetable
 4. **Cooking Schools:** Professional instruction
 
 **Popular Experiences:**
-- **Samode Haveli Cooking Class** (Jaipur)
 - **Shashi Cooking Classes** (Udaipur)
-- **Desert Culture Centre** (Jaisalmer)
+- **Home cooking classes** with local families in Jaipur and Udaipur, which we can arrange as part of your tour
 
-### Food Festivals and Events
+### Festival Foods
 
-**Annual Food Events:**
-- **Rajasthan Food Festival** (Multiple cities)
-- **Desert Food Festival** (Jaisalmer)
-- **Teej Festival Foods** (Monsoon season)
-- **Local Temple Festivals** (Various dates)
+- **Ghewar** during Teej and Raksha Bandhan in the monsoon
+- **Sweets and savoury snacks** made in every home at Diwali
+- **Food stalls** at the Pushkar Camel Fair and the Jaisalmer Desert Festival
 
 ## Vegetarian vs. Non-Vegetarian Options
 
@@ -871,7 +863,7 @@ Rajasthan offers incredible vegetarian options due to:
 - **Dairy products:** Rich milk, ghee, and paneer dishes
 
 ### Non-Vegetarian Specialties
-- **Game meats:** Traditional hunting preparations
+- **Royal curries:** Laal maas and safed maas, once made with game, now with mutton
 - **Mutton dishes:** Various curry preparations
 - **Chicken preparations:** Tandoori and curry styles
 
@@ -923,7 +915,7 @@ Rajasthan offers incredible vegetarian options due to:
 - **Eating with hands:** Traditional and preferred
 - **Sharing food:** Common practice
 - **Respect for food:** Never waste food
-- **Thanksgiving:** Thank the cook/host
+- **Gratitude:** Thank the cook or host
 
 ### Restaurant Behavior
 - **Tipping:** 10% is standard
@@ -966,14 +958,21 @@ Rajasthani cuisine is a celebration of flavors, traditions, and royal heritage. 
 
 Whether you're savoring street food in bustling bazaars or dining in palace hotels, Rajasthani cuisine offers an unforgettable journey for your taste buds. Remember to pace yourself, stay hydrated, and most importantly, approach each meal with an adventurous spirit and an empty stomach!
 
-The food of Rajasthan is not just sustenance—it's an integral part of the cultural experience that makes your journey through the Land of Kings truly memorable.`,
+The food of Rajasthan is not just sustenance—it's an integral part of the cultural experience that makes your journey through the Land of Kings truly memorable.
+
+## Taste Rajasthan with Us
+
+Our guide to the [best places to visit in Jaipur](/blog/places-to-visit-in-jaipur) includes the city's best-loved snacks, and the [12 best places to visit in Rajasthan](/blog/best-places-to-visit-in-rajasthan) will help you choose where to eat your way around the state.
+
+**Want food walks and cooking classes built into your trip?** Tell us in our [trip planner](/plan-my-trip), and we'll design a private itinerary around them.`,
     category: "Food & Culture",
     tags: ["Rajasthani Cuisine", "Indian Food", "Royal Dishes", "Food Guide", "Cultural Experience"],
     author: "Orbit Trails Expert",
     publishDate: "2025-01-05",
+    updatedDate: "2026-11-12",
     readTime: "10 min read",
-    featuredImage: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    altText: "Traditional Rajasthani thali with dal baati churma and royal cuisine dishes",
+    featuredImage: "https://images.orbittrails.com/gallery/WhatsApp%20Image%202025-12-06%20at%2019.50.377.jpg",
+    altText: "A traditional Rajasthani thali with curries, rice, bread and chutneys",
     metaTitle: "Rajasthani Food Guide: 15 Must-Try Royal Dishes",
     metaDescription: "Discover authentic Rajasthani cuisine with our food guide. Learn about 15 must-try royal dishes, local specialties, and best restaurants in Rajasthan.",
     keywords: ["rajasthani food", "rajasthani cuisine", "dal baati churma", "laal maas", "rajasthan food guide", "indian royal cuisine"],
@@ -984,9 +983,7 @@ The food of Rajasthan is not just sustenance—it's an integral part of the cult
     slug: "india-travel-safety-tips-first-time-visitors-guide",
     title: "India Travel Safety Guide: Essential Tips for First-Time Visitors",
     excerpt: "Complete safety guide for India travelers covering health precautions, cultural etiquette, money safety, transportation tips, and emergency contacts. Travel India confidently with expert advice.",
-    content: `# India Travel Safety Guide: Essential Tips for First-Time Visitors
-
-India is an incredible destination that welcomes millions of visitors each year. While it's generally safe for tourists, being well-prepared and informed will ensure you have a smooth, enjoyable, and worry-free journey. This comprehensive safety guide covers everything first-time visitors need to know.
+    content: `India is an incredible destination that welcomes millions of visitors each year. While it's generally safe for tourists, being well-prepared and informed will ensure you have a smooth, enjoyable, and worry-free journey. This comprehensive safety guide covers everything first-time visitors need to know.
 
 ## Pre-Travel Preparation
 
@@ -1207,11 +1204,12 @@ India is an incredible destination that welcomes millions of visitors each year.
 ### Important Emergency Numbers
 
 **India Emergency Numbers:**
+- All emergencies: 112 (India's single emergency number)
 - Police: 100
 - Fire: 101
 - Ambulance: 108
-- Tourist Helpline: 1363
-- Women's Helpline: 1091
+- Tourist helpline: 1800-11-1363 (toll-free, multilingual)
+- Women's helpline: 1091 or 181
 
 **Your Embassy Contacts:**
 - Register with your embassy
@@ -1349,14 +1347,21 @@ India is an incredible destination that welcomes millions of visitors each year.
 ### Remember
 India is an incredibly rewarding destination for travelers who come prepared. Millions of tourists visit safely every year and have transformative experiences. By following these safety guidelines, staying aware of your surroundings, and approaching your journey with respect and openness, you'll be well-equipped to have an amazing and safe adventure in incredible India.
 
-The key to safe travel in India is preparation, awareness, and flexibility. Embrace the chaos, enjoy the incredible hospitality, and let India's magic work on you while staying smart and safe throughout your journey!`,
+The key to safe travel in India is preparation, awareness, and flexibility. Embrace the chaos, enjoy the incredible hospitality, and let India's magic work on you while staying smart and safe throughout your journey!
+
+## More Help for Your First Trip
+
+Read our [first-time India travel guide](/india-travel-guide-first-time-visitors) for visas, money and etiquette, and our guide to [hiring a private car and driver](/blog/private-car-and-driver-india-guide), the safest and most comfortable way to travel between cities.
+
+**Travel with a local team behind you.** Every [Orbit Trails private tour](/luxury-private-tours-india) includes a vetted driver, checked hotels and 24/7 support while you travel. Tell us your plans in our [trip planner](/plan-my-trip).`,
     category: "Safety & Tips",
     tags: ["Travel Safety", "India Travel Tips", "First Time India", "Travel Preparation", "Safety Guide"],
     author: "Orbit Trails Expert",
     publishDate: "2025-01-01",
+    updatedDate: "2026-11-12",
     readTime: "11 min read",
-    featuredImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    altText: "Safe travel in India showing tourists exploring local markets and monuments",
+    featuredImage: "https://images.orbittrails.com/gallery/12.jpeg",
+    altText: "Three travellers with henna on their hands drinking masala chai at a tea stall in Jaipur's old city",
     metaTitle: "India Travel Safety Guide for First-Time Visitors",
     metaDescription: "Essential India travel safety tips for first-time visitors. Health, money, cultural etiquette, and transportation safety guide for a worry-free India trip.",
     keywords: ["india travel safety", "india safety tips", "first time india travel", "india travel guide", "safe travel india"],
@@ -1367,9 +1372,7 @@ The key to safe travel in India is preparation, awareness, and flexibility. Embr
     slug: "india-festivals-cultural-experiences-celebration-guide",
     title: "India's Vibrant Festivals: Cultural Experiences & Celebration Guide",
     excerpt: "Experience India's colorful festivals from Holi to Diwali, Pushkar Fair to Jaipur Literature Festival. Learn when, where, and how to participate in authentic cultural celebrations.",
-    content: `# India's Vibrant Festivals: Cultural Experiences & Celebration Guide
-
-India is a land of festivals, where celebrations happen throughout the year, each more colorful and vibrant than the last. From religious ceremonies to harvest festivals, from royal traditions to modern cultural events, India's festival calendar offers travelers incredible opportunities to experience authentic culture, meet locals, and create unforgettable memories.
+    content: `India is a land of festivals, where celebrations happen throughout the year, each more colorful and vibrant than the last. From religious ceremonies to harvest festivals, from royal traditions to modern cultural events, India's festival calendar offers travelers incredible opportunities to experience authentic culture, meet locals, and create unforgettable memories.
 
 ## Understanding India's Festival Culture
 
@@ -1405,7 +1408,7 @@ Indian festivals serve multiple purposes:
 - Shopping festivals and sales
 
 **Best Places to Experience:**
-- **Jaipur:** Royal celebrations at palaces
+- **Jaipur:** The old city's bazaars covered in lights
 - **Varanasi:** Spiritual significance along the Ganges
 - **Delhi:** Grand celebrations across the capital
 - **Udaipur:** Lakeside celebrations with reflection lights
@@ -1431,7 +1434,7 @@ Indian festivals serve multiple purposes:
 **Best Locations:**
 - **Mathura and Vrindavan:** Birthplace of Krishna, most authentic
 - **Pushkar, Rajasthan:** Desert backdrop with international crowd
-- **Jaipur:** Royal Holi celebrations
+- **Jaipur:** Holi in the old city, and organised celebrations at many hotels
 - **Rishikesh:** Spiritual Holi by the Ganges
 
 **Preparation Tips:**
@@ -1471,16 +1474,20 @@ Indian festivals serve multiple purposes:
 - Perfect weather for desert camping
 
 **Pushkar Camel Fair (October/November)**
-- Largest camel trading fair in the world
+- One of the world's largest camel and livestock fairs
 - Cultural competitions and folk performances
 - Hot air balloon rides and camel safaris
 - Spiritual rituals at Pushkar Lake
 
-**Elephant Festival, Jaipur (March)**
-- Coincides with Holi celebrations
-- Elephant beauty contests and processions
-- Traditional sports like elephant polo
-- Cultural performances and royal pageantry
+**Jaipur Literature Festival (January)**
+- One of the world's largest free literary festivals
+- Writers, thinkers and performers from around the world
+- Held every January in Jaipur
+
+**Gangaur and Teej, Jaipur (March/April and July/August)**
+- Women's festivals honouring the goddess Parvati
+- Royal processions through the old city of Jaipur
+- Women in their finest clothes, henna and jewellery
 
 ### Maharashtra Festivals
 
@@ -1755,14 +1762,21 @@ The key to enjoying Indian festivals is to approach them with respect, openness,
 
 Remember that festivals are about community, sharing, and celebration of life itself. By joining these celebrations respectfully and enthusiastically, you become part of India's continuing cultural story and take home memories that will last a lifetime.
 
-Plan your trip around these incredible celebrations, and discover why India truly is a land where every day is a festival and every festival is a celebration of the beautiful diversity of human culture!`,
+Plan your trip around these incredible celebrations, and discover why India truly is a land where every day is a festival and every festival is a celebration of the beautiful diversity of human culture!
+
+## Plan a Festival Trip
+
+Festival dates follow the lunar calendar and change every year, and hotels fill up early. Our guide to the [best time to visit Rajasthan](/blog/best-time-visit-rajasthan-season-weather-guide) lists the main festivals month by month.
+
+**Want to time your trip for Diwali, Holi or the Pushkar Camel Fair?** Tell us in our [trip planner](/plan-my-trip), and we'll confirm this year's dates and build your itinerary around them.`,
     category: "Culture",
     tags: ["Indian Festivals", "Cultural Events", "Holi", "Diwali", "Cultural Experience", "Traditional Celebrations"],
     author: "Orbit Trails Expert",
     publishDate: "2024-12-28",
+    updatedDate: "2026-11-12",
     readTime: "9 min read",
-    featuredImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    altText: "Colorful Indian festival celebration with traditional decorations and cultural performances",
+    featuredImage: "https://images.orbittrails.com/gallery/11.jpeg",
+    altText: "Travellers in colourful Rajasthani turbans and marigold garlands, a traditional festive welcome",
     metaTitle: "India Festivals Guide: Holi, Diwali & Cultural Celebrations",
     metaDescription: "Discover India's vibrant festivals and cultural celebrations. Complete guide to Holi, Diwali, regional festivals, and authentic cultural experiences.",
     keywords: ["india festivals", "indian cultural festivals", "holi festival", "diwali celebration", "india cultural experiences"],
@@ -1773,9 +1787,7 @@ Plan your trip around these incredible celebrations, and discover why India trul
     slug: "taj-mahal-photography-guide-best-shots-tips",
     title: "Taj Mahal Photography Guide: Capturing the Perfect Shot",
     excerpt: "Master Taj Mahal photography with our expert guide. Learn the best angles, lighting conditions, photography rules, and secret spots for stunning photos of this wonder of the world.",
-    content: `# Taj Mahal Photography Guide: Capturing the Perfect Shot
-
-The Taj Mahal, one of the world's most photographed monuments, presents both incredible opportunities and unique challenges for photographers. This comprehensive guide will help you capture stunning images of this architectural marvel, from classic shots to creative compositions that stand out from the millions of photos taken here each year.
+    content: `The Taj Mahal, one of the world's most photographed monuments, presents both incredible opportunities and unique challenges for photographers. This comprehensive guide will help you capture stunning images of this architectural marvel, from classic shots to creative compositions that stand out from the millions of photos taken here each year.
 
 ## Understanding the Taj Mahal
 
@@ -1789,35 +1801,29 @@ The Taj Mahal, one of the world's most photographed monuments, presents both inc
 ### The Photography Challenge
 The Taj Mahal's popularity means you'll be photographing alongside thousands of other visitors. The key is understanding the best times, angles, and techniques to create unique and stunning images.
 
+### Opening Hours to Plan Around
+- **Open:** from about 30 minutes before sunrise to 30 minutes before sunset
+- **Closed:** every Friday
+- **After dark:** the complex is closed, except for limited night viewing around the full moon (see below)
+
 ## Best Times for Photography
 
 ### Golden Hour Magic
 
-**Sunrise (6:00-7:30 AM)**
+**Sunrise (the best time)**
 - **Advantages:** Soft, warm light; fewer crowds; cool temperatures
-- **Lighting:** Golden light makes the marble glow warm
+- **Lighting:** The marble glows pink and gold
 - **Atmosphere:** Peaceful and serene; morning mist may add mystique
-- **Photography tip:** Arrive 30 minutes before sunrise for setup
+- **Photography tip:** Be in the queue before the gates open, so you reach the reflection pool before the crowds
 
-**Sunset (5:30-7:00 PM)**
-- **Advantages:** Warm light; dramatic sky potential
-- **Challenges:** More crowded than sunrise
-- **Lighting:** Beautiful golden and pink tones on marble
-- **Photography tip:** Stay after sunset for blue hour shots
+**Late Afternoon**
+- **Advantages:** Warm light on the marble
+- **Challenges:** Busier than sunrise, and the complex closes before sunset
+- **Photography tip:** For the sunset itself, go to Mehtab Bagh across the river
 
-### Blue Hour Excellence
+### Night Viewing
 
-**Dawn Blue Hour (5:30-6:30 AM)**
-- **Unique lighting:** Deep blue sky contrasts with warm monument lighting
-- **Fewer people:** Almost empty grounds
-- **Long exposure opportunities:** Smooth water reflections
-- **Equipment needed:** Tripod essential
-
-**Dusk Blue Hour (7:00-8:00 PM)**
-- **Dramatic skies:** Often colorful sunset afterglow
-- **Monument lighting:** Artificial lights begin to illuminate
-- **Reflection shots:** Perfect for main pool reflections
-- **Weather dependent:** Clear skies work best
+On the night of the full moon and two nights either side (except Fridays and during Ramadan), a small number of visitors can see the Taj by moonlight in short, timed slots. Tickets are limited and must be booked in advance. You view from the platform near the main gate, so bring a camera that handles low light well; tripods are not allowed.
 
 ### Midday Considerations
 
@@ -1898,11 +1904,11 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 - **Shutter speed:** 1/60s or faster to avoid camera shake
 - **Focus:** Single-point autofocus on the main dome
 
-**Blue Hour Settings**
-- **Aperture:** f/8-f/11 for depth of field
-- **ISO:** 800-1600 (depending on camera quality)
-- **Shutter speed:** 2-30 seconds with tripod
-- **Focus:** Manual focus or single-point AF with AF assist beam
+**Low Light Settings (dawn, night viewing, Mehtab Bagh at dusk)**
+- **Aperture:** f/2.8-f/5.6 to let in light
+- **ISO:** 800-3200 (depending on camera quality)
+- **Shutter speed:** 1/30s or faster handheld, with image stabilisation on
+- **Focus:** Single-point AF on the dome
 
 **Midday Harsh Light**
 - **Aperture:** f/5.6-f/8 for details
@@ -1913,10 +1919,10 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 ### Equipment Recommendations
 
 **Essential Gear**
-- **Tripod:** Mandatory for blue hour and long exposures
-- **Polarizing filter:** Reduces reflections; enhances sky contrast
-- **Neutral density filter:** For long exposures during day
-- **Lens cleaning kit:** Marble dust can be an issue
+- **A small bag:** Large bags and tripods are not allowed inside; lockers are available at the gates
+- **Polarizing filter:** Reduces glare; enhances sky contrast
+- **Spare batteries and memory cards:** You cannot pop back out easily
+- **Lens cleaning kit:** Dust can be an issue
 
 **Lens Suggestions**
 - **Wide-angle (14-24mm):** Full monument and garden views
@@ -1968,9 +1974,9 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 
 ## Photography Rules and Restrictions
 
-### Current Regulations (as of 2025)
-- **Tripods:** Generally allowed but may be restricted during peak hours
-- **Flash photography:** Not permitted inside the main tomb
+### Rules to Know
+- **Tripods:** Not allowed inside the complex
+- **Inside the main tomb:** Photography is not allowed
 - **Commercial photography:** Requires special permits
 - **Drone photography:** Strictly prohibited
 - **Video restrictions:** Some limitations on professional video equipment
@@ -1999,7 +2005,7 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 
 **Sharpening and Noise Reduction**
 - **Detail enhancement:** Careful sharpening for architectural elements
-- **Noise reduction:** Essential for high-ISO blue hour shots
+- **Noise reduction:** Essential for high-ISO low-light shots
 - **Luminance masking:** Protect highlights while sharpening details
 
 ### Creative Processing Techniques
@@ -2010,11 +2016,10 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 - **Focus stacking:** For macro shots of inlay work
 - **Panoramic stitching:** For ultra-wide views
 
-**Long Exposure Effects**
-- **Cloud movement:** 30-second exposures for streaking clouds
-- **Water smoothing:** 2-10 seconds for reflection pool
-- **People removal:** Long exposures can eliminate moving people
-- **Light trails:** Blue hour shots with light movement
+**Removing the Crowds**
+- **Burst and stack:** Take 10-20 frames from the same spot, then blend them with a "remove moving objects" or median-stack tool
+- **Go early:** The first 30 minutes after opening are the emptiest
+- **Look up:** Domes, minarets and arches against the sky need no crowd control
 
 ## Common Mistakes to Avoid
 
@@ -2039,9 +2044,9 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 ## Alternative Viewpoints and Day Trips
 
 ### Agra Fort Views
-- **Distance shots:** Taj visible from certain vantage points
-- **Historical context:** Shows relationship to other Mughal architecture
-- **Sunset opportunity:** Different perspective across the river
+- **Distance shots:** The Taj is visible from the fort's terraces and the Musamman Burj
+- **Historical context:** Shah Jahan spent his last years here, looking at the Taj
+- **Lens:** A telephoto lens brings the Taj closer across the river bend
 - **Combined visit:** Efficient use of time in Agra
 
 ### Mehtab Bagh (Moonlight Garden)
@@ -2060,7 +2065,7 @@ The Taj Mahal's popularity means you'll be photographing alongside thousands of 
 
 ### Pre-Visit Preparation
 - **Weather check:** Clear skies vs. dramatic clouds
-- **Moon phase:** Full moon can provide interesting night lighting
+- **Moon phase:** Night viewing is only possible around the full moon
 - **Crowd predictions:** Avoid major holidays if possible
 - **Equipment check:** Batteries, memory cards, cleaning supplies
 
@@ -2086,11 +2091,18 @@ Remember that photography is just one way to experience this wonder of the world
 
 Whether you're shooting with a smartphone or professional camera, the most important elements are preparation, patience, and respect for this sacred space. Plan your visit carefully, arrive with realistic expectations, and be open to unexpected opportunities that arise.
 
-The Taj Mahal will reward your photographic efforts with images that capture not just its physical beauty, but the sense of wonder and emotion that has inspired visitors for nearly 400 years. Make your photographs part of this continuing story, and create images that honor both the monument's beauty and your own unique vision.`,
+The Taj Mahal will reward your photographic efforts with images that capture not just its physical beauty, but the sense of wonder and emotion that has inspired visitors for nearly 400 years. Make your photographs part of this continuing story, and create images that honor both the monument's beauty and your own unique vision.
+
+## Plan Your Visit
+
+See our guide to the [best places to visit in Agra](/blog/places-to-visit-in-agra) for the other sights worth your time, and our [complete Golden Triangle guide](/blog/complete-golden-triangle-travel-guide-2025) to plan Delhi, Agra and Jaipur together.
+
+**Want the Taj at sunrise without the stress?** Tell us your dates in our [trip planner](/plan-my-trip), and we'll arrange your guide, tickets and an early start as part of a private itinerary.`,
     category: "Photography",
     tags: ["Taj Mahal", "Photography Guide", "Travel Photography", "Agra", "Monument Photography"],
     author: "Orbit Trails Expert",
     publishDate: "2024-12-25",
+    updatedDate: "2026-11-12",
     readTime: "7 min read",
     featuredImage: "https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
     altText: "Perfect Taj Mahal photography shot during golden hour with reflection pool",

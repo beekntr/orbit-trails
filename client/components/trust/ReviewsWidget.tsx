@@ -8,6 +8,7 @@ import {
   type ReviewSummary,
 } from "@/data/reviews";
 import { SITE } from "@/lib/site";
+import TripadvisorOwl from "@/components/trust/TripadvisorOwl";
 import { cn } from "@/lib/utils";
 
 /**
@@ -135,6 +136,7 @@ function PlatformBadges({ summaries }: { summaries?: ReviewSummary[] }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-secondary shadow-sm transition-colors hover:border-primary"
           >
+            {source === "tripadvisor" && <TripadvisorOwl className="h-5 w-auto" />}
             {SOURCE_LABEL[source]}
             {summary && (
               <>
@@ -199,6 +201,19 @@ export default function ReviewsWidget({
               >
                 Leave us a review on Google
               </a>
+              {SITE.reviewProfiles.tripadvisor && (
+                <>
+                  {" "}or{" "}
+                  <a
+                    href={SITE.reviewProfiles.tripadvisor}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    Tripadvisor
+                  </a>
+                </>
+              )}
             </p>
           )}
         </div>

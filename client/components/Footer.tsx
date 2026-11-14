@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Instagram, Twitter, Linkedin, Mail, Phone } from "lucide-react";
 import { SITE } from "@/lib/site";
+import TripadvisorOwl from "@/components/trust/TripadvisorOwl";
 import { openConsentSettings } from "@/lib/consent";
 
 export default function Footer() {
@@ -26,17 +27,18 @@ export default function Footer() {
               packages. From the Golden Triangle to Royal Rajasthan, create
               memories that last a lifetime.
             </p>
+            {SITE.reviewProfiles.tripadvisor && (
+              <a
+                href={SITE.reviewProfiles.tripadvisor}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pl-2 pr-4 text-sm font-semibold text-secondary transition-opacity hover:opacity-90"
+              >
+                <TripadvisorOwl className="h-5 w-auto" />
+                Find us on Tripadvisor
+              </a>
+            )}
             <div className="flex items-center space-x-3">
-              {SITE.reviewProfiles.tripadvisor && (
-                <a
-                  href={SITE.reviewProfiles.tripadvisor}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-gray-300 hover:text-primary transition-colors"
-                >
-                  Tripadvisor
-                </a>
-              )}
               <a
                 href="https://www.instagram.com/orbittrails9/"
                 target="_blank"

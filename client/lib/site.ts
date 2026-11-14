@@ -41,7 +41,7 @@ export const SITE = {
    * empty profiles are not linked anywhere on the site.
    */
   reviewProfiles: {
-    tripadvisor: "",
+    tripadvisor: "https://www.tripadvisor.com/Attraction_Review-g304555-d34813742-Reviews-Orbit_Trails-Jaipur_Jaipur_District_Rajasthan.html",
     google: "https://g.page/r/CQ2WqLkvSRQAEAI",
     viator: "",
   },
